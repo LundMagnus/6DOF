@@ -1,0 +1,8 @@
+[
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/build",
+  "command": "/usr/bin/c++   -g -o CMakeFiles/Code.dir/main.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/main.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/main.cpp",
+  "output": "CMakeFiles/Code.dir/main.cpp.o"
+}
+]

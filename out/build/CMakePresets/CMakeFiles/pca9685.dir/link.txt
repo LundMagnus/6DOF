@@ -1,0 +1,2 @@
+/usr/bin/ar qc libpca9685.a CMakeFiles/pca9685.dir/Libraries/pca9685/PCA9685.cpp.o
+/usr/bin/ranlib libpca9685.a
