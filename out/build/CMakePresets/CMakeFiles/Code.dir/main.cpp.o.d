@@ -167,7 +167,22 @@ CMakeFiles/Code.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/bits/getopt_posix.h \
  /usr/include/x86_64-linux-gnu/bits/getopt_core.h \
  /usr/include/x86_64-linux-gnu/bits/unistd_ext.h \
- /usr/include/linux/close_range.h \
+ /usr/include/linux/close_range.h /usr/include/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl.h \
+ /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
+ /usr/include/x86_64-linux-gnu/bits/types/struct_iovec.h \
+ /usr/include/linux/falloc.h /usr/include/x86_64-linux-gnu/bits/stat.h \
+ /usr/include/x86_64-linux-gnu/bits/struct_stat.h \
+ /usr/include/linux/i2c-dev.h /usr/include/x86_64-linux-gnu/sys/ioctl.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctls.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctls.h \
+ /usr/include/asm-generic/ioctls.h /usr/include/linux/ioctl.h \
+ /usr/include/x86_64-linux-gnu/asm/ioctl.h \
+ /usr/include/asm-generic/ioctl.h /usr/include/linux/sockios.h \
+ /usr/include/x86_64-linux-gnu/asm/sockios.h \
+ /usr/include/asm-generic/sockios.h \
+ /usr/include/x86_64-linux-gnu/bits/ioctl-types.h \
+ /usr/include/x86_64-linux-gnu/sys/ttydefaults.h \
  /home/magnus/Documents/Raspberry\ Pi/Code/Libraries/pca9685/PCA9685.h \
  /usr/include/c++/15/cstdint \
  /usr/lib/gcc/x86_64-linux-gnu/15/include/stdint.h /usr/include/stdint.h \
