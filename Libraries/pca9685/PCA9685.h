@@ -14,7 +14,7 @@ public:
     bool setPWMFreq(float freq_hz);
     bool setPWM(uint8_t channel, uint16_t on, uint16_t off);
     bool setServoPulse(uint8_t channel, float pulse_ms);
-    bool setServoAngle(uint8_t channel, uint8_t servoType, uint8_t servoAngle);
+    bool setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle);
 
 private:
     bool write8(uint8_t reg, uint8_t value);

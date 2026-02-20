@@ -162,7 +162,7 @@ double constrain(double x, double a, double b) {
     }
 }
 
-bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint8_t servoAngle) {
+bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle) {
     float val = 0.0f;
 
     // Use appropiate servo angle calculation
@@ -178,8 +178,9 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint8_t servoAng
             return false;
     }
 
-    setServoPulse(channel, val);
-    return true;
+    std::cout << "Channel " << static_cast<int>(channel) << ": angle=" << servoAngle 
+              << "° -> pulse=" << val << "ms" << std::endl;
+    return setServoPulse(channel, val);
 }
 
 bool PCA9685::write8(uint8_t reg, uint8_t value) {

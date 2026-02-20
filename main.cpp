@@ -126,5 +126,7 @@ int main() {
             std::cerr << "Failed to set servo pulse" << std::endl;
             return 1;
         }
+
+        sleep(5);
     }
 }
