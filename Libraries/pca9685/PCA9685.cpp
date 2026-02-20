@@ -1,5 +1,6 @@
 #include "PCA9685.h"
 
+#include <iostream>
 #include <cmath>
 #include <cerrno>
 #include <cstring>
@@ -19,6 +20,14 @@ constexpr uint8_t MODE1_RESTART = 0x80;
 constexpr uint8_t MODE2_OUTDRV = 0x04;
 constexpr float OSC_CLOCK_HZ = 25000000.0f;
 constexpr uint16_t RESOLUTION = 4096;
+#define MS62_SERVO 0     // 25kg servo motor
+constexpr float MS62_MIN_PULSE_MS = 0.5f;
+constexpr float MS62_MAX_PULSE_MS = 2.5f;
+constexpr uint16_t MS62_MAX_ANGLE = 270;
+#define DM996_SERVO 1   // 15kg servo motor
+constexpr float DM996_MIN_PULSE_MS = 0.5f;
+constexpr float DM996_MAX_PULSE_MS = 2.5f;
+constexpr uint16_t DM996_MAX_ANGLE = 180;
 } // namespace
 
 PCA9685::PCA9685(uint8_t address, std::string i2c_device)
@@ -83,15 +92,18 @@ bool PCA9685::setPWMFreq(float freq_hz) {
         return false;
     }
 
+    // Enter sleep mode to set prescaler
     uint8_t sleep = static_cast<uint8_t>((oldmode & 0x7F) | MODE1_SLEEP);
     if (!write8(MODE1, sleep)) {
         return false;
     }
 
+    // Set prescaler
     if (!write8(PRESCALE, prescale)) {
         return false;
     }
 
+    // Restore previous mode and restart
     if (!write8(MODE1, oldmode)) {
         return false;
     }
@@ -134,6 +146,40 @@ bool PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {
     }
 
     return setPWM(channel, 0, static_cast<uint16_t>(std::lround(ticks)));
+}
+
+double map(double x, double fromLow, double fromHigh, double toLow, double toHigh) {
+  return toLow + (x-fromLow)*(toHigh-toLow)/(fromHigh-fromLow);
+}
+
+double constrain(double x, double a, double b) {
+    if(x < a) {
+        return a;
+    } else if(x > b) {
+        return b;
+    } else {
+        return x;
+    }
+}
+
+bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint8_t servoAngle) {
+    float val = 0.0f;
+
+    // Use appropiate servo angle calculation
+    switch(servoType) {
+        case MS62_SERVO:
+            val = constrain(map(servoAngle, 0, MS62_MAX_ANGLE, MS62_MIN_PULSE_MS, MS62_MAX_PULSE_MS), MS62_MIN_PULSE_MS, MS62_MAX_PULSE_MS);
+            break;
+        case DM996_SERVO:
+            val = constrain(map(servoAngle, 0, DM996_MAX_ANGLE, DM996_MIN_PULSE_MS, DM996_MAX_PULSE_MS), DM996_MIN_PULSE_MS, DM996_MAX_PULSE_MS);
+            break;
+        default:
+            std::cerr << "Incorrect servo-type index was inputted." << std::endl;
+            return false;
+    }
+
+    setServoPulse(channel, val);
+    return true;
 }
 
 bool PCA9685::write8(uint8_t reg, uint8_t value) {
