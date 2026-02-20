@@ -105,7 +105,7 @@ int main() {
 
         sleep(5);   // sleep for 5 seconds
 
-        std::cout << "Setting servo to 135 degrees (1.25 ms pulse)" << std::endl;
+        std::cout << "Setting servo to 135 degrees (1.5 ms pulse)" << std::endl;
         if (!pwm.setServoAngle(BASE, MS62_SERVO, 135)) {
             std::cerr << "Failed to set servo pulse" << std::endl;
             return 1;
@@ -121,7 +121,7 @@ int main() {
         
         sleep(5);
 
-        std::cout << "Setting servo to 135 degrees (1.25 ms pulse)" << std::endl;
+        std::cout << "Setting servo to 135 degrees (1.5 ms pulse)" << std::endl;
         if (!pwm.setServoAngle(BASE, MS62_SERVO, 135)) {
             std::cerr << "Failed to set servo pulse" << std::endl;
             return 1;

@@ -59,11 +59,14 @@ bool PCA9685::open() {
         return false;
     }
 
-    if (!write8(MODE1, static_cast<uint8_t>(mode1 & ~MODE1_SLEEP))) {
+    // Wake up and enable auto-increment (AI bit = 0x20)
+    uint8_t newmode = static_cast<uint8_t>((mode1 & ~MODE1_SLEEP) | 0x20);
+    if (!write8(MODE1, newmode)) {
         close();
         return false;
     }
 
+    // Set output mode to totem-pole (not open-drain)
     if (!write8(MODE2, MODE2_OUTDRV)) {
         close();
         return false;
