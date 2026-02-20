@@ -148,11 +148,11 @@ bool PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {
     return setPWM(channel, 0, static_cast<uint16_t>(std::lround(ticks)));
 }
 
-double map(double x, double fromLow, double fromHigh, double toLow, double toHigh) {
+float map(double x, double fromLow, double fromHigh, double toLow, double toHigh) {
   return toLow + (x-fromLow)*(toHigh-toLow)/(fromHigh-fromLow);
 }
 
-double constrain(double x, double a, double b) {
+float constrain(double x, double a, double b) {
     if(x < a) {
         return a;
     } else if(x > b) {
