@@ -10,7 +10,7 @@ public:
     ~Controller();
 
     void initialize_SDL();
-    void checkController();
+    bool checkController();
     SDL_Joystick* getGameController();
     void handleJoyButtons(SDL_Event e);
     void handleJaxis(SDL_Event e);

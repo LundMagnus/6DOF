@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include <cmath>
 #include <unistd.h>   // getpid(), sleep()
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
@@ -105,20 +106,24 @@ int main() {
 
     Controller c8bitdo;
     c8bitdo.initialize_SDL();
-    c8bitdo.checkController();
+    if (!c8bitdo.checkController()) {
+        return 1;
+    }
     c8bitdo.getGameController();
 
     //while (SDL_PollEvent(&e) != 0)
     while (true) {
-        if (e.type == SDL_JOYBUTTONDOWN) {
-            c8bitdo.handleJoyButtons(e);
-        }
-        if (e.type == SDL_JOYAXISMOTION && abs(e.jaxis.value > DEADZONE)) {
-            c8bitdo.handleJaxis(e);
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_JOYBUTTONDOWN) {
+                c8bitdo.handleJoyButtons(e);
+            }
+            if (e.type == SDL_JOYAXISMOTION && std::abs(e.jaxis.value) > DEADZONE) {
+                c8bitdo.handleJaxis(e);
+            }
         }
         float angle = c8bitdo.getLSAngle();
 
         pwm.setSmoothServoAngle(0, MS62_SERVO, angle);
-        sleep(0.1);
+        usleep(100000);
     }
 }

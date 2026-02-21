@@ -44,22 +44,24 @@ void Controller::initialize_SDL() {
     SDL_Init(SDL_INIT_JOYSTICK);
 }
 
-void Controller::checkController() {
+bool Controller::checkController() {
     uint retries = 0;
-    std::cout << "Looking for game-controller";
+    std::cout << "Looking for game-controller" << std::flush;
 
     while (SDL_NumJoysticks() < 1) {
-        std::cout << ".";
+        std::cout << "." << std::flush;
         retries++;
-        if(retries > MAX_RETRIES) { // Will wait 1 minute
-            abort;
+        if (retries > MAX_RETRIES) { // Will wait 1 minute
+            std::cout << std::endl;
+            std::cerr << "No game-controller found" << std::endl;
+            return false;
         }
         sleep(2);
     }
 
     std::cout << std::endl;
     std::cout << "Found!" << std::endl;
-    return;
+    return true;
 }
 
 SDL_Joystick* Controller::getGameController() {
