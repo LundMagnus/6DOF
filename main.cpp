@@ -5,11 +5,19 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 
-#include "Libraries/pca9685/PCA9685.h"
 
+#include "Libraries/PCA9685/PCA9685.h"
+#include "Libraries/Controller/Controller.h"
+
+// Servo motors
 #define MS62_SERVO 0
 #define DM996 1
+
+// Links
 #define BASE 0
+
+// Other
+#define DEADZONE 200
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -68,7 +76,8 @@ int main() {
     std::cout << "Process started\n";
     std::cout << "PID: " << getpid() << std::endl;
 
-    
+    SDL_Event e;
+    bool quit = false;
 
     const std::string i2c_device = "/dev/i2c-1";
     const uint8_t address = 0x40; // Default I2C address for PCA9685
@@ -94,39 +103,17 @@ int main() {
         return 1;
     }
 
+    Controller c8bitdo;
+    c8bitdo.initialize_SDL();
+    c8bitdo.checkController();
+    c8bitdo.getGameController();
 
-    while (true) {
 
-        std::cout << "Setting servo to 0 degrees (0.5 ms pulse)" << std::endl;
-        if (!pwm.setServoAngle(BASE, MS62_SERVO, 0)) {
-            std::cerr << "Failed to set servo pulse" << std::endl;
-            return 1;
+    while (SDL_PollEvent(&e) != 0) {
+        if (e.type == SDL_JOYBUTTONDOWN) {
+            c8bitdo.handleJoyButtons(e);
         }
-
-        sleep(5);   // sleep for 5 seconds
-
-        std::cout << "Setting servo to 135 degrees (1.5 ms pulse)" << std::endl;
-        if (!pwm.setServoAngle(BASE, MS62_SERVO, 135)) {
-            std::cerr << "Failed to set servo pulse" << std::endl;
-            return 1;
+        if (e.type == SDL_JOYAXISMOTION && abs(e.jaxis.value > DEADZONE)) {
+            c8bitdo.handleJaxis(e);
         }
-
-        sleep(5);   // sleep for 5 seconds
-
-        std::cout << "Setting servo to 270 degrees (2.5 ms pulse)" << std::endl;
-        if (!pwm.setServoAngle(BASE, MS62_SERVO, 270)) {
-            std::cerr << "Failed to set servo pulse" << std::endl;
-            return 1;
-        }
-        
-        sleep(5);
-
-        std::cout << "Setting servo to 135 degrees (1.5 ms pulse)" << std::endl;
-        if (!pwm.setServoAngle(BASE, MS62_SERVO, 135)) {
-            std::cerr << "Failed to set servo pulse" << std::endl;
-            return 1;
-        }
-
-        sleep(5);
-    }
 }

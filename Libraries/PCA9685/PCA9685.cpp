@@ -1,4 +1,5 @@
 #include "PCA9685.h"
+#include "../Utilities/Utilities.h"
 
 #include <iostream>
 #include <cmath>
@@ -151,19 +152,6 @@ bool PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {
     return setPWM(channel, 0, static_cast<uint16_t>(std::lround(ticks)));
 }
 
-float map(double x, double fromLow, double fromHigh, double toLow, double toHigh) {
-  return toLow + (x-fromLow)*(toHigh-toLow)/(fromHigh-fromLow);
-}
-
-float constrain(double x, double a, double b) {
-    if(x < a) {
-        return a;
-    } else if(x > b) {
-        return b;
-    } else {
-        return x;
-    }
-}
 
 bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle) {
     float val = 0.0f;
