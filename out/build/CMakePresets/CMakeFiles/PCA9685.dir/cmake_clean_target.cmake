@@ -1,0 +1,3 @@
+file(REMOVE_RECURSE
+  "libPCA9685.a"
+)

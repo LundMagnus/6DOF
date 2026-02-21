@@ -127,17 +127,30 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named pca9685
+# Target rules for targets named PCA9685
 
 # Build rule for target.
-pca9685: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 pca9685
-.PHONY : pca9685
+PCA9685: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 PCA9685
+.PHONY : PCA9685
 
 # fast build rule for target.
-pca9685/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/build
-.PHONY : pca9685/fast
+PCA9685/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/build
+.PHONY : PCA9685/fast
+
+#=============================================================================
+# Target rules for targets named Controller
+
+# Build rule for target.
+Controller: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Controller
+.PHONY : Controller
+
+# fast build rule for target.
+Controller/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/build
+.PHONY : Controller/fast
 
 #=============================================================================
 # Target rules for targets named Code
@@ -516,29 +529,53 @@ ContinuousSubmit/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/ContinuousSubmit.dir/build.make CMakeFiles/ContinuousSubmit.dir/build
 .PHONY : ContinuousSubmit/fast
 
-Libraries/pca9685/PCA9685.o: Libraries/pca9685/PCA9685.cpp.o
-.PHONY : Libraries/pca9685/PCA9685.o
+Libraries/Controller/Controller.o: Libraries/Controller/Controller.cpp.o
+.PHONY : Libraries/Controller/Controller.o
 
 # target to build an object file
-Libraries/pca9685/PCA9685.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/Libraries/pca9685/PCA9685.cpp.o
-.PHONY : Libraries/pca9685/PCA9685.cpp.o
+Libraries/Controller/Controller.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.o
+.PHONY : Libraries/Controller/Controller.cpp.o
 
-Libraries/pca9685/PCA9685.i: Libraries/pca9685/PCA9685.cpp.i
-.PHONY : Libraries/pca9685/PCA9685.i
+Libraries/Controller/Controller.i: Libraries/Controller/Controller.cpp.i
+.PHONY : Libraries/Controller/Controller.i
 
 # target to preprocess a source file
-Libraries/pca9685/PCA9685.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/Libraries/pca9685/PCA9685.cpp.i
-.PHONY : Libraries/pca9685/PCA9685.cpp.i
+Libraries/Controller/Controller.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.i
+.PHONY : Libraries/Controller/Controller.cpp.i
 
-Libraries/pca9685/PCA9685.s: Libraries/pca9685/PCA9685.cpp.s
-.PHONY : Libraries/pca9685/PCA9685.s
+Libraries/Controller/Controller.s: Libraries/Controller/Controller.cpp.s
+.PHONY : Libraries/Controller/Controller.s
 
 # target to generate assembly for a file
-Libraries/pca9685/PCA9685.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/Libraries/pca9685/PCA9685.cpp.s
-.PHONY : Libraries/pca9685/PCA9685.cpp.s
+Libraries/Controller/Controller.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.s
+.PHONY : Libraries/Controller/Controller.cpp.s
+
+Libraries/PCA9685/PCA9685.o: Libraries/PCA9685/PCA9685.cpp.o
+.PHONY : Libraries/PCA9685/PCA9685.o
+
+# target to build an object file
+Libraries/PCA9685/PCA9685.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.o
+.PHONY : Libraries/PCA9685/PCA9685.cpp.o
+
+Libraries/PCA9685/PCA9685.i: Libraries/PCA9685/PCA9685.cpp.i
+.PHONY : Libraries/PCA9685/PCA9685.i
+
+# target to preprocess a source file
+Libraries/PCA9685/PCA9685.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.i
+.PHONY : Libraries/PCA9685/PCA9685.cpp.i
+
+Libraries/PCA9685/PCA9685.s: Libraries/PCA9685/PCA9685.cpp.s
+.PHONY : Libraries/PCA9685/PCA9685.s
+
+# target to generate assembly for a file
+Libraries/PCA9685/PCA9685.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.s
+.PHONY : Libraries/PCA9685/PCA9685.cpp.s
 
 main.o: main.cpp.o
 .PHONY : main.o
@@ -602,10 +639,14 @@ help:
 	@echo "... NightlyTest"
 	@echo "... NightlyUpdate"
 	@echo "... Code"
-	@echo "... pca9685"
-	@echo "... Libraries/pca9685/PCA9685.o"
-	@echo "... Libraries/pca9685/PCA9685.i"
-	@echo "... Libraries/pca9685/PCA9685.s"
+	@echo "... Controller"
+	@echo "... PCA9685"
+	@echo "... Libraries/Controller/Controller.o"
+	@echo "... Libraries/Controller/Controller.i"
+	@echo "... Libraries/Controller/Controller.s"
+	@echo "... Libraries/PCA9685/PCA9685.o"
+	@echo "... Libraries/PCA9685/PCA9685.i"
+	@echo "... Libraries/PCA9685/PCA9685.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

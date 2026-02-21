@@ -63,12 +63,14 @@ CMAKE_BINARY_DIR = "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePres
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/pca9685.dir/all
+all: CMakeFiles/PCA9685.dir/all
+all: CMakeFiles/Controller.dir/all
 all: CMakeFiles/Code.dir/all
 .PHONY : all
 
 # The main recursive "codegen" target.
-codegen: CMakeFiles/pca9685.dir/codegen
+codegen: CMakeFiles/PCA9685.dir/codegen
+codegen: CMakeFiles/Controller.dir/codegen
 codegen: CMakeFiles/Code.dir/codegen
 .PHONY : codegen
 
@@ -77,7 +79,8 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/pca9685.dir/clean
+clean: CMakeFiles/PCA9685.dir/clean
+clean: CMakeFiles/Controller.dir/clean
 clean: CMakeFiles/Code.dir/clean
 clean: CMakeFiles/Experimental.dir/clean
 clean: CMakeFiles/Nightly.dir/clean
@@ -110,42 +113,75 @@ clean: CMakeFiles/ContinuousSubmit.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/pca9685.dir
+# Target rules for target CMakeFiles/PCA9685.dir
 
 # All Build rule for target.
-CMakeFiles/pca9685.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=3,4 "Built target pca9685"
-.PHONY : CMakeFiles/pca9685.dir/all
+CMakeFiles/PCA9685.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Built target PCA9685"
+.PHONY : CMakeFiles/PCA9685.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/pca9685.dir/rule: cmake_check_build_system
+CMakeFiles/PCA9685.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/pca9685.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/PCA9685.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 0
-.PHONY : CMakeFiles/pca9685.dir/rule
+.PHONY : CMakeFiles/PCA9685.dir/rule
 
 # Convenience name for target.
-pca9685: CMakeFiles/pca9685.dir/rule
-.PHONY : pca9685
+PCA9685: CMakeFiles/PCA9685.dir/rule
+.PHONY : PCA9685
 
 # codegen rule for target.
-CMakeFiles/pca9685.dir/codegen:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=3,4 "Finished codegen for target pca9685"
-.PHONY : CMakeFiles/pca9685.dir/codegen
+CMakeFiles/PCA9685.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Finished codegen for target PCA9685"
+.PHONY : CMakeFiles/PCA9685.dir/codegen
 
 # clean rule for target.
-CMakeFiles/pca9685.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/pca9685.dir/build.make CMakeFiles/pca9685.dir/clean
-.PHONY : CMakeFiles/pca9685.dir/clean
+CMakeFiles/PCA9685.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/clean
+.PHONY : CMakeFiles/PCA9685.dir/clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/Controller.dir
+
+# All Build rule for target.
+CMakeFiles/Controller.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=3,4 "Built target Controller"
+.PHONY : CMakeFiles/Controller.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Controller.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Controller.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 0
+.PHONY : CMakeFiles/Controller.dir/rule
+
+# Convenience name for target.
+Controller: CMakeFiles/Controller.dir/rule
+.PHONY : Controller
+
+# codegen rule for target.
+CMakeFiles/Controller.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=3,4 "Finished codegen for target Controller"
+.PHONY : CMakeFiles/Controller.dir/codegen
+
+# clean rule for target.
+CMakeFiles/Controller.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/clean
+.PHONY : CMakeFiles/Controller.dir/clean
 
 #=============================================================================
 # Target rules for target CMakeFiles/Code.dir
 
 # All Build rule for target.
-CMakeFiles/Code.dir/all: CMakeFiles/pca9685.dir/all
+CMakeFiles/Code.dir/all: CMakeFiles/PCA9685.dir/all
+CMakeFiles/Code.dir/all: CMakeFiles/Controller.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Code.dir/build.make CMakeFiles/Code.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Code.dir/build.make CMakeFiles/Code.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=1,2 "Built target Code"
@@ -153,7 +189,7 @@ CMakeFiles/Code.dir/all: CMakeFiles/pca9685.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Code.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 4
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Code.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 0
 .PHONY : CMakeFiles/Code.dir/rule
