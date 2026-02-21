@@ -55,11 +55,18 @@ bool Controller::checkController() {
     std::cout << "Looking for game-controller" << std::flush;
 
     while (SDL_NumJoysticks() < 1) {
+        // Debug: list all detected joysticks
+        int num_joysticks = SDL_NumJoysticks();
         std::cout << "." << std::flush;
+        
         retries++;
         if (retries > MAX_RETRIES) { // Will wait 1 minute
             std::cout << std::endl;
-            std::cerr << "No game-controller found" << std::endl;
+            std::cerr << "No game-controller found after ~60s" << std::endl;
+            std::cerr << "Debug: SDL detected " << num_joysticks << " joystick(s)" << std::endl;
+            for (int i = 0; i < num_joysticks; ++i) {
+                std::cerr << "  [" << i << "] " << SDL_JoystickName(SDL_JoystickOpen(i)) << std::endl;
+            }
             return false;
         }
         sleep(2);

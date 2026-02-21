@@ -109,9 +109,11 @@ int main() {
         return 1;
     }
     if (!c8bitdo.checkController()) {
-        return 1;
+        std::cout << "\nWarning: Controller not found. Running in test mode (manual angles)." << std::endl;
+        // Continue anyway for testing servo movement
+    } else {
+        c8bitdo.getGameController();
     }
-    c8bitdo.getGameController();
 
     //while (SDL_PollEvent(&e) != 0)
     while (true) {
