@@ -105,7 +105,9 @@ int main() {
     }
 
     Controller c8bitdo;
-    c8bitdo.initialize_SDL();
+    if (!c8bitdo.initialize_SDL()) {
+        return 1;
+    }
     if (!c8bitdo.checkController()) {
         return 1;
     }

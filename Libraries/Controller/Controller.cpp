@@ -40,8 +40,14 @@ Controller::~Controller() = default;
 
 
 
-void Controller::initialize_SDL() {
-    SDL_Init(SDL_INIT_JOYSTICK);
+bool Controller::initialize_SDL() {
+    if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
+        std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
+
+    SDL_JoystickEventState(SDL_ENABLE);
+    return true;
 }
 
 bool Controller::checkController() {
