@@ -98,6 +98,8 @@ Code: CMakeFiles/Code.dir/build.make
 Code: CMakeFiles/Code.dir/compiler_depend.ts
 Code: libPCA9685.a
 Code: libController.a
+Code: libUtilities.a
+Code: /usr/lib/x86_64-linux-gnu/libSDL2.so
 Code: CMakeFiles/Code.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable Code"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Code.dir/link.txt --verbose=$(VERBOSE)

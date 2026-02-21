@@ -11,7 +11,11 @@ public:
 
     void initialize_SDL();
     void checkController();
-    SDL_Joystick getGameController();
+    SDL_Joystick* getGameController();
     void handleJoyButtons(SDL_Event e);
     void handleJaxis(SDL_Event e);
+
+    float calculateJoyAngle(int16_t joyX, int16_t joyY);
+    float getLSAngle();
+    float getRSAngle();
 };

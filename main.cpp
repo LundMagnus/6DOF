@@ -108,12 +108,17 @@ int main() {
     c8bitdo.checkController();
     c8bitdo.getGameController();
 
-
-    while (SDL_PollEvent(&e) != 0) {
+    //while (SDL_PollEvent(&e) != 0)
+    while (true) {
         if (e.type == SDL_JOYBUTTONDOWN) {
             c8bitdo.handleJoyButtons(e);
         }
         if (e.type == SDL_JOYAXISMOTION && abs(e.jaxis.value > DEADZONE)) {
             c8bitdo.handleJaxis(e);
         }
+        float angle = c8bitdo.getLSAngle();
+
+        pwm.setSmoothServoAngle(0, MS62_SERVO, angle);
+        sleep(0.1);
+    }
 }

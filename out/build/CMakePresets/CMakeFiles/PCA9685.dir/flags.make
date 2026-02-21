@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685"
+CXX_INCLUDES = -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685" -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Utilities"
 
 CXX_FLAGS = -g
 

@@ -255,6 +255,9 @@ Code_IS_TOP_LEVEL:STATIC=ON
 //Value Computed by CMake
 Code_SOURCE_DIR:STATIC=/home/magnus/Documents/Raspberry Pi/Code
 
+//Dependencies for the target
+Controller_LIB_DEPENDS:STATIC=general;SDL2::SDL2;
+
 //Maximum time allowed before CTest will kill the test.
 DART_TESTING_TIMEOUT:STRING=1500
 
@@ -269,6 +272,12 @@ MEMORYCHECK_COMMAND:FILEPATH=MEMORYCHECK_COMMAND-NOTFOUND
 
 //File that contains suppressions for the memory checker
 MEMORYCHECK_SUPPRESSIONS_FILE:FILEPATH=
+
+//Dependencies for the target
+PCA9685_LIB_DEPENDS:STATIC=general;Utilities;
+
+//The directory containing a CMake configuration file for SDL2.
+SDL2_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SDL2
 
 //Name of the computer/site where compile is being run
 SITE:STRING=zenith

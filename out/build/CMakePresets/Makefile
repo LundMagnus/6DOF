@@ -140,6 +140,19 @@ PCA9685/fast:
 .PHONY : PCA9685/fast
 
 #=============================================================================
+# Target rules for targets named Utilities
+
+# Build rule for target.
+Utilities: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Utilities
+.PHONY : Utilities
+
+# fast build rule for target.
+Utilities/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/build
+.PHONY : Utilities/fast
+
+#=============================================================================
 # Target rules for targets named Controller
 
 # Build rule for target.
@@ -577,6 +590,30 @@ Libraries/PCA9685/PCA9685.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.s
 .PHONY : Libraries/PCA9685/PCA9685.cpp.s
 
+Libraries/Utilities/Utilities.o: Libraries/Utilities/Utilities.cpp.o
+.PHONY : Libraries/Utilities/Utilities.o
+
+# target to build an object file
+Libraries/Utilities/Utilities.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/Libraries/Utilities/Utilities.cpp.o
+.PHONY : Libraries/Utilities/Utilities.cpp.o
+
+Libraries/Utilities/Utilities.i: Libraries/Utilities/Utilities.cpp.i
+.PHONY : Libraries/Utilities/Utilities.i
+
+# target to preprocess a source file
+Libraries/Utilities/Utilities.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/Libraries/Utilities/Utilities.cpp.i
+.PHONY : Libraries/Utilities/Utilities.cpp.i
+
+Libraries/Utilities/Utilities.s: Libraries/Utilities/Utilities.cpp.s
+.PHONY : Libraries/Utilities/Utilities.s
+
+# target to generate assembly for a file
+Libraries/Utilities/Utilities.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/Libraries/Utilities/Utilities.cpp.s
+.PHONY : Libraries/Utilities/Utilities.cpp.s
+
 main.o: main.cpp.o
 .PHONY : main.o
 
@@ -641,12 +678,16 @@ help:
 	@echo "... Code"
 	@echo "... Controller"
 	@echo "... PCA9685"
+	@echo "... Utilities"
 	@echo "... Libraries/Controller/Controller.o"
 	@echo "... Libraries/Controller/Controller.i"
 	@echo "... Libraries/Controller/Controller.s"
 	@echo "... Libraries/PCA9685/PCA9685.o"
 	@echo "... Libraries/PCA9685/PCA9685.i"
 	@echo "... Libraries/PCA9685/PCA9685.s"
+	@echo "... Libraries/Utilities/Utilities.o"
+	@echo "... Libraries/Utilities/Utilities.i"
+	@echo "... Libraries/Utilities/Utilities.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
