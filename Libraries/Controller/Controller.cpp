@@ -41,7 +41,7 @@ Controller::~Controller() = default;
 
 
 bool Controller::initialize_SDL() {
-    if (SDL_Init(SDL_INIT_JOYSTICK) != 0) {
+    if (SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) != 0) {
         std::cerr << "SDL_Init failed: " << SDL_GetError() << std::endl;
         return false;
     }
