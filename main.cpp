@@ -10,7 +10,7 @@
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
 
-// Servo motors
+// Servo motor types
 #define MS62_SERVO 0
 #define DM996 1
 
@@ -77,9 +77,6 @@ int main() {
     std::cout << "Process started\n";
     std::cout << "PID: " << getpid() << std::endl;
 
-    SDL_Event e;
-    bool quit = false;
-
     const std::string i2c_device = "/dev/i2c-1";
     const uint8_t address = 0x40; // Default I2C address for PCA9685
 
@@ -111,18 +108,13 @@ int main() {
     if (!c8bitdo.checkController()) {
         return 1;
     }
-    c8bitdo.getGameController();
+    if (!c8bitdo.openJoystick(0)) {
+        return 1;
+    }
 
     //while (SDL_PollEvent(&e) != 0)
     while (true) {
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_JOYBUTTONDOWN) {
-                c8bitdo.handleJoyButtons(e);
-            }
-            if (e.type == SDL_JOYAXISMOTION && std::abs(e.jaxis.value) > DEADZONE) {
-                c8bitdo.handleJaxis(e);
-            }
-        }
+        c8bitdo.updateAxes();
         float angle = c8bitdo.getLSAngle();
 
         pwm.setSmoothServoAngle(0, MS62_SERVO, angle);

@@ -36,7 +36,12 @@ namespace {
 
 Controller::Controller() = default;
 
-Controller::~Controller() = default;
+Controller::~Controller() {
+    if (joystick_) {
+        SDL_JoystickClose(joystick_);
+        joystick_ = nullptr;
+    }
+}
 
 
 
@@ -74,11 +79,24 @@ bool Controller::checkController() {
 
     std::cout << std::endl;
     std::cout << "Found!" << std::endl;
+    const char* name = SDL_JoystickNameForIndex(0);
+    if (name) {
+        std::cout << "Controller: " << name << std::endl;
+    }
+    return true;
+}
+
+bool Controller::openJoystick(int index) {
+    joystick_ = SDL_JoystickOpen(index);
+    if (!joystick_) {
+        std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
+        return false;
+    }
     return true;
 }
 
 SDL_Joystick* Controller::getGameController() {
-    return SDL_JoystickOpen(0);
+    return joystick_;
 }
 
 void Controller::handleJoyButtons(SDL_Event e) {
@@ -125,6 +143,20 @@ void Controller::handleJaxis(SDL_Event e) {
             RT_VALUE = e.jaxis.value;
             break;
     }
+}
+
+void Controller::updateAxes() {
+    if (!joystick_) {
+        return;
+    }
+
+    SDL_JoystickUpdate();
+    X_LS_VALUE = SDL_JoystickGetAxis(joystick_, X_LS);
+    Y_LS_VALUE = SDL_JoystickGetAxis(joystick_, Y_LS);
+    LT_VALUE = SDL_JoystickGetAxis(joystick_, LT);
+    X_RS_VALUE = SDL_JoystickGetAxis(joystick_, X_RS);
+    Y_RS_VALUE = SDL_JoystickGetAxis(joystick_, Y_RS);
+    RT_VALUE = SDL_JoystickGetAxis(joystick_, RT);
 }
 
 
