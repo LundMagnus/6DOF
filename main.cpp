@@ -117,7 +117,7 @@ int main() {
         c8bitdo.updateAxes();
         float angle = c8bitdo.getLSAngle();
 
-        pwm.setSmoothServoAngle(0, MS62_SERVO, angle);
+        pwm.setSmoothServoAngle(0, MS62_SERVO, angle, 8);
         usleep(100000);
     }
 }
