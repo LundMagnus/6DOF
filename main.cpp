@@ -108,6 +108,8 @@ int main() {
     if (!c8bitdo.initialize_SDL()) {
         return 1;
     }
+    SDL_Init(SDL_INIT_JOYSTICK);
+
     if (!c8bitdo.checkController()) {
         return 1;
     }

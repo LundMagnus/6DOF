@@ -60,7 +60,6 @@ bool Controller::initialize_SDL() {
 bool Controller::checkController() {
     uint retries = 0;
     std::cout << "Looking for game-controller" << std::flush;
-
     int start_time = std::time(0);
 
     while (SDL_NumJoysticks() < 1) { // Find controller
