@@ -8,6 +8,8 @@
 #include <unistd.h>
 #include <cmath>
 #include <limits.h>
+#include <chrono>
+#include <ctime>
 
 namespace {
     #define X_LS 0
@@ -59,10 +61,17 @@ bool Controller::checkController() {
     uint retries = 0;
     std::cout << "Looking for game-controller" << std::flush;
 
-    while (SDL_NumJoysticks() < 1) {
-        std::cout << "." << std::flush;
+    int start_time = std::time(0);
+
+    while (SDL_NumJoysticks() < 1) { // Find controller
+
+        if((start_time - std::time(0)) != 0) {
+            std::cout << "." << std::flush;
+            retries++;
+            start_time = std::time(0);
+        }
         
-        retries++;
+        
         if (retries > MAX_RETRIES) { // Will wait 1 minute
             std::cout << std::endl;
             std::cerr << "No game-controller found after ~60s" << std::endl;
@@ -70,7 +79,7 @@ bool Controller::checkController() {
             std::cerr << "Debug: SDL detected " << num_joysticks << " joystick(s)" << std::endl;
             return false;
         }
-        usleep(500000);  // 0.5s instead of 2s to catch controller faster
+       
     }
 
     std::cout << std::endl;
