@@ -158,6 +158,7 @@ int main() {
     //}
 
     //while (SDL_PollEvent(&e) != 0)
+    std::cout << "Done!" << std::endl;
     while (true) {
         c8bitdo.updateAxes();
         float angle = c8bitdo.getLSAngle();
