@@ -24,7 +24,7 @@ namespace {
     #define RB   5
     #define MIN  6
     #define PLU  7
-    #define MAX_RETRIES 30
+    #define MAX_RETRIES 120
 
     int16_t X_LS_VALUE = 0;
     int16_t Y_LS_VALUE = 0;
