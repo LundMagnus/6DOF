@@ -152,7 +152,7 @@ void Controller::updateAxes() {
 
 
 float Controller::calculateJoyAngle(int16_t joyX, int16_t joyY) {
-    return fmod(atan2(joyY, joyX) * 180/M_PI + 360, 360);
+    return 360 - fmod(atan2(joyY, joyX) * 180/M_PI + 360, 360);
 }
 
 float Controller::getLSAngle() {
