@@ -107,9 +107,9 @@ int main() {
     }
 
     Controller c8bitdo;
-    if (!c8bitdo.initialize_SDL()) {
-        return 1;
-    }
+    //if (!c8bitdo.initialize_SDL()) {
+    //    return 1;
+    //}
     SDL_Init(SDL_INIT_JOYSTICK);
 
     // Delete?
@@ -135,6 +135,7 @@ int main() {
         }
        
     }
+    SDL_Joystick* gGameController = SDL_JoystickOpen(0);
 
     std::cout << std::endl;
     
@@ -152,9 +153,9 @@ int main() {
 ///
 
 
-    if (!c8bitdo.checkController()) {
-        return 1;
-    }
+    //if (!c8bitdo.checkController()) {
+    //    return 1;
+    //}
 
     //while (SDL_PollEvent(&e) != 0)
     while (true) {
