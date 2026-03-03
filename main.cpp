@@ -69,6 +69,9 @@ void scan_i2c_bus(const std::string &device) {
 
     ::close(fd);
 }
+
+
+
 } // namespace
 
 
@@ -106,9 +109,6 @@ int main() {
         return 1;
     }
     if (!c8bitdo.checkController()) {
-        return 1;
-    }
-    if (!c8bitdo.openJoystick(0)) {
         return 1;
     }
 

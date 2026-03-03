@@ -60,33 +60,38 @@ bool Controller::checkController() {
     std::cout << "Looking for game-controller" << std::flush;
 
     while (SDL_NumJoysticks() < 1) {
-        // Debug: list all detected joysticks
-        int num_joysticks = SDL_NumJoysticks();
         std::cout << "." << std::flush;
         
         retries++;
         if (retries > MAX_RETRIES) { // Will wait 1 minute
             std::cout << std::endl;
             std::cerr << "No game-controller found after ~60s" << std::endl;
+            int num_joysticks = SDL_NumJoysticks();
             std::cerr << "Debug: SDL detected " << num_joysticks << " joystick(s)" << std::endl;
-            for (int i = 0; i < num_joysticks; ++i) {
-                std::cerr << "  [" << i << "] " << SDL_JoystickName(SDL_JoystickOpen(i)) << std::endl;
-            }
             return false;
         }
-        sleep(2);
+        usleep(500000);  // 0.5s instead of 2s to catch controller faster
     }
 
     std::cout << std::endl;
-    std::cout << "Found!" << std::endl;
-    const char* name = SDL_JoystickNameForIndex(0);
-    if (name) {
-        std::cout << "Controller: " << name << std::endl;
+    
+    // Open immediately to prevent controller sleep
+    joystick_ = SDL_JoystickOpen(0);
+    if (!joystick_) {
+        std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
+        return false;
     }
+    
+    const char* name = SDL_JoystickName(joystick_);
+    std::cout << "Found controller: " << (name ? name : "Unknown") << std::endl;
     return true;
 }
 
 bool Controller::openJoystick(int index) {
+    if (joystick_) {
+        return true;  // Already opened by checkController
+    }
+    
     joystick_ = SDL_JoystickOpen(index);
     if (!joystick_) {
         std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
@@ -121,29 +126,6 @@ void Controller::handleJoyButtons(SDL_Event e) {
     }
 }
 
-void Controller::handleJaxis(SDL_Event e) {
-    switch ((int)e.jaxis.axis) 
-    {
-        case X_LS:
-            X_LS_VALUE = e.jaxis.value;
-            break;
-        case Y_LS:
-            Y_LS_VALUE = e.jaxis.value;
-            break;
-        case LT:
-            LT_VALUE = e.jaxis.value;
-            break;
-        case X_RS:
-            X_RS_VALUE = e.jaxis.value;
-            break;
-        case Y_RS:
-            Y_RS_VALUE = e.jaxis.value;
-            break;
-        case RT:
-            RT_VALUE = e.jaxis.value;
-            break;
-    }
-}
 
 void Controller::updateAxes() {
     if (!joystick_) {
