@@ -18,6 +18,7 @@
 
 // Links
 #define BASE 0
+#define SHOULDER 1
 
 // Other
 #define DEADZONE 200
@@ -164,7 +165,8 @@ int main() {
         c8bitdo.updateAxes();
         float angle = c8bitdo.getLSAngle();
 
-        pwm.setSmoothServoAngle(0, MS62_SERVO, angle, 8);
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, angle, 8);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 8);
         usleep(100000);
     }
 }
