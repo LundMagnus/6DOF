@@ -120,7 +120,7 @@ int main() {
     while (SDL_NumJoysticks() < 1) { // Find controller
 
         if((start_time - std::time(0)) != 0) {
-            std::cout << "." << std::flush;
+            //std::cout << "." << std::flush;
             retries++;
             start_time = std::time(0);
         }
