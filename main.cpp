@@ -136,6 +136,7 @@ int main() {
        
     }
     SDL_Joystick* gGameController = SDL_JoystickOpen(0);
+    c8bitdo.setJoystick(gGameController);
 
     std::cout << std::endl;
     

@@ -13,6 +13,7 @@ public:
     bool checkController();
     bool openJoystick(int index = 0);
     SDL_Joystick* getGameController();
+    void setJoystick(SDL_Joystick* joy) { joystick_ = joy; }
     void handleJoyButtons(SDL_Event e);
     void handleJaxis(SDL_Event e);
     void updateAxes();
