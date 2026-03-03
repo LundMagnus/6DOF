@@ -5,6 +5,8 @@
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
+#include <chrono>
+#include <ctime>
 
 
 #include "Libraries/PCA9685/PCA9685.h"
@@ -109,6 +111,46 @@ int main() {
         return 1;
     }
     SDL_Init(SDL_INIT_JOYSTICK);
+
+    // Delete?
+    uint retries = 0;
+    std::cout << "Looking for game-controller" << std::flush;
+    int start_time = std::time(0);
+
+    while (SDL_NumJoysticks() < 1) { // Find controller
+
+        if((start_time - std::time(0)) != 0) {
+            std::cout << "." << std::flush;
+            retries++;
+            start_time = std::time(0);
+        }
+        
+        
+        if (retries > 120) { // Will wait 1 minute
+            std::cout << std::endl;
+            std::cerr << "No game-controller found after ~60s" << std::endl;
+            int num_joysticks = SDL_NumJoysticks();
+            std::cerr << "Debug: SDL detected " << num_joysticks << " joystick(s)" << std::endl;
+            return false;
+        }
+       
+    }
+
+    std::cout << std::endl;
+    
+    // Open immediately to prevent controller sleep
+    //joystick_ = SDL_JoystickOpen(0);
+    //if (!joystick_) {
+    //    std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
+    //    return false;
+    //}
+    //
+    //const char* name = SDL_JoystickName(joystick_);
+    //std::cout << "Found controller: " << (name ? name : "Unknown") << std::endl;
+    //return true;
+    
+///
+
 
     if (!c8bitdo.checkController()) {
         return 1;
