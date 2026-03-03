@@ -163,10 +163,11 @@ int main() {
     std::cout << "Done!" << std::endl;
     while (true) {
         c8bitdo.updateAxes();
-        float angle = c8bitdo.getLSAngle();
+        float angleLS = c8bitdo.getLSAngle();
+        float angleRS = c8bitdo.getRSAngle();
 
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, angle, 8);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 8);
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, angleLS, 8);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, angleRS, 8);
         usleep(100000);
     }
 }
