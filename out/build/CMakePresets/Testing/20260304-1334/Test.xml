@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Linux-g++"
-	BuildStamp="20260303-1637-Experimental"
+	BuildStamp="20260304-1334-Experimental"
 	Name="zenith"
 	Generator="ctest-3.31.6"
 	CompilerName="/usr/bin/g++"
@@ -22,14 +22,14 @@
 	TotalVirtualMemory="511"
 	TotalPhysicalMemory="31947"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="4199.62"
+	ProcessorClockFrequency="4200"
 	>
 	<Testing>
-		<StartDateTime>Mar 03 20:34 CET</StartDateTime>
-		<StartTestTime>1772566492</StartTestTime>
+		<StartDateTime>Mar 04 14:34 CET</StartDateTime>
+		<StartTestTime>1772631257</StartTestTime>
 		<TestList/>
-		<EndDateTime>Mar 03 20:34 CET</EndDateTime>
-		<EndTestTime>1772566492</EndTestTime>
+		<EndDateTime>Mar 04 14:34 CET</EndDateTime>
+		<EndTestTime>1772631257</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
