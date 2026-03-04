@@ -155,6 +155,14 @@ float Controller::calculateJoyAngle(int16_t joyX, int16_t joyY) {
     return 360 - fmod(atan2(joyY, joyX) * 180/M_PI + 360, 360);
 }
 
+int16_t Controller::getLSX() {
+    return X_LS_VALUE;
+}
+
+int16_t Controller::getLSY() {
+    return Y_LS_VALUE;
+}
+
 float Controller::getLSAngle() {
     return calculateJoyAngle(X_LS_VALUE, Y_LS_VALUE);
 }

@@ -6,7 +6,6 @@
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
 #include <chrono>
-#include <ctime>
 
 
 #include "Libraries/PCA9685/PCA9685.h"
@@ -21,7 +20,7 @@
 #define SHOULDER 1
 
 // Other
-#define DEADZONE 200
+#define DEADZONE 5000
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -108,68 +107,33 @@ int main() {
     }
 
     Controller c8bitdo;
-    //if (!c8bitdo.initialize_SDL()) {
-    //    return 1;
-    //}
-    SDL_Init(SDL_INIT_JOYSTICK);
-
-    // Delete?
-    uint retries = 0;
-    std::cout << "Looking for game-controller" << std::flush;
-    int start_time = std::time(0);
-
-    while (SDL_NumJoysticks() < 1) { // Find controller
-
-        if((start_time - std::time(0)) != 0) {
-            //std::cout << "." << std::flush;
-            retries++;
-            start_time = std::time(0);
-        }
-        
-        
-        if (retries > 120) { // Will wait 1 minute
-            std::cout << std::endl;
-            std::cerr << "No game-controller found after ~60s" << std::endl;
-            int num_joysticks = SDL_NumJoysticks();
-            std::cerr << "Debug: SDL detected " << num_joysticks << " joystick(s)" << std::endl;
-            return false;
-        }
-       
+    if (!c8bitdo.initialize_SDL()) {
+        return 1;
     }
-    SDL_Joystick* gGameController = SDL_JoystickOpen(0);
-    c8bitdo.setJoystick(gGameController);
+    if (!c8bitdo.checkController()) {
+        return 1;
+    }
 
-    std::cout << std::endl;
-    
-    // Open immediately to prevent controller sleep
-    //joystick_ = SDL_JoystickOpen(0);
-    //if (!joystick_) {
-    //    std::cerr << "SDL_JoystickOpen failed: " << SDL_GetError() << std::endl;
-    //    return false;
-    //}
-    //
-    //const char* name = SDL_JoystickName(joystick_);
-    //std::cout << "Found controller: " << (name ? name : "Unknown") << std::endl;
-    //return true;
-    
-///
-
-
-    //if (!c8bitdo.checkController()) {
-    //    return 1;
-    //}
-
-    //while (SDL_PollEvent(&e) != 0)
+    uint16_t targetBaseAngle = 135;
     std::cout << "Done!" << std::endl;
     while (true) {
         c8bitdo.updateAxes();
-        usleep(100000);
-        float angleLS = c8bitdo.getLSAngle();
-        float angleRS = c8bitdo.getRSAngle();
 
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, angleLS, 8);
-        usleep(100000);
-        //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, angleRS, 8);
+        const int16_t lsx = c8bitdo.getLSX();
+        const int16_t lsy = c8bitdo.getLSY();
+        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
+            float angleLS = c8bitdo.getLSAngle();
+            if (angleLS < 0.0f) {
+                angleLS = 0.0f;
+            }
+            if (angleLS > 270.0f) {
+                angleLS = 270.0f;
+            }
+            targetBaseAngle = static_cast<uint16_t>(angleLS);
+        }
+
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
+        //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
     }
 }

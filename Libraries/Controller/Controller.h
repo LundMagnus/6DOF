@@ -19,6 +19,8 @@ public:
     void updateAxes();
 
     float calculateJoyAngle(int16_t joyX, int16_t joyY);
+    int16_t getLSX();
+    int16_t getLSY();
     float getLSAngle();
     float getRSAngle();
 

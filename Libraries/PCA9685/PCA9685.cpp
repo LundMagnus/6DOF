@@ -173,17 +173,24 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
 }
 
 bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle, uint8_t smoothness) {
-    static uint16_t currentAngle = 0;
-    
-    if(!abs(currentAngle - servoAngle) < smoothness * 2) {
-        if(currentAngle < servoAngle) {
-            currentAngle += smoothness;
-        } else if(currentAngle > servoAngle) {
-            currentAngle -= smoothness;
-        } 
+    if (channel >= 16) {
+        return false;
     }
 
-    return setServoAngle(channel, servoType, currentAngle);
+    static uint16_t currentAngle[16] = {0};
+
+    int delta = static_cast<int>(servoAngle) - static_cast<int>(currentAngle[channel]);
+    if (std::abs(delta) >= static_cast<int>(smoothness) * 2) {
+        if (delta > 0) {
+            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + smoothness);
+        } else {
+            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] - smoothness);
+        }
+    } else {
+        currentAngle[channel] = servoAngle;
+    }
+
+    return setServoAngle(channel, servoType, currentAngle[channel]);
 }
 
 bool PCA9685::write8(uint8_t reg, uint8_t value) {
