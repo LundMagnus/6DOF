@@ -123,14 +123,14 @@ int main() {
         std::cout << "PCA9685 opened on " << i2c_device << "." << std::endl;
     }
 
-    pwm.reset();
+    //pwm.reset();
     usleep(10000);
     // Set PWM frequency to 50 Hz for servo control
     if (!pwm.setPWMFreq(50.0f)) {
         std::cerr << "Failed to set PWM frequency" << std::endl;
         return 1;
     } else {
-        std::cout << "Set frequency " << 50 << "." << std::endl;
+        std::cout << "Set frequency to" << 50 << "Hz." << std::endl;
     }
 
 
