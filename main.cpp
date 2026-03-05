@@ -153,13 +153,14 @@ int main() {
     sleep(1);
     std::cout << "Done!" << std::endl;
     
-    while (c8bitdo.getProgramState() && g_running) {
+    while (c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
 
         SDL_PollEvent(&e);
         if (e.type == SDL_JOYBUTTONDOWN) {
             c8bitdo.handleJoyButtons(e);
         }
+        std::cout << c8bitdo.getProgramState() << std::endl;
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
