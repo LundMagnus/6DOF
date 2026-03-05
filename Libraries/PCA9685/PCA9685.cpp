@@ -38,15 +38,49 @@ PCA9685::~PCA9685() {
     close();
 }
 
+//bool PCA9685::open() {
+//    if (fd_ >= 0) {
+//        return true;
+//    }
+//
+//    fd_ = ::open(i2c_device_.c_str(), O_RDWR);
+//    if (fd_ < 0) {
+//        return false;
+//    }
+//
+//    if (ioctl(fd_, I2C_SLAVE, address_) < 0) {
+//        ::close(fd_);
+//        fd_ = -1;
+//        return false;
+//    }
+//
+//    uint8_t mode1 = 0;
+//    if (!read8(MODE1, mode1)) {
+//        close();
+//        return false;
+//    }
+//
+//    // Wake up and enable auto-increment (AI bit = 0x20)
+//    uint8_t newmode = static_cast<uint8_t>((mode1 & ~MODE1_SLEEP) | 0x20);
+//    if (!write8(MODE1, newmode)) {
+//        close();
+//        return false;
+//    }
+//
+//    // Set output mode to totem-pole (not open-drain)
+//    if (!write8(MODE2, MODE2_OUTDRV)) {
+//        close();
+//        return false;
+//    }
+//
+//    return setPWMFreq(current_freq_hz_);
+//}
+
 bool PCA9685::open() {
-    if (fd_ >= 0) {
-        return true;
-    }
+    if (fd_ >= 0) return true;
 
     fd_ = ::open(i2c_device_.c_str(), O_RDWR);
-    if (fd_ < 0) {
-        return false;
-    }
+    if (fd_ < 0) return false;
 
     if (ioctl(fd_, I2C_SLAVE, address_) < 0) {
         ::close(fd_);
@@ -54,26 +88,22 @@ bool PCA9685::open() {
         return false;
     }
 
-    uint8_t mode1 = 0;
-    if (!read8(MODE1, mode1)) {
+    // Reset chip: MODE1=0x00 (awake, AI cleared), MODE2=OUTDRV
+    if (!write8(MODE1, 0x00)) { close(); return false; }
+    if (!write8(MODE2, MODE2_OUTDRV)) { close(); return false; }
+
+    // Set PWM frequency
+    if (!setPWMFreq(current_freq_hz_)) {
         close();
         return false;
     }
 
-    // Wake up and enable auto-increment (AI bit = 0x20)
-    uint8_t newmode = static_cast<uint8_t>((mode1 & ~MODE1_SLEEP) | 0x20);
-    if (!write8(MODE1, newmode)) {
-        close();
-        return false;
+    // Clear all channels (full-off)
+    for (int i = 0; i < 16; i++) {
+        setPWM(i, 0, 0); // off
     }
 
-    // Set output mode to totem-pole (not open-drain)
-    if (!write8(MODE2, MODE2_OUTDRV)) {
-        close();
-        return false;
-    }
-
-    return setPWMFreq(current_freq_hz_);
+    return true;
 }
 
 void PCA9685::close() {
@@ -97,42 +127,70 @@ bool PCA9685::sleep() {
     return write8(MODE1, static_cast<uint8_t>(mode1 | MODE1_SLEEP));
 }
 
-bool PCA9685::setPWMFreq(float freq_hz) {
-    if (fd_ < 0) {
-        return false;
-    }
+//bool PCA9685::setPWMFreq(float freq_hz) {
+//    if (fd_ < 0) {
+//        return false;
+//    }
+//
+//    float prescaleval = (OSC_CLOCK_HZ / (RESOLUTION * freq_hz)) - 1.0f;
+//    uint8_t prescale = static_cast<uint8_t>(std::lround(prescaleval));
+//    
+//
+//    uint8_t oldmode = 0;
+//    if (!read8(MODE1, oldmode)) {
+//        return false;
+//    }
+//
+//    // Enter sleep mode to set prescaler
+//    uint8_t sleep = static_cast<uint8_t>((oldmode & 0x7F) | MODE1_SLEEP);
+//    if (!write8(MODE1, sleep)) {
+//        return false;
+//    }
+//
+//    // Set prescaler
+//    if (!write8(PRESCALE, prescale)) {
+//        return false;
+//    } else {
+//        std::cout << "Prescaler set to " << prescaleval << "." << std::endl;
+//    }
+//
+//    // Restore previous mode and restart
+//    if (!write8(MODE1, oldmode)) {
+//        return false;
+//    }
+//
+//    usleep(5000);
+//    if (!write8(MODE1, static_cast<uint8_t>(oldmode | MODE1_RESTART))) {
+//        return false;
+//    }
+//
+//    current_freq_hz_ = freq_hz;
+//    return true;
+//}
 
+bool PCA9685::setPWMFreq(float freq_hz) {
+    if (fd_ < 0) return false;
+
+    // Compute prescaler
     float prescaleval = (OSC_CLOCK_HZ / (RESOLUTION * freq_hz)) - 1.0f;
     uint8_t prescale = static_cast<uint8_t>(std::lround(prescaleval));
-    
 
-    uint8_t oldmode = 0;
-    if (!read8(MODE1, oldmode)) {
-        return false;
-    }
+    // Read MODE1
+    uint8_t oldmode;
+    if (!read8(MODE1, oldmode)) return false;
 
-    // Enter sleep mode to set prescaler
-    uint8_t sleep = static_cast<uint8_t>((oldmode & 0x7F) | MODE1_SLEEP);
-    if (!write8(MODE1, sleep)) {
-        return false;
-    }
+    // Enter sleep to set prescaler
+    uint8_t sleepmode = (oldmode & 0x7F) | MODE1_SLEEP;
+    if (!write8(MODE1, sleepmode)) return false;
 
-    // Set prescaler
-    if (!write8(PRESCALE, prescale)) {
-        return false;
-    } else {
-        std::cout << "Prescaler set to " << prescaleval << "." << std::endl;
-    }
+    if (!write8(PRESCALE, prescale)) return false;
 
-    // Restore previous mode and restart
-    if (!write8(MODE1, oldmode)) {
-        return false;
-    }
+    // Wake up and clear SLEEP
+    if (!write8(MODE1, oldmode & ~MODE1_SLEEP)) return false;
+    usleep(5000); // small delay for oscillator
 
-    usleep(5000);
-    if (!write8(MODE1, static_cast<uint8_t>(oldmode | MODE1_RESTART))) {
-        return false;
-    }
+    // Restart chip (recommended for proper PWM output)
+    if (!write8(MODE1, (oldmode & ~MODE1_SLEEP) | MODE1_RESTART)) return false;
 
     current_freq_hz_ = freq_hz;
     return true;
