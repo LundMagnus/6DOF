@@ -134,7 +134,6 @@ int main() {
             targetBaseAngle = static_cast<uint16_t>(angleLS);
         }
 
-        std::cout << targetBaseAngle << std::endl;
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
         //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
