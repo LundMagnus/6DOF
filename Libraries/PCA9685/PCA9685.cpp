@@ -149,13 +149,21 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
     }
 
     uint8_t data[4] = {
-        static_cast<uint8_t>(on & 0xFF),
-        static_cast<uint8_t>((on >> 8) & 0x1F),  // preserve full-on bit (bit 4)
-        static_cast<uint8_t>(off & 0xFF),
-        static_cast<uint8_t>((off >> 8) & 0x1F)  // preserve full-off bit (bit 4)
+        (uint8_t)(on & 0xFF),
+        (uint8_t)((on >> 8) & 0x0F),
+        (uint8_t)(off & 0xFF),
+        (uint8_t)((off >> 8) & 0x0F)
     };
 
     uint8_t reg = static_cast<uint8_t>(LED0_ON_L + 4 * channel);
+
+    // DEBUG
+    std::cout << "setPWM ch=" << (int)channel
+            << " on=" << on
+            << " off=" << off
+            << " reg=" << reg 
+            << std::endl;
+
     return writeBlock(reg, data, sizeof(data));
 }
 

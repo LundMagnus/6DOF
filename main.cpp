@@ -159,9 +159,6 @@ int main() {
     std::cout << "Done!" << std::endl;
     
 
-    pwm.setPWM(BASE, 1024, 0);
-    sleep(3);
-
     //
     // PROGRAM START
     //
