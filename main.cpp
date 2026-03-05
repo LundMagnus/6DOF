@@ -153,7 +153,7 @@ int main() {
     SDL_Event e;
 
     for (int i = 0; i < 16; i++) {
-        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off bit)
+        pwm.setPWM(i, 0, 0);   // Turn off channel (full-off bit)
     }
     sleep(1);
     std::cout << "Done!" << std::endl;
@@ -187,7 +187,7 @@ int main() {
     // Program stopping
     std::cout << "Goodbye." << std::endl;
     for (int i = 0; i < 16; i++) {
-        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off bit)
+        pwm.setPWM(i, 0, 0);   // Turn off channel (full-off bit)
     }
         
     pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
