@@ -125,14 +125,20 @@ int main() {
         std::cerr << "Failed to set PWM frequency" << std::endl;
         return 1;
     }
+    std::cout << "Frequency set." << std::endl;
+    sleep(1);
 
     Controller c8bitdo;
     if (!c8bitdo.initialize_SDL()) {
         return 1;
     }
+    std::cout << "SDL initiliazed." << std::endl;
+    sleep(1);
+
     if (!c8bitdo.checkController()) {
         return 1;
     }
+    sleep(1);
 
     uint16_t targetBaseAngle = 135;
     
