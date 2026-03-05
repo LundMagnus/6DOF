@@ -121,7 +121,7 @@ bool PCA9685::setPWMFreq(float freq_hz) {
     if (!write8(PRESCALE, prescale)) {
         return false;
     } else {
-        std::cout << "Prescaler set to " << prescale << "." << std::endl;
+        std::cout << "Prescaler set to " << prescaleval << "." << std::endl;
     }
 
     // Restore previous mode and restart
