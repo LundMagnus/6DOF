@@ -7,7 +7,6 @@
 #include <sys/ioctl.h>
 #include <chrono>   // Time
 #include <stdio.h>
-#include <conio.h>  // Get key
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
