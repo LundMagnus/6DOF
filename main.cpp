@@ -119,6 +119,8 @@ int main() {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
         return 1;
     }
+    std::cout << "PCA9685 opened." << std::endl;
+    sleep(5);
 
     // Set PWM frequency to 50 Hz for servo control
     if (!pwm.setPWMFreq(50.0f)) {
@@ -126,7 +128,7 @@ int main() {
         return 1;
     }
     std::cout << "Frequency set." << std::endl;
-    sleep(1);
+    sleep(5);
 
     Controller c8bitdo;
     if (!c8bitdo.initialize_SDL()) {
