@@ -106,6 +106,8 @@ int main() {
         scan_i2c_bus(i2c_device);
         return 1;
     }
+    std::cout << "I am here." << std::endl;
+    sleep(5);
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
