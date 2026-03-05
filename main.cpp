@@ -169,7 +169,7 @@ int main() {
         if (e.type == SDL_JOYBUTTONDOWN) {
             c8bitdo.handleJoyButtons(e);
         }
-        std::cout << c8bitdo.getProgramState() << std::endl;
+        //std::cout << c8bitdo.getProgramState() << std::endl;
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
@@ -178,7 +178,6 @@ int main() {
             targetBaseAngle = angleLS;
         }
 
-        std::cout << targetBaseAngle << std::endl;
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
         //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
