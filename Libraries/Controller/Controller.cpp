@@ -65,6 +65,8 @@ bool Controller::checkController() {
 
     while (SDL_NumJoysticks() < 1) { // Find controller
 
+        initialize_SDL();
+
         if((start_time - std::time(0)) != 0) {
             std::cout << "." << std::flush;
             retries++;

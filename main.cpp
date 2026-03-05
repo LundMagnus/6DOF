@@ -166,7 +166,7 @@ int main() {
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
             float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
-            targetBaseAngle = static_cast<uint16_t>(angleLS);
+            targetBaseAngle = angleLS;
         }
 
         std::cout << targetBaseAngle << std::endl;
@@ -177,7 +177,7 @@ int main() {
 
     // Program stopping
     std::cout << "Goodbye." << std::endl;
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 16; i++) {
         pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off bit)
     }
         
