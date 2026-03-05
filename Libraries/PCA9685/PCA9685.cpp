@@ -153,17 +153,33 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
 
 bool PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {
     float period_ms = 1000.0f / current_freq_hz_;
-    float ticks = (pulse_ms / period_ms) * RESOLUTION;
+    float ticks_f = (pulse_ms / period_ms) * RESOLUTION;
 
-    if (ticks < 0.0f) {
-        ticks = 0.0f;
+    if (ticks_f < 0.0f) {
+        ticks_f = 0.0f;
     }
 
-    if (ticks > (RESOLUTION - 1)) {
-        ticks = RESOLUTION - 1;
+    if (ticks_f > (RESOLUTION - 1)) {
+        ticks_f = RESOLUTION - 1;
     }
 
-    return setPWM(channel, 0, static_cast<uint16_t>(std::lround(ticks)));
+    uint16_t ticks = static_cast<uint16_t>(std::lround(ticks_f));
+
+    static uint16_t lastTicks[16];
+    static bool lastInit = false;
+    if (!lastInit) {
+        for (int i = 0; i < 16; ++i) lastTicks[i] = UINT16_MAX;
+        lastInit = true;
+    }
+
+    if (channel >= 16) return false;
+
+    if (lastTicks[channel] == ticks) {
+        return true; // nothing changed
+    }
+    lastTicks[channel] = ticks;
+
+    return setPWM(channel, 0, ticks);
 }
 
 
@@ -203,8 +219,6 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     } else {
         currentAngle[channel] = servoAngle;
     }
-
-    std::cout << currentAngle[channel] << std::endl;
 
     return setServoAngle(channel, servoType, currentAngle[channel]);
 }

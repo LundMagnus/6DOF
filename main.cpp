@@ -135,6 +135,7 @@ int main() {
     }
 
     uint16_t targetBaseAngle = 135;
+    uint16_t lastTargetPrint = targetBaseAngle;
     std::cout << "Done!" << std::endl;
     
     SDL_Event e;
@@ -150,12 +151,15 @@ int main() {
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
             float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
-            targetBaseAngle = static_cast<uint16_t>(angleLS);
+            uint16_t newTarget = static_cast<uint16_t>(std::lround(angleLS));
+            if (newTarget != targetBaseAngle) {
+                targetBaseAngle = newTarget;
+                // Log only on changes
+                std::cout << "Axes: " << lsx << "," << lsy << "  angle: " << angleLS << "  target: " << targetBaseAngle << std::endl;
+            }
         }
 
-        std::cout << targetBaseAngle << std::endl;
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
-        //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
     }
 

@@ -142,6 +142,8 @@ void Controller::updateAxes() {
         return;
     }
 
+    // Ensure SDL processes input events so joystick state is fresh
+    SDL_PumpEvents();
     SDL_JoystickUpdate();
     X_LS_VALUE = SDL_JoystickGetAxis(joystick_, X_LS);
     Y_LS_VALUE = SDL_JoystickGetAxis(joystick_, Y_LS);
