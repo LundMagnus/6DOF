@@ -21,6 +21,7 @@ public:
     float calculateJoyAngle(int16_t joyX, int16_t joyY);
     int16_t getLSX();
     int16_t getLSY();
+    bool getProgramState();
     float getLSAngle();
     float getRSAngle();
 

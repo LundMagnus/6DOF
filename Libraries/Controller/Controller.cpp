@@ -34,6 +34,7 @@ namespace {
     int16_t X_RS_VALUE = 0;
     int16_t Y_RS_VALUE = 0;
     int16_t RT_VALUE   = 0;
+    bool PROGRAMSTATE  = true;
 }
 
 Controller::Controller() = default;
@@ -128,6 +129,7 @@ void Controller::handleJoyButtons(SDL_Event e) {
         case RB:
             break;
         case MIN:
+            PROGRAMSTATE = false;
             break;
         case PLU:
             break;
@@ -169,4 +171,8 @@ float Controller::getLSAngle() {
 
 float Controller::getRSAngle() {
     return calculateJoyAngle(X_RS_VALUE, Y_RS_VALUE);
+}
+
+bool Controller::getProgramState() {
+    return PROGRAMSTATE;
 }

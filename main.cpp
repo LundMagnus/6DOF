@@ -5,11 +5,13 @@
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
-#include <chrono>
-
+#include <chrono>   // Time
+#include <stdio.h>
+#include <conio.h>  // Get key
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
+#include "Libraries/Utilities/Utilities.h"
 
 // Servo motor types
 #define MS62_SERVO 0
@@ -21,6 +23,7 @@
 
 // Other
 #define DEADZONE 5000
+
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -42,36 +45,35 @@ bool probe_i2c_address(const std::string &device, uint8_t address) {
     return ok;
 }
 
-void scan_i2c_bus(const std::string &device) {
-    int fd = ::open(device.c_str(), O_RDWR);
-    if (fd < 0) {
-        std::cerr << "Failed to open " << device << " for scanning" << std::endl;
-        return;
-    }
-
-    std::cout << "Scanning " << device << "..." << std::endl;
-    bool found_any = false;
-
-    for (uint8_t address = 0x03; address <= 0x77; ++address) {
-        if (ioctl(fd, I2C_SLAVE, address) < 0) {
-            continue;
+    void scan_i2c_bus(const std::string &device) {
+        int fd = ::open(device.c_str(), O_RDWR);
+        if (fd < 0) {
+            std::cerr << "Failed to open " << device << " for scanning" << std::endl;
+            return;
         }
 
-        uint8_t reg = 0x00;
-        uint8_t value = 0;
-        if ((::write(fd, &reg, 1) == 1) && (::read(fd, &value, 1) == 1)) {
-            std::cout << "Found device at 0x" << std::hex << static_cast<int>(address) << std::dec << std::endl;
-            found_any = true;
+        std::cout << "Scanning " << device << "..." << std::endl;
+        bool found_any = false;
+
+        for (uint8_t address = 0x03; address <= 0x77; ++address) {
+            if (ioctl(fd, I2C_SLAVE, address) < 0) {
+                continue;
+            }
+
+            uint8_t reg = 0x00;
+            uint8_t value = 0;
+            if ((::write(fd, &reg, 1) == 1) && (::read(fd, &value, 1) == 1)) {
+                std::cout << "Found device at 0x" << std::hex << static_cast<int>(address) << std::dec << std::endl;
+                found_any = true;
+            }
         }
+
+        if (!found_any) {
+            std::cout << "No I2C devices found" << std::endl;
+        }
+
+        ::close(fd);
     }
-
-    if (!found_any) {
-        std::cout << "No I2C devices found" << std::endl;
-    }
-
-    ::close(fd);
-}
-
 
 
 } // namespace
@@ -116,19 +118,20 @@ int main() {
 
     uint16_t targetBaseAngle = 135;
     std::cout << "Done!" << std::endl;
-    while (true) {
+    
+    SDL_Event e;
+    
+    while (c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
+
+        if (e.type == SDL_JOYBUTTONDOWN) {
+            c8bitdo.handleJoyButtons(e);
+        }
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
-            float angleLS = c8bitdo.getLSAngle();
-            if (angleLS < 0.0f) {
-                angleLS = 0.0f;
-            }
-            if (angleLS > 270.0f) {
-                angleLS = 270.0f;
-            }
+            float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
             targetBaseAngle = static_cast<uint16_t>(angleLS);
         }
 
@@ -136,4 +139,9 @@ int main() {
         //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
     }
+
+    // Program stopping
+    std::cout << "Goodbye." << std::endl;
+    pwm.setPWM(BASE, 0, 4096);
+
 }
