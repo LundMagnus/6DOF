@@ -65,7 +65,7 @@ bool Controller::checkController() {
 
     while (SDL_NumJoysticks() < 1) { // Find controller
 
-        initialize_SDL();
+        initialize_SDL(); // Keeps re-opening port
 
         if((start_time - std::time(0)) != 0) {
             std::cout << "." << std::flush;

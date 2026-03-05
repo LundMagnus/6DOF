@@ -96,6 +96,10 @@ int main() {
     std::cout << "Process started\n";
     std::cout << "PID: " << getpid() << std::endl;
 
+
+    //
+    // I2C
+    //
     const std::string i2c_device = "/dev/i2c-1";
     const uint8_t address = 0x40; // Default I2C address for PCA9685
 
@@ -111,15 +115,13 @@ int main() {
     PCA9685 pwm(address, i2c_device);
     g_pwm = &pwm;  // Set global for signal handler
 
-    // Set up signal handlers for clean shutdown
-    signal(SIGINT, signal_handler);
-    signal(SIGTERM, signal_handler);
 
     if (!pwm.open()) {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
         return 1;
+    } else {
+        std::cout << "PCA9685 opened on " << i2c_device << "." << std::endl;
     }
-    std::cout << "PCA9685 opened." << std::endl;
 
     pwm.reset();
     usleep(10000);
@@ -127,22 +129,25 @@ int main() {
     if (!pwm.setPWMFreq(50.0f)) {
         std::cerr << "Failed to set PWM frequency" << std::endl;
         return 1;
+    } else {
+        std::cout << "Set frequency " << 50 << "." << std::endl;
     }
-    std::cout << "Frequency set." << std::endl;
 
 
+    //
+    // GAME-CONTROLLER
+    //
     Controller c8bitdo;
-    if (!c8bitdo.initialize_SDL()) {
-        return 1;
-    }
-    std::cout << "SDL initiliazed." << std::endl;
-    sleep(1);
 
     if (!c8bitdo.checkController()) {
         return 1;
     }
     sleep(1);
 
+
+    //
+    // PREPARING
+    //
     uint16_t targetBaseAngle = 135;
     
     SDL_Event e;
@@ -153,6 +158,10 @@ int main() {
     sleep(1);
     std::cout << "Done!" << std::endl;
     
+
+    //
+    // PROGRAM START
+    //
     while (c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
 
