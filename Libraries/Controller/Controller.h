@@ -12,7 +12,6 @@ public:
     bool initialize_SDL();
     bool checkController();
     bool openJoystick(int index = 0);
-    bool getProgramState();
     SDL_Joystick* getGameController();
     void setJoystick(SDL_Joystick* joy) { joystick_ = joy; }
     void handleJoyButtons(SDL_Event e);
@@ -22,6 +21,7 @@ public:
     float calculateJoyAngle(int16_t joyX, int16_t joyY);
     int16_t getLSX();
     int16_t getLSY();
+    bool getProgramState();
     float getLSAngle();
     float getRSAngle();
 
