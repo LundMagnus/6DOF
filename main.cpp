@@ -7,6 +7,7 @@
 #include <sys/ioctl.h>
 #include <chrono>   // Time
 #include <stdio.h>
+#include <signal.h>
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
@@ -77,6 +78,18 @@ bool probe_i2c_address(const std::string &device, uint8_t address) {
 
 } // namespace
 
+// Global for signal handler cleanup
+static PCA9685* g_pwm = nullptr;
+static volatile bool g_running = true;
+
+void signal_handler(int sig) {
+    (void)sig;
+    g_running = false;
+    if (g_pwm) {
+        g_pwm->setPWM(0, 0, 4096);  // Turn off channel 0
+        g_pwm->sleep();              // Put chip to sleep
+    }
+}
 
 
 int main() {
@@ -96,6 +109,12 @@ int main() {
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
+    g_pwm = &pwm;  // Set global for signal handler
+
+    // Set up signal handlers for clean shutdown
+    signal(SIGINT, signal_handler);
+    signal(SIGTERM, signal_handler);
+
     if (!pwm.open()) {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
         return 1;
@@ -120,7 +139,7 @@ int main() {
     
     SDL_Event e;
     
-    while (c8bitdo.getProgramState()) {
+    while (c8bitdo.getProgramState() && g_running) {
         c8bitdo.updateAxes();
 
         if (e.type == SDL_JOYBUTTONDOWN) {
@@ -142,6 +161,7 @@ int main() {
 
     // Program stopping
     std::cout << "Goodbye." << std::endl;
-    pwm.setPWM(BASE, 0, 4096);
+    pwm.setPWM(BASE, 0, 4096);   // Turn off channel (full-off bit)
+    pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
 
 }

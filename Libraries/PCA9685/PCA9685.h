@@ -10,6 +10,7 @@ public:
 
     bool open();
     void close();
+    bool sleep();
 
     bool setPWMFreq(float freq_hz);
     bool setPWM(uint8_t channel, uint16_t on, uint16_t off);

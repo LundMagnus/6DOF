@@ -83,6 +83,20 @@ void PCA9685::close() {
     }
 }
 
+bool PCA9685::sleep() {
+    if (fd_ < 0) {
+        return false;
+    }
+
+    uint8_t mode1 = 0;
+    if (!read8(MODE1, mode1)) {
+        return false;
+    }
+
+    // Set sleep bit to stop oscillator and disable outputs
+    return write8(MODE1, static_cast<uint8_t>(mode1 | MODE1_SLEEP));
+}
+
 bool PCA9685::setPWMFreq(float freq_hz) {
     if (fd_ < 0) {
         return false;
@@ -128,9 +142,9 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
 
     uint8_t data[4] = {
         static_cast<uint8_t>(on & 0xFF),
-        static_cast<uint8_t>((on >> 8) & 0x0F),
+        static_cast<uint8_t>((on >> 8) & 0x1F),  // 0x1F preserves full-on bit (bit 4)
         static_cast<uint8_t>(off & 0xFF),
-        static_cast<uint8_t>((off >> 8) & 0x0F)
+        static_cast<uint8_t>((off >> 8) & 0x1F)  // 0x1F preserves full-off bit (bit 4)
     };
 
     uint8_t reg = static_cast<uint8_t>(LED0_ON_L + 4 * channel);
