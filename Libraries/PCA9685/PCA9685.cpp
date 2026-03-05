@@ -163,6 +163,7 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
             << " on=" << on
             << " off=" << off
             << " reg=" << reg 
+            << " LED0_ON_L=" << LED0_ON_L
             << std::endl;
 
     return writeBlock(reg, data, sizeof(data));
