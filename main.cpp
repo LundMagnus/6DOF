@@ -106,8 +106,6 @@ int main() {
         scan_i2c_bus(i2c_device);
         return 1;
     }
-    std::cout << "I am here." << std::endl;
-    sleep(5);
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
@@ -122,15 +120,16 @@ int main() {
         return 1;
     }
     std::cout << "PCA9685 opened." << std::endl;
-    sleep(5);
 
+    pwm.reset();
+    usleep(10000);
     // Set PWM frequency to 50 Hz for servo control
     if (!pwm.setPWMFreq(50.0f)) {
         std::cerr << "Failed to set PWM frequency" << std::endl;
         return 1;
     }
     std::cout << "Frequency set." << std::endl;
-    sleep(5);
+
 
     Controller c8bitdo;
     if (!c8bitdo.initialize_SDL()) {
@@ -148,7 +147,7 @@ int main() {
     
     SDL_Event e;
 
-    for (int i = 0; i < 15; i++) {
+    for (int i = 0; i < 16; i++) {
         pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off bit)
     }
     sleep(1);
@@ -157,6 +156,7 @@ int main() {
     while (c8bitdo.getProgramState() && g_running) {
         c8bitdo.updateAxes();
 
+        SDL_PollEvent(&e);
         if (e.type == SDL_JOYBUTTONDOWN) {
             c8bitdo.handleJoyButtons(e);
         }

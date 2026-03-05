@@ -135,6 +135,11 @@ bool PCA9685::setPWMFreq(float freq_hz) {
     return true;
 }
 
+bool PCA9685::reset()
+{
+    return write8(MODE1, 0x00);
+}
+
 bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
     if (fd_ < 0 || channel >= 16) {
         return false;
