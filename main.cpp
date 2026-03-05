@@ -130,7 +130,7 @@ int main() {
         std::cerr << "Failed to set PWM frequency" << std::endl;
         return 1;
     } else {
-        std::cout << "Set frequency to" << 50 << "Hz." << std::endl;
+        std::cout << "Set frequency to " << 50 << "Hz." << std::endl;
     }
 
 

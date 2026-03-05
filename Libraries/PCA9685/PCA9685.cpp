@@ -104,6 +104,7 @@ bool PCA9685::setPWMFreq(float freq_hz) {
 
     float prescaleval = (OSC_CLOCK_HZ / (RESOLUTION * freq_hz)) - 1.0f;
     uint8_t prescale = static_cast<uint8_t>(std::lround(prescaleval));
+    
 
     uint8_t oldmode = 0;
     if (!read8(MODE1, oldmode)) {
@@ -119,6 +120,8 @@ bool PCA9685::setPWMFreq(float freq_hz) {
     // Set prescaler
     if (!write8(PRESCALE, prescale)) {
         return false;
+    } else {
+        std::cout << "Prescaler set to " << prescale << "." << std::endl;
     }
 
     // Restore previous mode and restart
