@@ -88,9 +88,22 @@ bool PCA9685::open() {
         return false;
     }
 
+    uint8_t mode1 = 0;
+    if (!read8(MODE1, mode1)) {
+       close();
+       return false;
+    }
+
     // Reset chip: MODE1=0x00 (awake, AI cleared), MODE2=OUTDRV
-    if (!write8(MODE1, 0x00)) { close(); return false; }
-    if (!write8(MODE2, MODE2_OUTDRV)) { close(); return false; }
+    uint8_t newmode = static_cast<uint8_t>((mode1 & ~MODE1_SLEEP) | 0x20);
+    if (!write8(MODE1, newmode)) { 
+        close(); 
+        return false; 
+    }
+    if (!write8(MODE2, MODE2_OUTDRV)) { 
+        close(); 
+        return false; 
+    }
 
     // Set PWM frequency
     if (!setPWMFreq(current_freq_hz_)) {
