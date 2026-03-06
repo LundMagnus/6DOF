@@ -258,6 +258,17 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
         return false;
     }
 
+    // Track last values to avoid redundant writes
+    static uint16_t lastOn[16] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+                                   0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
+    static uint16_t lastOff[16] = {0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF,
+                                    0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF, 0xFFFF};
+
+    // Skip write if value unchanged
+    if (lastOn[channel] == on && lastOff[channel] == off) {
+        return true;
+    }
+
     uint8_t data[4] = {
         (uint8_t)(on & 0xFF),
         (uint8_t)((on >> 8) & 0x1F),  // 0x1F preserves full-on bit
@@ -265,22 +276,14 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
         (uint8_t)((off >> 8) & 0x1F)  // 0x1F preserves full-off bit
     };
 
-    //uint8_t reg = static_cast<uint8_t>(LED0_ON_L + 4 * channel);
     uint8_t reg = (LED0_ON_L + 4 * channel);
 
-    // DEBUG
-    std::cout << "setPWM ch=" << (int)channel
-            << " on=" << on
-            << " off=" << off
-            << " reg=" << (int)reg 
-            << " LED0_ON_L=" << (int)LED0_ON_L
-            << " data0=" << (int)data[0]
-            << " data1=" << (int)data[1]
-            << " data2=" << (int)data[2]
-            << " data3=" << (int)data[3]
-            << std::endl;
-
-    return writeBlock(reg, data, sizeof(data));
+    if (writeBlock(reg, data, sizeof(data))) {
+        lastOn[channel] = on;
+        lastOff[channel] = off;
+        return true;
+    }
+    return false;
 }
 
 bool PCA9685::setServoPulse(uint8_t channel, float pulse_ms) {

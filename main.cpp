@@ -119,18 +119,8 @@ int main() {
     if (!pwm.open()) {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
         return 1;
-    } else {
-        std::cout << "PCA9685 opened on " << i2c_device << "." << std::endl;
     }
-    pwm.reset();
-
-    // Set PWM frequency to 50 Hz for servo control
-    if (!pwm.setPWMFreq(50.0f)) {
-        std::cerr << "Failed to set PWM frequency" << std::endl;
-        return 1;
-    } else {
-        std::cout << "Set frequency to " << 50 << "Hz." << std::endl;
-    }
+    std::cout << "PCA9685 initialized at 50Hz." << std::endl;
 
 
     //
@@ -151,11 +141,7 @@ int main() {
     
     SDL_Event e;
 
-    for (int i = 0; i < 16; i++) {
-        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
-    }
-    sleep(1);
-    std::cout << "Done!" << std::endl;
+    std::cout << "Ready!" << std::endl;
     
 
     //
