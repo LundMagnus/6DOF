@@ -113,7 +113,7 @@ bool PCA9685::open() {
 
     // Clear all channels (full-off)
     for (int i = 0; i < 16; i++) {
-        setPWM(i, 0, 0); // off
+        setPWM(i, 0, 4096); // full-off
     }
 
     return true;
@@ -223,8 +223,34 @@ bool PCA9685::setPWMFreq(float freq_hz) {
 }
 
 bool PCA9685::reset()
-{   
-    return write8(MODE1, 0x00);
+{
+    // Put chip to sleep first
+    if (!write8(MODE1, MODE1_SLEEP)) {
+        return false;
+    }
+    usleep(5000);
+
+    // Set all PWM registers to 0 (using individual writes since AI may be off)
+    for (int ch = 0; ch < 16; ch++) {
+        uint8_t base = LED0_ON_L + 4 * ch;
+        write8(base + 0, 0);  // ON_L
+        write8(base + 1, 0);  // ON_H
+        write8(base + 2, 0);  // OFF_L
+        write8(base + 3, 0x10);  // OFF_H with full-off bit set
+    }
+
+    // Wake up with AI bit set
+    if (!write8(MODE1, 0x20)) {  // AI=1, SLEEP=0
+        return false;
+    }
+    usleep(5000);
+
+    // Set totem-pole output
+    if (!write8(MODE2, MODE2_OUTDRV)) {
+        return false;
+    }
+
+    return true;
 }
 
 bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
@@ -234,9 +260,9 @@ bool PCA9685::setPWM(uint8_t channel, uint16_t on, uint16_t off) {
 
     uint8_t data[4] = {
         (uint8_t)(on & 0xFF),
-        (uint8_t)((on >> 8) & 0x0F),
+        (uint8_t)((on >> 8) & 0x1F),  // 0x1F preserves full-on bit
         (uint8_t)(off & 0xFF),
-        (uint8_t)((off >> 8) & 0x0F)
+        (uint8_t)((off >> 8) & 0x1F)  // 0x1F preserves full-off bit
     };
 
     //uint8_t reg = static_cast<uint8_t>(LED0_ON_L + 4 * channel);
