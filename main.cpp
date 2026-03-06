@@ -113,11 +113,7 @@ int main() {
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
-    g_pwm = &pwm;
 
-    // Register signal handlers for clean shutdown
-    signal(SIGINT, signal_handler);
-    signal(SIGTERM, signal_handler);
 
     if (!pwm.open()) {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
@@ -150,15 +146,14 @@ int main() {
     //
     // PROGRAM START
     //
-    while (c8bitdo.getProgramState() && g_running) {
+    while (c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
 
-        // Process ALL pending SDL events
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_JOYBUTTONDOWN) {
-                c8bitdo.handleJoyButtons(e);
-            }
+        SDL_PollEvent(&e);
+        if (e.type == SDL_JOYBUTTONDOWN) {
+            c8bitdo.handleJoyButtons(e);
         }
+        
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
