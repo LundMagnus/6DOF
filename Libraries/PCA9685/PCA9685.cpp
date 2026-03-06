@@ -212,8 +212,9 @@ bool PCA9685::setPWMFreq(float freq_hz) {
     }
     usleep(5000); // small delay for oscillator
 
-    // Restart chip (recommended for proper PWM output)
-    if (!write8(MODE1, (oldmode & ~MODE1_SLEEP) | MODE1_RESTART)) {
+    // Restart chip and ensure AI (auto-increment) is set
+    uint8_t finalmode = (oldmode & ~MODE1_SLEEP) | MODE1_RESTART | 0x20;  // 0x20 = AI bit
+    if (!write8(MODE1, finalmode)) {
         return false;
     }
 

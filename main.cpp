@@ -123,8 +123,6 @@ int main() {
         std::cout << "PCA9685 opened on " << i2c_device << "." << std::endl;
     }
 
-    pwm.reset();
-    usleep(10000);
     // Set PWM frequency to 50 Hz for servo control
     if (!pwm.setPWMFreq(50.0f)) {
         std::cerr << "Failed to set PWM frequency" << std::endl;
@@ -153,7 +151,7 @@ int main() {
     SDL_Event e;
 
     for (int i = 0; i < 16; i++) {
-        pwm.setPWM(i, 0, 0);   // Turn off channel (full-off via 4096)
+        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
     }
     sleep(1);
     std::cout << "Done!" << std::endl;
@@ -186,7 +184,7 @@ int main() {
     // Program stopping
     std::cout << "Goodbye." << std::endl;
     for (int i = 0; i < 16; i++) {
-        pwm.setPWM(i, 0, 0);   // Turn off channel (full-off via 4096)
+        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
     }
 
     pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
