@@ -182,7 +182,9 @@ bool PCA9685::sleep() {
 //}
 
 bool PCA9685::setPWMFreq(float freq_hz) {
-    if (fd_ < 0) return false;
+    if (fd_ < 0) {
+        return false;
+    }
 
     // Compute prescaler
     float prescaleval = (OSC_CLOCK_HZ / (RESOLUTION * freq_hz)) - 1.0f;
@@ -190,20 +192,30 @@ bool PCA9685::setPWMFreq(float freq_hz) {
 
     // Read MODE1
     uint8_t oldmode;
-    if (!read8(MODE1, oldmode)) return false;
+    if (!read8(MODE1, oldmode)) {
+        return false;
+    }
 
     // Enter sleep to set prescaler
     uint8_t sleepmode = (oldmode & 0x7F) | MODE1_SLEEP;
-    if (!write8(MODE1, sleepmode)) return false;
+    if (!write8(MODE1, sleepmode)) {
+        return false;
+    }
 
-    if (!write8(PRESCALE, prescale)) return false;
+    if (!write8(PRESCALE, prescale)) {
+        return false;
+    }
 
     // Wake up and clear SLEEP
-    if (!write8(MODE1, oldmode & ~MODE1_SLEEP)) return false;
+    if (!write8(MODE1, oldmode & ~MODE1_SLEEP)) {
+        return false;
+    }
     usleep(5000); // small delay for oscillator
 
     // Restart chip (recommended for proper PWM output)
-    if (!write8(MODE1, (oldmode & ~MODE1_SLEEP) | MODE1_RESTART)) return false;
+    if (!write8(MODE1, (oldmode & ~MODE1_SLEEP) | MODE1_RESTART)) {
+        return false;
+    }
 
     current_freq_hz_ = freq_hz;
     return true;

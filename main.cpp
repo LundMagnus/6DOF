@@ -113,7 +113,7 @@ int main() {
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
-    g_pwm = &pwm;  // Set global for signal handler
+    //g_pwm = &pwm;  // Set global for signal handler
 
 
     if (!pwm.open()) {
