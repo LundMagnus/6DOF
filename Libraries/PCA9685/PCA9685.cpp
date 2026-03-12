@@ -329,13 +329,14 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     static uint16_t currentAngle[16] = {0};
 
     int delta = static_cast<int>(servoAngle) - static_cast<int>(currentAngle[channel]);
+    std::cout << "Delta: " << delta;
     if (std::abs(delta) >= static_cast<int>(smoothness) * 2) {
         if (delta > 0) {
             currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + log10(delta));
         } else {
             currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] - log10(delta));
         }
-        std::cout << "Delta: " << delta << "Current angle of " << channel << " is " << (int)currentAngle[channel] << std::endl;
+        std::cout << ", log10 of Delta: " << delta << ". Current angle of " << (int)channel << " is " << (int)currentAngle[channel] << std::endl;
     } else {
         currentAngle[channel] = servoAngle;
     }
