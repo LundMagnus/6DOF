@@ -85,10 +85,6 @@ static volatile bool g_running = true;
 void signal_handler(int sig) {
     (void)sig;
     g_running = false;
-    if (g_pwm) {
-        g_pwm->setPWM(0, 0, 4096);  // Turn off channel 0
-        g_pwm->sleep();              // Put chip to sleep
-    }
 }
 
 
@@ -113,6 +109,11 @@ int main() {
 
     // Create PCA9685 instance and initialize it
     PCA9685 pwm(address, i2c_device);
+    g_pwm = &pwm;  // Set global pointer for cleanup after loop
+
+    // Register Ctrl+C / termination handlers.
+    ::signal(SIGINT, signal_handler);
+    ::signal(SIGTERM, signal_handler);
 
 
     if (!pwm.open()) {
@@ -146,14 +147,19 @@ int main() {
     //
     // PROGRAM START
     //
-    while (c8bitdo.getProgramState()) {
+    while (g_running && c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
 
-        SDL_PollEvent(&e);
-        if (e.type == SDL_JOYBUTTONDOWN) {
-            c8bitdo.handleJoyButtons(e);
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
+                c8bitdo.handleJoyButtons(e);
+            }
+
+            if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
+                g_running = false;
+            }
         }
-        
+        //std::cout << c8bitdo.getProgramState() << std::endl;
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
@@ -163,7 +169,6 @@ int main() {
         }
 
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 2);
         //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
     }
@@ -175,5 +180,7 @@ int main() {
     }
 
     pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
+
+    return 0;
 
 }

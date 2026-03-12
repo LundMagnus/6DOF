@@ -116,7 +116,16 @@ SDL_Joystick* Controller::getGameController() {
 }
 
 void Controller::handleJoyButtons(SDL_Event e) {
-    switch ((int)e.jbutton.button) 
+    int button = -1;
+    if (e.type == SDL_JOYBUTTONDOWN) {
+        button = static_cast<int>(e.jbutton.button);
+    } else if (e.type == SDL_CONTROLLERBUTTONDOWN) {
+        button = static_cast<int>(e.cbutton.button);
+    } else {
+        return;
+    }
+
+    switch (button)
     {
         case A:
             break;
