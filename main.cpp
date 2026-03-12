@@ -80,11 +80,11 @@ bool probe_i2c_address(const std::string &device, uint8_t address) {
 
 // Global for signal handler cleanup
 static PCA9685* g_pwm = nullptr;
-static volatile bool g_running = true;
+static volatile sig_atomic_t g_running = 1;
 
 void signal_handler(int sig) {
     (void)sig;
-    g_running = false;
+    g_running = 0;
 }
 
 
@@ -156,7 +156,7 @@ int main() {
             }
 
             if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
-                g_running = false;
+                g_running = 0;
             }
         }
         //std::cout << c8bitdo.getProgramState() << std::endl;
