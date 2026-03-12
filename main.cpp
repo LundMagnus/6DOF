@@ -163,6 +163,7 @@ int main() {
         }
 
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 2);
         //pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, targetBaseAngle, 2);
         usleep(100000);
     }
