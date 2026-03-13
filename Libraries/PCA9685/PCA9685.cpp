@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <vector>
 
+
+
 namespace {
 constexpr uint8_t MODE1 = 0x00;
 constexpr uint8_t MODE2 = 0x01;
@@ -21,6 +23,7 @@ constexpr uint8_t MODE1_RESTART = 0x80;
 constexpr uint8_t MODE2_OUTDRV = 0x04;
 constexpr float OSC_CLOCK_HZ = 25000000.0f;
 constexpr uint16_t RESOLUTION = 4096;
+constexpr double acc_factor = 0.25;
 #define MS62_SERVO 0     // 25kg servo motor
 constexpr float MS62_MIN_PULSE_MS = 0.5f;
 constexpr float MS62_MAX_PULSE_MS = 2.5f;
@@ -330,19 +333,20 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     static double speed = 1;
     int delta = static_cast<int>(servoAngle) - static_cast<int>(currentAngle[channel]);
 
-    // Use curve-profile log10 
+    // Curve profile log10 
     double curve = log10(abs(delta)) * 2;
     
+    // Acceleration profile 
     if(speed < curve) {
-        speed *= 1.1;
+        speed *= 1 + acc_factor;
     } else if(speed > curve && speed > 0.5) {
-        speed *= 0.9;
+        speed *= 1 - acc_factor;
     } 
     std::cout << speed << std::endl;
 
     //double curve = pow(abs(delta), 2);
     
-    if (std::abs(delta) >= static_cast<int>(smoothness) * 2) {
+    if (std::abs(delta) >= static_cast<int>(smoothness) * 3) {
         if (delta > 0) {
             currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + speed);
         } else {
