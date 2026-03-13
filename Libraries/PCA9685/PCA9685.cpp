@@ -350,7 +350,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     //double curve = pow(abs(delta), 2);
     
     if (std::abs(delta[channel]) >= static_cast<int>(smoothness) * 2) {
-        if (delta > 0) {
+        if (delta[channel] > 0) {
             currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + speed[channel]);
         } else {
             currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] - speed[channel]);
