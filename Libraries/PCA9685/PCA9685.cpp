@@ -366,7 +366,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
         
         //currentAngle[channel] = servoAngle;
     }
-
+    std::cout << currentAngle[channel] << std::endl;
     //std::cout << currentAngle[channel] << std::endl;
 
     return setServoAngle(channel, servoType, currentAngle[channel]);
