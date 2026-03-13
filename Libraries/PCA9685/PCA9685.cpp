@@ -330,30 +330,33 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     }
 
     static uint16_t currentAngle[16] = {0};
-    static double speed = 1;
-    int delta = static_cast<int>(servoAngle) - static_cast<int>(currentAngle[channel]);
+    static double speed[16] = {1};
+    static int delta[16] = {0};
+    static double curve[16] = {0};
+
+    delta[channel] = static_cast<int>(servoAngle) - static_cast<int>(currentAngle[channel]);
 
     // Curve profile log10 
-    double curve = log10(abs(delta)) * 3;
+    curve[channel] = log10(abs(delta[channel])) * 3;
     
     // Acceleration profile 
-    if(speed < curve) {
-        speed *= 1 + acc_factor;
-    } else if(speed > curve && speed > 0.5) {
-        speed *= 1 - acc_factor;
+    if(speed[channel] < curve[channel]) {
+        speed[channel] *= 1 + acc_factor;
+    } else if(speed[channel] > curve[channel] && speed[channel] > 0.5) {
+        speed[channel] *= 1 - acc_factor;
     } 
-    std::cout << speed << std::endl;
+    std::cout << speed[channel] << std::endl;
 
     //double curve = pow(abs(delta), 2);
     
-    if (std::abs(delta) >= static_cast<int>(smoothness) * 2) {
+    if (std::abs(delta[channel]) >= static_cast<int>(smoothness) * 2) {
         if (delta > 0) {
-            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + speed);
+            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] + speed[channel]);
         } else {
-            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] - speed);
+            currentAngle[channel] = static_cast<uint16_t>(currentAngle[channel] - speed[channel]);
         }
         
-        currentAngle[channel] = servoAngle;
+        //currentAngle[channel] = servoAngle;
     }
 
     //std::cout << currentAngle[channel] << std::endl;
