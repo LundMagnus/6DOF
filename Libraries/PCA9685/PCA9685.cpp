@@ -353,7 +353,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     } else if(speed[channel] > curve[channel] && speed[channel] > 0.5) {
         speed[channel] *= 1 - acc_factor;
     } 
-    std::cout << "Channel " << channel << " speed: " << speed[channel] << std::endl;
+    std::cout << "Channel " << (int)channel << " speed: " << speed[channel] << std::endl;
 
     //double curve = pow(abs(delta), 2);
     
