@@ -34,8 +34,9 @@ constexpr float DM996_MAX_PULSE_MS = 2.5f;
 constexpr uint16_t DM996_MAX_ANGLE = 180;
 #define MS62_SERVO_A 2  // Special case
 constexpr float MS62_A_MIN_PULSE_MS = 0.611f;
-constexpr float MS62_A_MAX_PULSE_MS = 2.5f;
-constexpr uint16_t MS62_A_MAX_ANGLE = 270;
+constexpr float MS62_A_MAX_PULSE_MS = 2.322f;
+constexpr uint16_t MS62_A_MIN_ANGLE = 15;
+constexpr uint16_t MS62_A_MAX_ANGLE = 246;
 } // namespace
 
 PCA9685::PCA9685(uint8_t address, std::string i2c_device)
@@ -320,6 +321,8 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
         case DM996_SERVO:
             val = constrain(map(servoAngle, 0, DM996_MAX_ANGLE, DM996_MIN_PULSE_MS, DM996_MAX_PULSE_MS), DM996_MIN_PULSE_MS, DM996_MAX_PULSE_MS);
             break;
+        case MS62_SERVO_A:
+            val = constrain(map(servoAngle, MS62_A_MIN_ANGLE, MS62_A_MAX_ANGLE, MS62_A_MIN_PULSE_MS, MS62_A_MAX_PULSE_MS), MS62_A_MIN_PULSE_MS, MS62_A_MAX_PULSE_MS);
         default:
             std::cerr << "Incorrect servo-type index was inputted." << std::endl;
             return false;
