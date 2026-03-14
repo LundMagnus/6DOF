@@ -170,9 +170,9 @@ int main() {
             targetBaseAngle = angleLS;
         }
 
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
         usleep(1000);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, targetBaseAngle, 2);
         usleep(1000);
         pwm.setSmoothServoAngle(ARM, DM996_SERVO, targetBaseAngle, 2);
 
