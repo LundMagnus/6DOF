@@ -329,6 +329,8 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
             return false;
     }
 
+    std::cout << "Channel: " << channel << ", Pulse: " << val << std::endl;
+
     return setServoPulse(channel, val);
 }
 
@@ -362,7 +364,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     } else if(speed[channel] > curve[channel] && speed[channel] > 0.5) {
         speed[channel] *= 1 - acc_factor;
     } 
-    std::cout << "Channel " << (int)channel << " speed: " << speed[channel] << std::endl;
+    //std::cout << "Channel " << (int)channel << " speed: " << speed[channel] << std::endl;
 
     //double curve = pow(abs(delta), 2);
     
@@ -375,8 +377,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
         
         //currentAngle[channel] = servoAngle;
     }
-    std::cout << currentAngle[channel] << std::endl;
-    //std::cout << currentAngle[channel] << std::endl;
+    
 
     return setServoAngle(channel, servoType, currentAngle[channel]);
 }
