@@ -176,6 +176,12 @@ int main() {
         usleep(100000);
     }
 
+    for(int i = 0; i < 30; i++) {
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+        usleep(1000);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 2);
+    }
+
     // Program stopping
     std::cout << "Goodbye." << std::endl;
     for (int i = 0; i < 16; i++) {
