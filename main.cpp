@@ -15,7 +15,7 @@
 
 // Servo motor types
 #define MS62_SERVO 0
-#define DM996 1
+#define DM996_SERVO 1
 #define MS62_SERVO_A 2
 
 // Links
@@ -174,8 +174,8 @@ int main() {
         usleep(1000);
         pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
         usleep(1000);
-        pwm.setSmoothServoAngle(ARM, DM996, 90, 2);
-        
+        pwm.setSmoothServoAngle(ARM, DM996_SERVO, 90, 2);
+
         usleep(100000);
     }
 
@@ -185,7 +185,7 @@ int main() {
         usleep(1000);
         pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
         usleep(1000);
-        pwm.setSmoothServoAngle(ARM, DM996, 90, 2);
+        pwm.setSmoothServoAngle(ARM, DM996_SERVO, 90, 2);
         usleep(100000);
     }
 
