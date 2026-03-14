@@ -170,7 +170,7 @@ int main() {
 
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(1000);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 235, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 242, 2);
 
 
         usleep(100000);
@@ -180,6 +180,7 @@ int main() {
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(1000);
         pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO, 135, 2);
+        usleep(100000);
     }
 
     // Program stopping
