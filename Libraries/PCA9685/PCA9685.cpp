@@ -32,6 +32,10 @@ constexpr uint16_t MS62_MAX_ANGLE = 270;
 constexpr float DM996_MIN_PULSE_MS = 0.5f;
 constexpr float DM996_MAX_PULSE_MS = 2.5f;
 constexpr uint16_t DM996_MAX_ANGLE = 180;
+#define MS62_SERVO_2 2  // Special case
+constexpr float MS62_MIN_PULSE_MS = 0.611f;
+constexpr float MS62_MAX_PULSE_MS = 2.5f;
+constexpr uint16_t MS62_MAX_ANGLE = 270;
 } // namespace
 
 PCA9685::PCA9685(uint8_t address, std::string i2c_device)
