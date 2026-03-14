@@ -329,7 +329,7 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
             return false;
     }
 
-    std::cout << "Channel: " << channel << ", Pulse: " << val << std::endl;
+    std::cout << "Channel: " << (int)channel << ", Pulse: " << val << std::endl;
 
     return setServoPulse(channel, val);
 }

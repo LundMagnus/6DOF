@@ -14,14 +14,15 @@
 #include "Libraries/Utilities/Utilities.h"
 
 // Servo motor types
-#define MS62_SERVO 0
-#define DM996_SERVO 1
-#define MS62_SERVO_A 2
+#define MS62_SERVO      0
+#define DM996_SERVO     1
+#define MS62_SERVO_A    2
 
 // Links
-#define BASE 0
-#define SHOULDER 1
-#define ARM 2
+#define BASE        0
+#define SHOULDER    1
+#define UPPER_ARM   2
+#define FOREARM     3
 
 // Other
 #define DEADZONE 5000
@@ -170,22 +171,26 @@ int main() {
             targetBaseAngle = angleLS;
         }
 
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, targetBaseAngle, 2);
-        usleep(1000);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, targetBaseAngle, 2);
-        usleep(1000);
-        pwm.setSmoothServoAngle(ARM, DM996_SERVO, targetBaseAngle, 2);
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 150, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 56, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, targetBaseAngle, 2);
 
         usleep(100000);
     }
 
-    for(int i = 0; i < 40; i++) {
+    for(int i = 0; i < 50; i++) {
         
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(100);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
         usleep(100);
-        pwm.setSmoothServoAngle(ARM, DM996_SERVO, 56, 2);
+        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 56, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 56, 2);
         usleep(100000);
     }
 
