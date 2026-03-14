@@ -323,6 +323,7 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
             break;
         case MS62_SERVO_A:
             val = constrain(map(servoAngle, MS62_A_MIN_ANGLE, MS62_A_MAX_ANGLE, MS62_A_MIN_PULSE_MS, MS62_A_MAX_PULSE_MS), MS62_A_MIN_PULSE_MS, MS62_A_MAX_PULSE_MS);
+            break;
         default:
             std::cerr << "Incorrect servo-type index was inputted." << std::endl;
             return false;
