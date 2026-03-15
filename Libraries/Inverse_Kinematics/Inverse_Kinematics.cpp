@@ -44,8 +44,8 @@ void IK_solver()
     ChainIkSolverPos_LMA ik_solver(chain, lma_weights);
 
     // Desired end-effector pose
-    Frame target(Frame::Identity());
-    target.p = KDL::Vector(150, 0, 150);
+    KDL::Frame target(Frame::Identity());
+    target.p = KDL::Vector(0.150, 0, 0.150);
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());
