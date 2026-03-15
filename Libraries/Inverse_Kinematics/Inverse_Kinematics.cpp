@@ -4,22 +4,36 @@
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/chainiksolverpos_lma.hpp>
 
-#define E_GRADIENT_JOINTS_TOO_SMALL -100
-#define E_INCREMENT_JOINTS_TOO_SMALL -101
-
 void IK_solver() 
 {
     using namespace KDL;
 
-    // Create robot chain
+
+    struct Link {
+        double length;
+        Joint::JointType joint;
+    };
+
+    std::vector<Link> robot = {
+        {0.045, Joint::RotZ},
+        {0.113132, Joint::RotY},
+        {0.102184, Joint::RotY},
+        {0.054058, Joint::RotX},
+        {0.061168, Joint::RotY},
+        //{0.04, Joint::RotX}
+    };
+
     Chain chain;
 
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
-    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
+    for(const auto& link : robot)
+    {
+        chain.addSegment(
+            Segment(
+                Joint(link.joint),
+                Frame(Vector(link.length,0,0))
+            )
+        );
+    }
 
     // Forward kinematics solver
     ChainFkSolverPos_recursive fk_solver(chain);
@@ -31,7 +45,7 @@ void IK_solver()
 
     // Desired end-effector pose
     Frame target(Frame::Identity());
-    target.p = Vector(10, 13, 0);
+    target.p = KDL::Vector(150, 0, 150);
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());
