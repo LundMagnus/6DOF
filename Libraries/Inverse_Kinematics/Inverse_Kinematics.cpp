@@ -76,10 +76,7 @@ std::vector<double> IK_solver()
 
     if(ret >= 0)
     {
-        std::cout << "Solution found:\n";
-        for (int i = 0; i < chain.getNrOfJoints(); i++) {
-            std::cout << "q" << i << " rad=" << q_out(i) << " deg=" << q_out(i) * 180.0 / M_PI << "\n";
-        }
+
         return std::vector<double>{get_actual_angle(q_out(0)), get_actual_angle(q_out(1)), get_actual_angle(q_out(2)), get_actual_angle(q_out(3))};
 
     }

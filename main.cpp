@@ -152,8 +152,13 @@ int main() {
     std::vector<double> IK_Solutions = IK_solver();
     if(IK_Solutions[0] == -1) {
         g_running = 0;
-    }
+    } else {
 
+        std::cout << "Solution found:\n";
+        for (int i = 0; i < 5; i++) {
+            std::cout << "q" << i << " deg=" << IK_Solutions[i] << "\n";
+        }
+    }
     //
     // PROGRAM START
     //
