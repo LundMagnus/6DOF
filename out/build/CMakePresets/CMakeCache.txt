@@ -261,8 +261,14 @@ Controller_LIB_DEPENDS:STATIC=general;SDL2::SDL2;
 //Maximum time allowed before CTest will kill the test.
 DART_TESTING_TIMEOUT:STRING=1500
 
+//The directory containing a CMake configuration file for Eigen3.
+Eigen3_DIR:PATH=/usr/share/eigen3/cmake
+
 //Path to a program.
 GITCOMMAND:FILEPATH=/usr/bin/git
+
+//Dependencies for the target
+Inverse_Kinematics_LIB_DEPENDS:STATIC=general;orocos_kdl;
 
 //Command to build the project
 MAKECOMMAND:STRING=/usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"
@@ -281,6 +287,9 @@ SDL2_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/SDL2
 
 //Name of the computer/site where compile is being run
 SITE:STRING=zenith
+
+//The directory containing a CMake configuration file for orocos_kdl.
+orocos_kdl_DIR:PATH=/usr/lib/x86_64-linux-gnu/cmake/orocos_kdl
 
 
 ########################

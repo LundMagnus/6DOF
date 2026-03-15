@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.10.0)
 project(Code VERSION 0.1.0 LANGUAGES C CXX)
 
 find_package(SDL2 REQUIRED)
+find_package(orocos_kdl REQUIRED)
 
 add_library(PCA9685 Libraries/PCA9685/PCA9685.cpp)
 target_include_directories(PCA9685 PUBLIC Libraries/PCA9685)
@@ -17,6 +18,7 @@ target_link_libraries(Controller PUBLIC ${SDL2_LIBRARIES})
 
 add_library(Inverse_Kinematics Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp)
 target_include_directories(Inverse_Kinematics PUBLIC Libraries/Inverse_Kinematics)
+target_link_libraries(Inverse_Kinematics PRIVATE orocos_kdl)
 
 add_executable(Code main.cpp)
 target_link_libraries(Code PRIVATE PCA9685)
