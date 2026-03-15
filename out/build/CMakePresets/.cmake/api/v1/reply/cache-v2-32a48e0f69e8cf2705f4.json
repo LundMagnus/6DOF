@@ -1455,7 +1455,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "general;orocos_kdl;"
+			"value" : "general;orocos-kdl;"
 		},
 		{
 			"name" : "MAKECOMMAND",

@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685" -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller" -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics" -isystem /usr/include/SDL2
+CXX_INCLUDES = -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685" -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller" -I/usr/include/eigen3 -isystem /usr/include/SDL2
 
 CXX_FLAGS = -g
 

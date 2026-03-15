@@ -268,7 +268,7 @@ Eigen3_DIR:PATH=/usr/share/eigen3/cmake
 GITCOMMAND:FILEPATH=/usr/bin/git
 
 //Dependencies for the target
-Inverse_Kinematics_LIB_DEPENDS:STATIC=general;orocos_kdl;
+Inverse_Kinematics_LIB_DEPENDS:STATIC=general;orocos-kdl;
 
 //Command to build the project
 MAKECOMMAND:STRING=/usr/bin/cmake --build . --config "${CTEST_CONFIGURATION_TYPE}"

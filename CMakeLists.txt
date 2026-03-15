@@ -17,8 +17,8 @@ target_include_directories(Controller PUBLIC ${SDL2_INCLUDE_DIRS})
 target_link_libraries(Controller PUBLIC ${SDL2_LIBRARIES})
 
 add_library(Inverse_Kinematics Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp)
-target_include_directories(Inverse_Kinematics PUBLIC Libraries/Inverse_Kinematics)
-target_link_libraries(Inverse_Kinematics PRIVATE orocos_kdl)
+target_include_directories(Inverse_Kinematics PUBLIC ${orocos_kdl_INCLUDE_DIRS})
+target_link_libraries(Inverse_Kinematics PRIVATE ${orocos_kdl_LIBRARIES})
 
 add_executable(Code main.cpp)
 target_link_libraries(Code PRIVATE PCA9685)

@@ -50,7 +50,7 @@
 			[
 				{
 					"backtrace" : 2,
-					"path" : "/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics"
+					"path" : "/usr/include/eigen3"
 				}
 			],
 			"language" : "CXX",

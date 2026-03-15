@@ -4,7 +4,7 @@
 # compile CXX with /usr/bin/g++
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics"
+CXX_INCLUDES = -I/usr/include/eigen3
 
 CXX_FLAGS = -g
 

@@ -87,7 +87,7 @@
 				},
 				{
 					"backtrace" : 4,
-					"path" : "/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics"
+					"path" : "/usr/include/eigen3"
 				},
 				{
 					"backtrace" : 3,
@@ -161,7 +161,7 @@
 			},
 			{
 				"backtrace" : 7,
-				"fragment" : "-lorocos_kdl",
+				"fragment" : "-lorocos-kdl",
 				"role" : "libraries"
 			}
 		],
