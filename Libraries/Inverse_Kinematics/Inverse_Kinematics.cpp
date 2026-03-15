@@ -31,7 +31,7 @@ void IK_solver()
     // Output solution
     JntArray q_out(chain.getNrOfJoints());
 
-    int ret = ik_solver.CartToJnt(q_init, target, q_out);
+    auto ret = ik_solver.CartToJnt(q_init, target, q_out);
     std::cout << ret << std::endl;
 
     if(ret >= 0)
