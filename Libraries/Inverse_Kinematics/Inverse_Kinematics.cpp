@@ -46,23 +46,20 @@ void IK_solver()
 
     int ret = ik_solver.CartToJnt(q_init, target, q_out);
 
-    if (ret == E_GRADIENT_JOINTS_TOO_SMALL) {
-        std::cout << "Gradient joints too small" << std::endl;
-    } else if (ret == E_INCREMENT_JOINTS_TOO_SMALL) {
-        std::cout << "Increment joints too small" << std::endl;
-    }
+    
 
 
     if(ret >= 0)
     {
         std::cout << "Solution found:\n";
         for (int i = 0; i < 6; i++) {
-            std::cout << "q" << i << " = " << q_out(i) << "\n";
+            std::cout << "q" << i << " rad=" << q_out(i) << " deg=" << q_out(i) * 180.0 / M_PI << "\n";
         }
     }
     else
     {
-        std::cout << "IK failed\n";
+        std::cout << "IK failed:\n";
+        ik_solver.strError(ret);
     }
     return;
 }
