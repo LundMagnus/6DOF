@@ -16,6 +16,10 @@ void IK_solver()
 
     chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
     chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
+    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
+    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
+    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
+    chain.addSegment(Segment(Joint(Joint::RotZ), Frame(Vector(10,0,0))));
 
     // Forward kinematics solver
     ChainFkSolverPos_recursive fk_solver(chain);
@@ -33,6 +37,10 @@ void IK_solver()
     JntArray q_init(chain.getNrOfJoints());
     q_init(0) = 0;
     q_init(1) = 0;
+    q_init(2) = 0;
+    q_init(3) = 0;
+    q_init(4) = 0;
+    q_init(5) = 0;
 
     // Output solution
     JntArray q_out(chain.getNrOfJoints());
