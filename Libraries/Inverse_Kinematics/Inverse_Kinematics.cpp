@@ -49,7 +49,7 @@ void IK_solver()
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());
-    for(int i = 0; i < 6; i++) {
+    for(int i = 0; i < chain.getNrOfJoints(); i++) {
         q_init(i) = 0;
     }
     
@@ -66,14 +66,14 @@ void IK_solver()
     if(ret >= 0)
     {
         std::cout << "Solution found:\n";
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < chain.getNrOfJoints(); i++) {
             std::cout << "q" << i << " rad=" << q_out(i) << " deg=" << q_out(i) * 180.0 / M_PI << "\n";
         }
     }
     else
     {
         std::cout << "IK failed:\n";
-        ik_solver.strError(ret);
+        std::cout << ik_solver.strError(ret) << std::endl;
     }
     return;
 }
