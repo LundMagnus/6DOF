@@ -1,6 +1,7 @@
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/PCA9685.dir
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Utilities.dir
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Controller.dir
+/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Inverse_Kinematics.dir
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Code.dir
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Experimental.dir
 /home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/Nightly.dir

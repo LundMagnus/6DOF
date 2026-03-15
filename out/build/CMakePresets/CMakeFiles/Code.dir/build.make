@@ -98,6 +98,7 @@ Code: CMakeFiles/Code.dir/build.make
 Code: CMakeFiles/Code.dir/compiler_depend.ts
 Code: libPCA9685.a
 Code: libController.a
+Code: libInverse_Kinematics.a
 Code: libUtilities.a
 Code: /usr/lib/x86_64-linux-gnu/libSDL2.so
 Code: CMakeFiles/Code.dir/link.txt

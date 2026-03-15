@@ -15,9 +15,13 @@ target_include_directories(Controller PUBLIC Libraries/Controller)
 target_include_directories(Controller PUBLIC ${SDL2_INCLUDE_DIRS})
 target_link_libraries(Controller PUBLIC ${SDL2_LIBRARIES})
 
+add_library(Inverse_Kinematics Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp)
+target_include_directories(Inverse_Kinematics PUBLIC Libraries/Inverse_Kinematics)
+
 add_executable(Code main.cpp)
 target_link_libraries(Code PRIVATE PCA9685)
 target_link_libraries(Code PRIVATE Controller)
+target_link_libraries(Code PRIVATE Inverse_Kinematics)
 
 include(CTest)
 enable_testing()

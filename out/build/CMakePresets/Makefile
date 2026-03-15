@@ -166,6 +166,19 @@ Controller/fast:
 .PHONY : Controller/fast
 
 #=============================================================================
+# Target rules for targets named Inverse_Kinematics
+
+# Build rule for target.
+Inverse_Kinematics: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 Inverse_Kinematics
+.PHONY : Inverse_Kinematics
+
+# fast build rule for target.
+Inverse_Kinematics/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/build
+.PHONY : Inverse_Kinematics/fast
+
+#=============================================================================
 # Target rules for targets named Code
 
 # Build rule for target.
@@ -566,6 +579,30 @@ Libraries/Controller/Controller.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Controller.dir/build.make CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.s
 .PHONY : Libraries/Controller/Controller.cpp.s
 
+Libraries/Inverse_Kinematics/Inverse_Kinematics.o: Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.o
+
+# target to build an object file
+Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o
+
+Libraries/Inverse_Kinematics/Inverse_Kinematics.i: Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.i
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.i
+
+# target to preprocess a source file
+Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.i
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.i
+
+Libraries/Inverse_Kinematics/Inverse_Kinematics.s: Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.s
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.s
+
+# target to generate assembly for a file
+Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.s
+.PHONY : Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.s
+
 Libraries/PCA9685/PCA9685.o: Libraries/PCA9685/PCA9685.cpp.o
 .PHONY : Libraries/PCA9685/PCA9685.o
 
@@ -677,11 +714,15 @@ help:
 	@echo "... NightlyUpdate"
 	@echo "... Code"
 	@echo "... Controller"
+	@echo "... Inverse_Kinematics"
 	@echo "... PCA9685"
 	@echo "... Utilities"
 	@echo "... Libraries/Controller/Controller.o"
 	@echo "... Libraries/Controller/Controller.i"
 	@echo "... Libraries/Controller/Controller.s"
+	@echo "... Libraries/Inverse_Kinematics/Inverse_Kinematics.o"
+	@echo "... Libraries/Inverse_Kinematics/Inverse_Kinematics.i"
+	@echo "... Libraries/Inverse_Kinematics/Inverse_Kinematics.s"
 	@echo "... Libraries/PCA9685/PCA9685.o"
 	@echo "... Libraries/PCA9685/PCA9685.i"
 	@echo "... Libraries/PCA9685/PCA9685.s"

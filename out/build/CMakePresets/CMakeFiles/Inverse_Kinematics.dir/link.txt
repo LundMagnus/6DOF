@@ -1,0 +1,2 @@
+/usr/bin/ar qc libInverse_Kinematics.a CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o
+/usr/bin/ranlib libInverse_Kinematics.a

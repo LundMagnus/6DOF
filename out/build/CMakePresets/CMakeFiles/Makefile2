@@ -66,6 +66,7 @@ CMAKE_BINARY_DIR = "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePres
 all: CMakeFiles/PCA9685.dir/all
 all: CMakeFiles/Utilities.dir/all
 all: CMakeFiles/Controller.dir/all
+all: CMakeFiles/Inverse_Kinematics.dir/all
 all: CMakeFiles/Code.dir/all
 .PHONY : all
 
@@ -73,6 +74,7 @@ all: CMakeFiles/Code.dir/all
 codegen: CMakeFiles/PCA9685.dir/codegen
 codegen: CMakeFiles/Utilities.dir/codegen
 codegen: CMakeFiles/Controller.dir/codegen
+codegen: CMakeFiles/Inverse_Kinematics.dir/codegen
 codegen: CMakeFiles/Code.dir/codegen
 .PHONY : codegen
 
@@ -84,6 +86,7 @@ preinstall:
 clean: CMakeFiles/PCA9685.dir/clean
 clean: CMakeFiles/Utilities.dir/clean
 clean: CMakeFiles/Controller.dir/clean
+clean: CMakeFiles/Inverse_Kinematics.dir/clean
 clean: CMakeFiles/Code.dir/clean
 clean: CMakeFiles/Experimental.dir/clean
 clean: CMakeFiles/Nightly.dir/clean
@@ -122,7 +125,7 @@ clean: CMakeFiles/ContinuousSubmit.dir/clean
 CMakeFiles/PCA9685.dir/all: CMakeFiles/Utilities.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Built target PCA9685"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=7,8 "Built target PCA9685"
 .PHONY : CMakeFiles/PCA9685.dir/all
 
 # Build rule for subdir invocation for target.
@@ -139,7 +142,7 @@ PCA9685: CMakeFiles/PCA9685.dir/rule
 # codegen rule for target.
 CMakeFiles/PCA9685.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/PCA9685.dir/build.make CMakeFiles/PCA9685.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Finished codegen for target PCA9685"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=7,8 "Finished codegen for target PCA9685"
 .PHONY : CMakeFiles/PCA9685.dir/codegen
 
 # clean rule for target.
@@ -154,7 +157,7 @@ CMakeFiles/PCA9685.dir/clean:
 CMakeFiles/Utilities.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=7,8 "Built target Utilities"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=9,10 "Built target Utilities"
 .PHONY : CMakeFiles/Utilities.dir/all
 
 # Build rule for subdir invocation for target.
@@ -171,7 +174,7 @@ Utilities: CMakeFiles/Utilities.dir/rule
 # codegen rule for target.
 CMakeFiles/Utilities.dir/codegen:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Utilities.dir/build.make CMakeFiles/Utilities.dir/codegen
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=7,8 "Finished codegen for target Utilities"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=9,10 "Finished codegen for target Utilities"
 .PHONY : CMakeFiles/Utilities.dir/codegen
 
 # clean rule for target.
@@ -212,12 +215,45 @@ CMakeFiles/Controller.dir/clean:
 .PHONY : CMakeFiles/Controller.dir/clean
 
 #=============================================================================
+# Target rules for target CMakeFiles/Inverse_Kinematics.dir
+
+# All Build rule for target.
+CMakeFiles/Inverse_Kinematics.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Built target Inverse_Kinematics"
+.PHONY : CMakeFiles/Inverse_Kinematics.dir/all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/Inverse_Kinematics.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Inverse_Kinematics.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 0
+.PHONY : CMakeFiles/Inverse_Kinematics.dir/rule
+
+# Convenience name for target.
+Inverse_Kinematics: CMakeFiles/Inverse_Kinematics.dir/rule
+.PHONY : Inverse_Kinematics
+
+# codegen rule for target.
+CMakeFiles/Inverse_Kinematics.dir/codegen:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/codegen
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=5,6 "Finished codegen for target Inverse_Kinematics"
+.PHONY : CMakeFiles/Inverse_Kinematics.dir/codegen
+
+# clean rule for target.
+CMakeFiles/Inverse_Kinematics.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Inverse_Kinematics.dir/build.make CMakeFiles/Inverse_Kinematics.dir/clean
+.PHONY : CMakeFiles/Inverse_Kinematics.dir/clean
+
+#=============================================================================
 # Target rules for target CMakeFiles/Code.dir
 
 # All Build rule for target.
 CMakeFiles/Code.dir/all: CMakeFiles/PCA9685.dir/all
 CMakeFiles/Code.dir/all: CMakeFiles/Utilities.dir/all
 CMakeFiles/Code.dir/all: CMakeFiles/Controller.dir/all
+CMakeFiles/Code.dir/all: CMakeFiles/Inverse_Kinematics.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Code.dir/build.make CMakeFiles/Code.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Code.dir/build.make CMakeFiles/Code.dir/build
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir="/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" --progress-num=1,2 "Built target Code"
@@ -225,7 +261,7 @@ CMakeFiles/Code.dir/all: CMakeFiles/Controller.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/Code.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 8
+	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 10
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/Code.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles" 0
 .PHONY : CMakeFiles/Code.dir/rule
