@@ -36,13 +36,15 @@ void IK_solver()
 
     int ret = ik_solver.CartToJnt(q_init, target, q_out);
     bool IK = false;
+
+
     switch (ret) {
         case E_GRADIENT_JOINTS_TOO_SMALL:
             std::cout << "Gradient joints too small" << std::endl;
             IK = false;
 
         case E_INCREMENT_JOINTS_TOO_SMALL:
-            std::cout << "Gradient joints too small" << std::endl;
+            std::cout << "Increment joints too small" << std::endl;
             IK = false;
 
         default:
