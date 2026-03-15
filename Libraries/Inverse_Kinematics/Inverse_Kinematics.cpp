@@ -3,6 +3,9 @@
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/chainiksolverpos_lma.hpp>
 
+#define E_GRADIENT_JOINTS_TOO_SMALL -100
+#define E_INCREMENT_JOINTS_TOO_SMALL -101
+
 void IK_solver() 
 {
     using namespace KDL;
@@ -31,8 +34,21 @@ void IK_solver()
     // Output solution
     JntArray q_out(chain.getNrOfJoints());
 
-    std::cout << ik_solver.CartToJnt(q_init, target, q_out) << std::endl;
-    int ret = 0;
+    int ret = ik_solver.CartToJnt(q_init, target, q_out);
+    bool IK = false;
+    switch (ret) {
+        case E_GRADIENT_JOINTS_TOO_SMALL:
+            std::cout << "Gradient joints too small" << std::endl;
+            IK = false;
+
+        case E_INCREMENT_JOINTS_TOO_SMALL:
+            std::cout << "Gradient joints too small" << std::endl;
+            IK = false;
+
+        default:
+            IK = true;
+    }
+
 
     if(ret >= 0)
     {

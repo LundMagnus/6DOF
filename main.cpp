@@ -27,6 +27,8 @@
 
 // Other
 #define DEADZONE 5000
+#define E_GRADIENT_JOINTS_TOO_SMALL -100
+#define E_INCREMENT_JOINTS_TOO_SMALL -101
 
 
 namespace {
