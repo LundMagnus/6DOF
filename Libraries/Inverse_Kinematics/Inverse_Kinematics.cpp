@@ -35,12 +35,11 @@ void IK_solver()
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());
-    q_init(0) = 0;
-    q_init(1) = 0;
-    q_init(2) = 0;
-    q_init(3) = 0;
-    q_init(4) = 0;
-    q_init(5) = 0;
+    for(int i = 0; i < 6; i++) {
+        q_init(i) = 0;
+    }
+    
+
 
     // Output solution
     JntArray q_out(chain.getNrOfJoints());
@@ -57,8 +56,9 @@ void IK_solver()
     if(ret >= 0)
     {
         std::cout << "Solution found:\n";
-        std::cout << "q1 = " << q_out(0) << "\n";
-        std::cout << "q2 = " << q_out(1) << "\n";
+        for (int i = 0; i < 6; i++) {
+            std::cout << "q" << i << " = " << q_out(i) << "\n";
+        }
     }
     else
     {
