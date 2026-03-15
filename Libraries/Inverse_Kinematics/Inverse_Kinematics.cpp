@@ -1,4 +1,5 @@
 #include <iostream>
+#include <Eigen/Core>
 #include <kdl/chain.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/chainiksolverpos_lma.hpp>
@@ -19,8 +20,10 @@ void IK_solver()
     // Forward kinematics solver
     ChainFkSolverPos_recursive fk_solver(chain);
 
-    // Inverse kinematics solver
-    ChainIkSolverPos_LMA ik_solver(chain);
+    // Inverse kinematics solver (position-priority: orientation almost ignored)
+    Eigen::Matrix<double, 6, 1> lma_weights;
+    lma_weights << 1.0, 1.0, 1.0, 1e-6, 1e-6, 1e-6;
+    ChainIkSolverPos_LMA ik_solver(chain, lma_weights);
 
     // Desired end-effector pose
     Frame target(Frame::Identity());
@@ -35,20 +38,11 @@ void IK_solver()
     JntArray q_out(chain.getNrOfJoints());
 
     int ret = ik_solver.CartToJnt(q_init, target, q_out);
-    bool IK = false;
 
-
-    switch (ret) {
-        case E_GRADIENT_JOINTS_TOO_SMALL:
-            std::cout << "Gradient joints too small" << std::endl;
-            IK = false;
-
-        case E_INCREMENT_JOINTS_TOO_SMALL:
-            std::cout << "Increment joints too small" << std::endl;
-            IK = false;
-
-        default:
-            IK = true;
+    if (ret == E_GRADIENT_JOINTS_TOO_SMALL) {
+        std::cout << "Gradient joints too small" << std::endl;
+    } else if (ret == E_INCREMENT_JOINTS_TOO_SMALL) {
+        std::cout << "Increment joints too small" << std::endl;
     }
 
 
