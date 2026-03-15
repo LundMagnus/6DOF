@@ -3,8 +3,19 @@
 #include <kdl/chain.hpp>
 #include <kdl/chainfksolverpos_recursive.hpp>
 #include <kdl/chainiksolverpos_lma.hpp>
+#include <vector>
 
-void IK_solver() 
+double get_actual_angle(double angle) {
+
+    double degrees = angle * 180.0 / M_PI;
+    if(degrees < 0) {
+        return 360 - degrees;
+    } else {
+        return degrees;
+    } 
+}
+
+std::vector<double> IK_solver() 
 {
     using namespace KDL;
 
@@ -69,11 +80,13 @@ void IK_solver()
         for (int i = 0; i < chain.getNrOfJoints(); i++) {
             std::cout << "q" << i << " rad=" << q_out(i) << " deg=" << q_out(i) * 180.0 / M_PI << "\n";
         }
+        return std::vector<double>{get_actual_angle(q_out(0)), get_actual_angle(q_out(1)), get_actual_angle(q_out(2)), get_actual_angle(q_out(3))};
+
     }
     else
     {
         std::cout << "IK failed:\n";
         std::cout << ik_solver.strError(ret) << std::endl;
     }
-    return;
+    return std::vector<double>{-1, -1, -1, -1};
 }

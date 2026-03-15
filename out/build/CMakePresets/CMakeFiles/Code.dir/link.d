@@ -5,8 +5,10 @@ Code: \
   CMakeFiles/Code.dir/main.cpp.o \
   libPCA9685.a \
   libController.a \
+  libInverse_Kinematics.a \
   libUtilities.a \
   /usr/lib/x86_64-linux-gnu/libSDL2.so \
+  /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/liborocos-kdl.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libm.so \
   /usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/libm.so \
@@ -160,9 +162,13 @@ libPCA9685.a:
 
 libController.a:
 
+libInverse_Kinematics.a:
+
 libUtilities.a:
 
 /usr/lib/x86_64-linux-gnu/libSDL2.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/15/../../../x86_64-linux-gnu/liborocos-kdl.so:
 
 /usr/lib/gcc/x86_64-linux-gnu/15/libstdc++.so:
 

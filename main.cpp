@@ -8,6 +8,7 @@
 #include <chrono>   // Time
 #include <stdio.h>
 #include <signal.h>
+#include <vector>
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
@@ -27,8 +28,6 @@
 
 // Other
 #define DEADZONE 5000
-#define E_GRADIENT_JOINTS_TOO_SMALL -100
-#define E_INCREMENT_JOINTS_TOO_SMALL -101
 
 
 namespace {
@@ -93,124 +92,123 @@ void signal_handler(int sig) {
     g_running = 0;
 }
 
-int main() {
 
-    IK_solver();
+
+int main() {
+    std::cout << "Process started\n";
+    std::cout << "PID: " << getpid() << std::endl;
+
+
+    //
+    // I2C
+    //
+    const std::string i2c_device = "/dev/i2c-1";
+    const uint8_t address = 0x40; // Default I2C address for PCA9685
+
+    // Connect to the PCA9685 and verify it's present before proceeding
+    if (!probe_i2c_address(i2c_device, address)) {
+        std::cerr << "I2C address 0x" << std::hex << static_cast<int>(address) << std::dec
+                  << " not visible on " << i2c_device << std::endl;
+        scan_i2c_bus(i2c_device);
+        return 1;
+    }
+
+    // Create PCA9685 instance and initialize it
+    PCA9685 pwm(address, i2c_device);
+    g_pwm = &pwm;  // Set global pointer for cleanup after loop
+
+    // Register Ctrl+C / termination handlers.
+    ::signal(SIGINT, signal_handler);
+    ::signal(SIGTERM, signal_handler);
+
+
+    if (!pwm.open()) {
+        std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
+        return 1;
+    }
+    std::cout << "PCA9685 initialized at 50Hz." << std::endl;
+
+
+    //
+    // GAME-CONTROLLER
+    //
+    Controller c8bitdo;
+
+    if (!c8bitdo.checkController()) {
+        return 1;
+    }
+    sleep(1);
+
+
+    //
+    // PREPARING
+    //
+    uint16_t targetBaseAngle = 135;
+    
+    SDL_Event e;
+
+    std::cout << "Ready!" << std::endl;
+    
+    std::vector<double> IK_Solutions = IK_solver();
+    if(IK_Solutions[0] == -1) {
+        g_running = 0;
+    }
+
+    //
+    // PROGRAM START
+    //
+    while (g_running && c8bitdo.getProgramState()) {
+        c8bitdo.updateAxes();
+
+        while (SDL_PollEvent(&e)) {
+            if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
+                c8bitdo.handleJoyButtons(e);
+            }
+
+            if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
+                g_running = 0;
+            }
+        }
+        //std::cout << c8bitdo.getProgramState() << std::endl;
+
+        const int16_t lsx = c8bitdo.getLSX();
+        const int16_t lsy = c8bitdo.getLSY();
+        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
+            float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
+            targetBaseAngle = angleLS;
+        }
+
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
+        usleep(20);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
+        usleep(20);
+        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 2);
+        usleep(20);
+        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
+
+        usleep(100000);
+    }
+
+    for(int i = 0; i < 50; i++) {
+        
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 56, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 56, 2);
+        usleep(100000);
+    }
+
+    // Program stopping
+    std::cout << "Goodbye." << std::endl;
+    for (int i = 0; i < 16; i++) {
+        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
+    }
+
+    pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
 
     return 0;
-}
 
-//int main() {
-//    std::cout << "Process started\n";
-//    std::cout << "PID: " << getpid() << std::endl;
-//
-//
-//    //
-//    // I2C
-//    //
-//    const std::string i2c_device = "/dev/i2c-1";
-//    const uint8_t address = 0x40; // Default I2C address for PCA9685
-//
-//    // Connect to the PCA9685 and verify it's present before proceeding
-//    if (!probe_i2c_address(i2c_device, address)) {
-//        std::cerr << "I2C address 0x" << std::hex << static_cast<int>(address) << std::dec
-//                  << " not visible on " << i2c_device << std::endl;
-//        scan_i2c_bus(i2c_device);
-//        return 1;
-//    }
-//
-//    // Create PCA9685 instance and initialize it
-//    PCA9685 pwm(address, i2c_device);
-//    g_pwm = &pwm;  // Set global pointer for cleanup after loop
-//
-//    // Register Ctrl+C / termination handlers.
-//    ::signal(SIGINT, signal_handler);
-//    ::signal(SIGTERM, signal_handler);
-//
-//
-//    if (!pwm.open()) {
-//        std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
-//        return 1;
-//    }
-//    std::cout << "PCA9685 initialized at 50Hz." << std::endl;
-//
-//
-//    //
-//    // GAME-CONTROLLER
-//    //
-//    Controller c8bitdo;
-//
-//    if (!c8bitdo.checkController()) {
-//        return 1;
-//    }
-//    sleep(1);
-//
-//
-//    //
-//    // PREPARING
-//    //
-//    uint16_t targetBaseAngle = 135;
-//    
-//    SDL_Event e;
-//
-//    std::cout << "Ready!" << std::endl;
-//    
-//
-//    //
-//    // PROGRAM START
-//    //
-//    while (g_running && c8bitdo.getProgramState()) {
-//        c8bitdo.updateAxes();
-//
-//        while (SDL_PollEvent(&e)) {
-//            if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
-//                c8bitdo.handleJoyButtons(e);
-//            }
-//
-//            if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
-//                g_running = 0;
-//            }
-//        }
-//        //std::cout << c8bitdo.getProgramState() << std::endl;
-//
-//        const int16_t lsx = c8bitdo.getLSX();
-//        const int16_t lsy = c8bitdo.getLSY();
-//        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
-//            float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
-//            targetBaseAngle = angleLS;
-//        }
-//
-//        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
-//        usleep(20);
-//        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
-//        usleep(20);
-//        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 56, 2);
-//        usleep(20);
-//        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, targetBaseAngle, 2);
-//
-//        usleep(100000);
-//    }
-//
-//    for(int i = 0; i < 50; i++) {
-//        
-//        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
-//        usleep(100);
-//        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
-//        usleep(100);
-//        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 56, 2);
-//        usleep(100);
-//        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 56, 2);
-//        usleep(100000);
-//    }
-//
-//    // Program stopping
-//    std::cout << "Goodbye." << std::endl;
-//    for (int i = 0; i < 16; i++) {
-//        pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
-//    }
-//
-//    pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
-//
-//    return 0;
-//
-//}
+}
