@@ -30,6 +30,9 @@
 // Other
 #define DEADZONE 5000
 
+float x = 0;
+float y = 0;
+
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -186,12 +189,23 @@ int main() {
             std::cout << targetBaseAngle << std::endl;
         }
 
-        std::vector<double> IK_Solutions = IK_solver();
+
+        const int16_t lsx = c8bitdo.getLSX();
+        const int16_t lsy = c8bitdo.getLSY();
+        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
+            float vectorLS = c8bitdo.getLSVector() / INT16_MAX;
+            float angleLS = c8bitdo.getLSAngle();
+            x += cos(angleLS) * vectorLS;
+            y += sin(angleLS) * vectorLS;
+        }
+
+
+        std::vector<double> IK_Solutions = IK_solver(x/1000, y/1000, 0.15);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
         }
 
-        if(false){
+        if(true){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
@@ -199,6 +213,8 @@ int main() {
             pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 2);
             usleep(20);
             pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[3], 2);
         } else {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
             usleep(20);

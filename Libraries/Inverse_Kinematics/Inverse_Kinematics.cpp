@@ -15,7 +15,7 @@ double get_actual_angle(double angle) {
     } 
 }
 
-std::vector<double> IK_solver() 
+std::vector<double> IK_solver(float x, float y, float z) 
 {
     using namespace KDL;
 
@@ -56,7 +56,7 @@ std::vector<double> IK_solver()
 
     // Desired end-effector pose
     KDL::Frame target(Frame::Identity());
-    target.p = KDL::Vector(0.150, 0, 0.150);
+    target.p = KDL::Vector(x, y, z);
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());

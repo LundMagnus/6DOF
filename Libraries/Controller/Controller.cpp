@@ -163,6 +163,9 @@ void Controller::updateAxes() {
 }
 
 
+float Controller::calculateJoyVector(int16_t joyX, int16_t joyY) {
+    return sqrt(pow(joyX, 2) + pow(joyY, 2));
+}
 
 float Controller::calculateJoyAngle(int16_t joyX, int16_t joyY) {
     return 360 - fmod(atan2(joyY, joyX) * 180/M_PI + 360, 360);
@@ -182,6 +185,14 @@ float Controller::getLSAngle() {
 
 float Controller::getRSAngle() {
     return calculateJoyAngle(X_RS_VALUE, Y_RS_VALUE);
+}
+
+float Controller::getLSVector() {
+    return calculateJoyVector(X_LS_VALUE, Y_LS_VALUE);
+}
+
+float Controller::getRSVector() {
+    return calculateJoyVector(X_RS_VALUE, Y_RS_VALUE);
 }
 
 bool Controller::getProgramState() {

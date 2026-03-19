@@ -19,11 +19,14 @@ public:
     void updateAxes();
 
     float calculateJoyAngle(int16_t joyX, int16_t joyY);
+    float calculateJoyVector(int16_t joyX, int16_t joyY);
     int16_t getLSX();
     int16_t getLSY();
     bool getProgramState();
     float getLSAngle();
     float getRSAngle();
+    float getLSVector();
+    float getRSVector();
 
 private:
     SDL_Joystick* joystick_ = nullptr;
