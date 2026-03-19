@@ -149,16 +149,18 @@ int main() {
 
     std::cout << "Ready!" << std::endl;
     
-    std::vector<double> IK_Solutions = IK_solver();
-    if(IK_Solutions[0] == -1) {
-        g_running = 0;
-    } else {
+    //std::vector<double> IK_Solutions = IK_solver();
+    //if(IK_Solutions[0] == -1) {
+    //    g_running = 0;
+    //} else {
+//
+    //    std::cout << "Solution found:\n";
+    //    for (int i = 0; i < 5; i++) {
+    //        std::cout << "q" << i << " deg=" << IK_Solutions[i] << "\n";
+    //    }
+    //}
 
-        std::cout << "Solution found:\n";
-        for (int i = 0; i < 5; i++) {
-            std::cout << "q" << i << " deg=" << IK_Solutions[i] << "\n";
-        }
-    }
+
     //
     // PROGRAM START
     //
@@ -174,7 +176,6 @@ int main() {
                 g_running = 0;
             }
         }
-        //std::cout << c8bitdo.getProgramState() << std::endl;
 
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
@@ -183,13 +184,31 @@ int main() {
             targetBaseAngle = angleLS;
         }
 
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
-        usleep(20);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
-        usleep(20);
-        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 2);
-        usleep(20);
-        pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
+        std::vector<double> IK_Solutions = IK_solver();
+        if(IK_Solutions[0] == -1) {
+            std::cout << "No solution found." << std::endl;
+        }
+
+        if(false){
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
+        } else {
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 90, 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
+        }
+
 
         usleep(100000);
     }
@@ -207,12 +226,12 @@ int main() {
     }
 
     // Program stopping
-    std::cout << "Goodbye." << std::endl;
     for (int i = 0; i < 16; i++) {
         pwm.setPWM(i, 0, 4096);   // Turn off channel (full-off via 4096)
     }
 
     pwm.sleep();                 // Put PCA9685 to sleep to stop all outputs
+    std::cout << "Goodbye." << std::endl;
 
     return 0;
 
