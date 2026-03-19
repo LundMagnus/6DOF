@@ -348,7 +348,7 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
     if(initializer) {
         for(int i = 0; i < 16; i++) {
             speed[i] = 1;
-            currentAngle[i] = 135; // In the future, make it so it remembers its last position instead!
+            currentAngle[i] = 90; // In the future, make it so it remembers its last position instead!
         }
         initializer = false;
     }
