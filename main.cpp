@@ -183,6 +183,7 @@ int main() {
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
             float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
             targetBaseAngle = angleLS;
+            std::cout << targetBaseAngle << std::endl;
         }
 
         std::vector<double> IK_Solutions = IK_solver();
