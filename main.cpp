@@ -25,6 +25,7 @@
 #define SHOULDER    1
 #define UPPER_ARM   2
 #define FOREARM     3
+#define WIRST       4
 
 // Other
 #define DEADZONE 5000
@@ -206,7 +207,7 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
         }
 
 
