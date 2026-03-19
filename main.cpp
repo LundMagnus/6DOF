@@ -181,13 +181,6 @@ int main() {
             }
         }
 
-        const int16_t lsx = c8bitdo.getLSX();
-        const int16_t lsy = c8bitdo.getLSY();
-        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
-            float angleLS = constrain(c8bitdo.getLSAngle(), 0, 270);
-            targetBaseAngle = angleLS;
-            std::cout << targetBaseAngle << std::endl;
-        }
 
 
         const int16_t lsx = c8bitdo.getLSX();
