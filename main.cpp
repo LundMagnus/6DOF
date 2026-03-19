@@ -9,6 +9,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <vector>
+#include <iomanip>
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
@@ -190,10 +191,14 @@ int main() {
             float angleLS = c8bitdo.getLSAngle();
             x += cos(angleLS) * vectorLS;
             y += sin(angleLS) * vectorLS;
+
+            x = x/1000;
+            y = y/1000;
         }
+        
+        std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::endl;
 
-
-        std::vector<double> IK_Solutions = IK_solver(x/1000, y/1000, 0.15);
+        std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
         }
