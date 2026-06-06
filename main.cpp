@@ -203,7 +203,7 @@ int main() {
             std::cout << "No solution found." << std::endl;
         }
 
-        if(true){
+        if(false){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
@@ -220,9 +220,9 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 0, 2);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, targetBaseAngle, 2);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
         }
 
 

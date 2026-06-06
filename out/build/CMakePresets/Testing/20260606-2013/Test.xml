@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Site BuildName="Linux-g++"
-	BuildStamp="20260319-1124-Experimental"
+	BuildStamp="20260606-2013-Experimental"
 	Name="zenith"
 	Generator="ctest-3.31.6"
 	CompilerName="/usr/bin/g++"
 	CompilerVersion="15.2.0"
 	OSName="Linux"
 	Hostname="zenith"
-	OSRelease="6.17.0-19-generic"
-	OSVersion="#19-Ubuntu SMP PREEMPT_DYNAMIC Fri Mar  6 14:02:58 UTC 2026"
+	OSRelease="6.17.0-35-generic"
+	OSVersion="#35-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 13:10:28 UTC 2026"
 	OSPlatform="x86_64"
 	Is64Bits="1"
 	VendorString="GenuineIntel"
@@ -20,16 +20,16 @@
 	NumberOfLogicalCPU="12"
 	NumberOfPhysicalCPU="6"
 	TotalVirtualMemory="511"
-	TotalPhysicalMemory="31947"
+	TotalPhysicalMemory="31946"
 	LogicalProcessorsPerPhysical="2"
-	ProcessorClockFrequency="4200.06"
+	ProcessorClockFrequency="4200"
 	>
 	<Testing>
-		<StartDateTime>Mar 19 22:09 CET</StartDateTime>
-		<StartTestTime>1773954563</StartTestTime>
+		<StartDateTime>Jun 06 22:13 CEST</StartDateTime>
+		<StartTestTime>1780776829</StartTestTime>
 		<TestList/>
-		<EndDateTime>Mar 19 22:09 CET</EndDateTime>
-		<EndTestTime>1773954563</EndTestTime>
+		<EndDateTime>Jun 06 22:13 CEST</EndDateTime>
+		<EndTestTime>1780776829</EndTestTime>
 		<ElapsedMinutes>0</ElapsedMinutes>
 	</Testing>
 </Site>
