@@ -228,7 +228,7 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, 90, 2);
+            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, lsx, 2);
         }
 
 
