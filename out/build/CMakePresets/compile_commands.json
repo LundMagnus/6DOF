@@ -1,0 +1,32 @@
+[
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets",
+  "command": "/usr/bin/g++  -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Utilities\" -g -o CMakeFiles/Utilities.dir/Libraries/Utilities/Utilities.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Utilities/Utilities.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/Libraries/Utilities/Utilities.cpp",
+  "output": "CMakeFiles/Utilities.dir/Libraries/Utilities/Utilities.cpp.o"
+},
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets",
+  "command": "/usr/bin/g++  -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685\" -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Utilities\" -g -o CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685/PCA9685.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685/PCA9685.cpp",
+  "output": "CMakeFiles/PCA9685.dir/Libraries/PCA9685/PCA9685.cpp.o"
+},
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets",
+  "command": "/usr/bin/g++  -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller\" -isystem /usr/include/SDL2 -g -o CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller/Controller.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller/Controller.cpp",
+  "output": "CMakeFiles/Controller.dir/Libraries/Controller/Controller.cpp.o"
+},
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets",
+  "command": "/usr/bin/g++  -I/usr/include/eigen3 -g -o CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp",
+  "output": "CMakeFiles/Inverse_Kinematics.dir/Libraries/Inverse_Kinematics/Inverse_Kinematics.cpp.o"
+},
+{
+  "directory": "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets",
+  "command": "/usr/bin/g++  -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/PCA9685\" -I\"/home/magnus/Documents/Raspberry Pi/Code/Libraries/Controller\" -I/usr/include/eigen3 -isystem /usr/include/SDL2 -g -o CMakeFiles/Code.dir/main.cpp.o -c \"/home/magnus/Documents/Raspberry Pi/Code/main.cpp\"",
+  "file": "/home/magnus/Documents/Raspberry Pi/Code/main.cpp",
+  "output": "CMakeFiles/Code.dir/main.cpp.o"
+}
+]
