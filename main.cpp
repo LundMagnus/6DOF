@@ -27,6 +27,7 @@
 #define UPPER_ARM   2
 #define FOREARM     3
 #define WIRST       4
+#define FINGER      5
 
 // Other
 #define DEADZONE 5000
@@ -212,7 +213,10 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[3], 2);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, 90, 2);
+
         } else {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
             usleep(20);
@@ -223,6 +227,8 @@ int main() {
             pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
             usleep(20);
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
+            usleep(20);
+            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, 90, 2);
         }
 
 
@@ -231,15 +237,17 @@ int main() {
 
     for(int i = 0; i < 50; i++) {
         
-        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 90, 2);
+        pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(100);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 90, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
         usleep(100);
         pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 90, 2);
         usleep(100);
         pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
         usleep(100);
         pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
+        usleep(100);
+        pwm.setSmoothServoAngle(FINGER, DM996_SERVO, 90, 2);
         usleep(100000);
     }
 

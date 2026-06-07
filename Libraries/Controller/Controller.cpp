@@ -74,7 +74,7 @@ bool Controller::checkController() {
         }
         
         
-        if (retries > MAX_RETRIES) { // Will wait 1 minute
+        if (retries > MAX_RETRIES) { 
             std::cout << std::endl;
             std::cerr << "No game-controller found after ~60s" << std::endl;
             int num_joysticks = SDL_NumJoysticks();
