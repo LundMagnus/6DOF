@@ -170,6 +170,7 @@ int main() {
     //
     // PROGRAM START
     //
+    float angleLS = 90;
     while (g_running && c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
 
@@ -189,7 +190,7 @@ int main() {
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
             float vectorLS = c8bitdo.getLSVector() / INT16_MAX;
-            float angleLS = c8bitdo.getLSAngle();
+            angleLS = c8bitdo.getLSAngle();
             x += cos(angleLS) * vectorLS;
             y += sin(angleLS) * vectorLS;
 
@@ -228,7 +229,7 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, lsx, 2);
+            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, angleLS, 2);
         }
 
 
