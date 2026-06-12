@@ -215,7 +215,7 @@ int main() {
             z += c8bitdo.getLTCurve();
         }
         
-        std::cout << "x: " << std::setw(5) << x << std::setw(5) << ", y: " << std::setw(5) << y << ", z: " << z << std::endl;
+        std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
 
         std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
         if(IK_Solutions[0] == -1) {
