@@ -179,6 +179,22 @@ int16_t Controller::getLSY() {
     return Y_LS_VALUE;
 }
 
+int16_t Controller::getRSX() {
+    return X_RS_VALUE;
+}
+
+int16_t Controller::getRSY() {
+    return Y_RS_VALUE;
+}
+
+int16_t Controller::getLT() {
+    return LT_VALUE;
+}
+
+int16_t Controller::getRT() {
+    return RT_VALUE;
+}
+
 float Controller::getLSAngle() {
     return calculateJoyAngle(X_LS_VALUE, Y_LS_VALUE);
 }
@@ -197,4 +213,12 @@ float Controller::getRSVector() {
 
 bool Controller::getProgramState() {
     return PROGRAMSTATE;
+}
+
+float Controller::getLTCurve() { // magic number from main. too lazy
+    return LT_VALUE - 5000 < 0 ? 0 : (LT_VALUE - 5000) / (INT16_MAX - 5000);
+}   
+
+float Controller::getRTCurve() {
+    return RT_VALUE - 5000 < 0 ? 0 : (RT_VALUE - 5000) / (INT16_MAX - 5000);
 }

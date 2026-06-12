@@ -22,11 +22,17 @@ public:
     float calculateJoyVector(int16_t joyX, int16_t joyY);
     int16_t getLSX();
     int16_t getLSY();
+    int16_t getRSX();
+    int16_t getRSY();
+    int16_t getLT();
+    int16_t getRT();
     bool getProgramState();
     float getLSAngle();
     float getRSAngle();
     float getLSVector();
     float getRSVector();
+    float getLTCurve();
+    float getRTCurve();
 
 private:
     SDL_Joystick* joystick_ = nullptr;

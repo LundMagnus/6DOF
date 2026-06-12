@@ -34,6 +34,7 @@
 
 float x = 0;
 float y = 0;
+float z = 0;
 
 
 namespace {
@@ -186,11 +187,14 @@ int main() {
             }
         }
 
+        // Gripper
+        const int16_t rsy = c8bitdo.getRSY();
+        if(std::abs(rsy) > DEADZONE) { 
+            angleRS = c8bitdo.getRSAngle();
+            RS = constrain(angleRS, 66, 180);
+        }
 
-        angleRS = c8bitdo.getRSAngle();
-        RS = constrain(angleRS, 66, 180);
-
-
+        // X Y movement
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
@@ -202,8 +206,16 @@ int main() {
             y += (sin(angleLS) * vectorLS)/1000;
 
         }
+
+        // Z movement
+        const int16_t lt = c8bitdo.getLT();
+        const int16_t rt = c8bitdo.getRT();
+        if (std::abs(lt) > DEADZONE || std::abs(rt) > DEADZONE) {
+            z -= c8bitdo.getLTCurve();
+            z += c8bitdo.getLTCurve();
+        }
         
-        std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::endl;
+        std::cout << "x: " << std::setw(5) << x << std::setw(5) << ", y: " << std::setw(5) << y << ", z: " << z << std::endl;
 
         std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
         if(IK_Solutions[0] == -1) {
