@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Site BuildName="Linux-g++"
+	BuildStamp="20260611-1332-Experimental"
+	Name="zenith"
+	Generator="ctest-3.31.6"
+	CompilerName="/usr/bin/g++"
+	CompilerVersion="15.2.0"
+	OSName="Linux"
+	Hostname="zenith"
+	OSRelease="6.17.0-35-generic"
+	OSVersion="#35-Ubuntu SMP PREEMPT_DYNAMIC Tue May 26 13:10:28 UTC 2026"
+	OSPlatform="x86_64"
+	Is64Bits="1"
+	VendorString="GenuineIntel"
+	VendorID="Intel Corporation"
+	FamilyID="6"
+	ModelID="167"
+	ModelName="11th Gen Intel(R) Core(TM) i5-11400F @ 2.60GHz"
+	ProcessorCacheSize="12288"
+	NumberOfLogicalCPU="12"
+	NumberOfPhysicalCPU="6"
+	TotalVirtualMemory="511"
+	TotalPhysicalMemory="31946"
+	LogicalProcessorsPerPhysical="2"
+	ProcessorClockFrequency="4200"
+	>
+	<Testing>
+		<StartDateTime>Jun 11 22:43 CEST</StartDateTime>
+		<StartTestTime>1781210626</StartTestTime>
+		<TestList/>
+		<EndDateTime>Jun 11 22:43 CEST</EndDateTime>
+		<EndTestTime>1781210626</EndTestTime>
+		<ElapsedMinutes>0</ElapsedMinutes>
+	</Testing>
+</Site>

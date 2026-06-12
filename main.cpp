@@ -198,11 +198,9 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += cos(angleLS) * vectorLS;
-            y += sin(angleLS) * vectorLS;
+            x += (cos(angleLS) * vectorLS)/1000;
+            y += (sin(angleLS) * vectorLS)/1000;
 
-            //x = x/1000;
-            //y = y/1000;
         }
         
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::endl;
@@ -213,15 +211,15 @@ int main() {
         }
 
         if(false){
-            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 2);
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 1);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 2);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 1);
             usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 2);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2], 1);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 2);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 1);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], 2);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], 1);
             usleep(20);
             
             pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
@@ -229,9 +227,9 @@ int main() {
         } else {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 138, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 90, 2);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 110, 2);
             usleep(20);
             pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
             usleep(20);

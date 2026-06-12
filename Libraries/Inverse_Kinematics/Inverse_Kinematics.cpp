@@ -6,14 +6,12 @@
 #include <vector>
 
 double get_actual_angle(double angle) {
-
     double degrees = angle * 180.0 / M_PI;
-    if(degrees < 0) {
-        return 360 - degrees;
-    } else {
-        return degrees;
-    } 
+    if(degrees < 0) return 360.0 + degrees;  // was: 360 - degrees
+    return degrees;
 }
+
+
 
 std::vector<double> IK_solver(float x, float y, float z) 
 {
@@ -21,27 +19,30 @@ std::vector<double> IK_solver(float x, float y, float z)
 
 
     struct Link {
-        double length;
         Joint::JointType joint;
+        double a;
+        double d;
+        double alpha;
     };
 
     std::vector<Link> robot = {
-        {0.045, Joint::RotZ},
-        {0.113132, Joint::RotY},
-        {0.102184, Joint::RotY},
-        {0.054058, Joint::RotX},
-        {0.061168, Joint::RotY},
-        //{0.04, Joint::RotX}
+        // joint,       a         d          alpha
+        {Joint::RotZ,  0.023491,  0.043682,  M_PI/2},  // J1: base yaw, X offset + Z rise to J2
+        {Joint::RotY,  0.11312,   0.0,       0.0},       // J2: upper arm, nearly pure Z
+        {Joint::RotY,  0.097049,  0.015182,  M_PI/2},       // J3: forearm
+        {Joint::RotX,  0.017141,  0.049753,  M_PI/2},    // J4: wrist roll, twist to J5
+        {Joint::RotY,  0.041431,  0.045000,  0.0},       // J5: wrist pitch (end)
     };
 
     Chain chain;
-
-    for(const auto& link : robot)
-    {
+    for(const auto& link : robot) {
         chain.addSegment(
             Segment(
                 Joint(link.joint),
-                Frame(Vector(link.length,0,0))
+                Frame(
+                    Rotation::RotX(link.alpha),   // twist between axes
+                    Vector(link.a, 0.0, link.d)   // a along X, d along Z
+                )
             )
         );
     }
@@ -85,5 +86,13 @@ std::vector<double> IK_solver(float x, float y, float z)
         std::cout << "IK failed:\n";
         std::cout << ik_solver.strError(ret) << std::endl;
     }
-    return std::vector<double>{-1, -1, -1, -1};
+    
+    // Return all 5 joints
+    return std::vector<double>{
+    get_actual_angle(q_out(0)),
+    get_actual_angle(q_out(1)),
+    get_actual_angle(q_out(2)),
+    get_actual_angle(q_out(3)),
+    get_actual_angle(q_out(4))
+};
 }
