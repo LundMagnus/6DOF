@@ -202,8 +202,8 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += (cos(angleLS) * vectorLS)/100;
-            y += (sin(angleLS) * vectorLS)/100;
+            x += (cos(angleLS) * vectorLS)/10;
+            y += (sin(angleLS) * vectorLS)/10;
 
         }
 
@@ -239,7 +239,7 @@ int main() {
         } else {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, 2);
             usleep(20);
             pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, 2);
             usleep(20);
@@ -258,7 +258,7 @@ int main() {
         
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(20);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, 2);
         usleep(20);
         pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, 2);
         usleep(20);
