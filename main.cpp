@@ -257,15 +257,15 @@ int main() {
     for(int i = 0; i < 50; i++) {
         
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
-        usleep(100);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 135, 2);
-        usleep(100);
-        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 90, 2);
-        usleep(100);
+        usleep(20);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 145, 2);
+        usleep(20);
+        pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, 2);
+        usleep(20);
         pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
-        usleep(100);
+        usleep(20);
         pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
-        usleep(100);
+        usleep(20);
         pwm.setSmoothServoAngle(FINGER, DM996_SERVO, 90, 2);
         usleep(100000);
     }
