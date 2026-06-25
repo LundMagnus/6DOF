@@ -217,7 +217,7 @@ int main() {
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
         //std::cout << "RT: " << rt << std::endl;
 
-        std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
+        std::vector<double> IK_Solutions = IK_solver(x, y, z);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
         }
