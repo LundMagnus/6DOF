@@ -86,6 +86,6 @@ std::vector<double> IK_solver(float x, float y, float z)
         std::cout << "IK failed:\n";
         std::cout << ik_solver.strError(ret) << std::endl;
 
-        return std::vector<double>(-1);
+        return std::vector<double>{-1};
     }
 }
