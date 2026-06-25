@@ -334,7 +334,7 @@ bool PCA9685::setServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAn
     return setServoPulse(channel, val);
 }
 
-bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle, uint8_t smoothness) {
+bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t servoAngle, float smoothness) {
     if (channel >= 16) {
         return false;
     }

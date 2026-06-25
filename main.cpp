@@ -32,9 +32,9 @@
 // Other
 #define DEADZONE 5000
 
-float x = 0.15;
+float x = 0.0;
 float y = 0;
-float z = 0.20;
+float z = 0.0;
 
 
 namespace {
@@ -228,8 +228,8 @@ int main() {
         }
 
 
-        double smoothness = 0.5;
-        if(false and solution_found){
+        double smoothness = 0.3;
+        if(true and solution_found){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], smoothness);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, smoothness);
