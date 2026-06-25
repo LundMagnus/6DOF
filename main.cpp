@@ -228,30 +228,31 @@ int main() {
         }
 
 
-        if(false and solution_found){
-            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 1);
+        double smoothness = 0.5;
+        if(true and solution_found){
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, 1);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] - 30, 1);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] - 30, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], 1);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], 1);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], smoothness);
             usleep(20);
             
             //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
 
         } else {
-            pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, 2);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, 2);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, 2);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, smoothness);
             usleep(20);
             //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
         }
