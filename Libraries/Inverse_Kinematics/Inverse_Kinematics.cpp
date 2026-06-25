@@ -47,6 +47,8 @@ std::vector<double> IK_solver(float x, float y, float z)
         );
     }
 
+    std::cout << "Chain has " << chain.getNrOfJoints() << " joints and " 
+          << chain.getNrOfSegments() << " segments" << std::endl;
 
 
     // Forward kinematics solver
