@@ -27,11 +27,11 @@ std::vector<double> IK_solver(float x, float y, float z)
 
     std::vector<Link> robot = {
         // joint,       a         d          alpha
-        {Joint::RotZ,  0.023491,  0.043682,  M_PI/2},  // J1: base yaw, X offset + Z rise to J2
-        {Joint::RotY,  0.11312,   0.0,       0.0},       // J2: upper arm, nearly pure Z
-        {Joint::RotY,  0.097049,  0.015182,  M_PI/2},       // J3: forearm
-        {Joint::RotX,  0.017141,  0.049753,  M_PI/2},    // J4: wrist roll, twist to J5
-        {Joint::RotY,  0.041431,  0.045000,  0.0},       // J5: wrist pitch (end)
+        {Joint::RotZ,  0.023491,  0.043682,  -M_PI/2},  // J1: base yaw, X offset + Z rise to J2
+        {Joint::RotY,  0.11312,   0.0,       M_PI},       // J2: upper arm, nearly pure Z
+        {Joint::RotY,  0.097049,  0.015182,  -M_PI/2},       // J3: forearm
+        {Joint::RotX,  0.017141,  0.049753,  -M_PI/2},    // J4: wrist roll, twist to J5
+        {Joint::RotY,  0.041431,  0.045000,  -M_PI},       // J5: wrist pitch (end)
     };
 
     Chain chain;
