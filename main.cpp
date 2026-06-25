@@ -202,14 +202,14 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += (cos(angleLS) * vectorLS);
-            y += (sin(angleLS) * vectorLS);
+            x += (cos(angleLS) * vectorLS)/100;
+            y += (sin(angleLS) * vectorLS)/100;
 
         }
 
         // Z movement
-        z -= c8bitdo.getLTCurve();
-        z += c8bitdo.getRTCurve();
+        z -= c8bitdo.getLTCurve()/100;
+        z += c8bitdo.getRTCurve()/100;
 
 
 
