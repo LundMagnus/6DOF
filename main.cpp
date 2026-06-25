@@ -202,8 +202,8 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += (cos(angleLS) * vectorLS)/10;
-            y += (sin(angleLS) * vectorLS)/10;
+            x += (cos(angleLS) * vectorLS);
+            y += (sin(angleLS) * vectorLS);
 
         }
 
@@ -216,13 +216,14 @@ int main() {
         }
         
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
+        std::cout << "RS: " << RS << std::endl;
 
         std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
         }
 
-        if(false){
+        if(true){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 1);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1], 1);
