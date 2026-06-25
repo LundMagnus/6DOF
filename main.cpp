@@ -243,7 +243,7 @@ int main() {
             
             //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
 
-        } else {
+        } else if(false) {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, smoothness);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, smoothness);
@@ -255,6 +255,18 @@ int main() {
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, smoothness);
             usleep(20);
             //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
+        
+        } else {
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, 0, smoothness);
+            usleep(20);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 0, smoothness);
+            usleep(20);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 0, smoothness);
+            usleep(20);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 0, smoothness);
+            usleep(20);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 0, smoothness);
+            usleep(20);
         }
 
 
