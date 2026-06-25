@@ -202,29 +202,33 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += (cos(angleLS) * vectorLS)/100;
-            y += (sin(angleLS) * vectorLS)/100;
+            x += (cos(angleLS) * vectorLS)/1000;
+            y += (sin(angleLS) * vectorLS)/1000;
 
         }
 
         // Z movement
-        z -= c8bitdo.getLTCurve()/100;
-        z += c8bitdo.getRTCurve()/100;
+        z -= c8bitdo.getLTCurve()/1000;
+        z += c8bitdo.getRTCurve()/1000;
 
 
 
-        
+        // x,y,z debug
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
-        //std::cout << "RT: " << rt << std::endl;
 
+        // IK solver
+        bool solution_found = false;
         std::vector<double> IK_Solutions = IK_solver(x, y, z);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
+            solution_found = false;
+        } else {
+            std::cout << IK_Solutions[0] << ", " << IK_Solutions[1] << ", " << IK_Solutions[2] << ", " << IK_Solutions[3] << ", " << IK_Solutions[4] << std::endl;
+            solution_found = true;
         }
 
-        std::cout << IK_Solutions[0] << ", " << IK_Solutions[1] << ", " << IK_Solutions[2] << ", " << IK_Solutions[3] << ", " << IK_Solutions[4] << std::endl;
 
-        if(false){
+        if(false and solution_found){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], 1);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, 1);
