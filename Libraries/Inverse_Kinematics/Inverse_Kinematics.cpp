@@ -52,12 +52,12 @@ std::vector<double> IK_solver(float x, float y, float z)
 
 
     // Initial joint guess
-    JntArray q_init(chain.getNrOfJoints());
-    q_init(0) = (135.0 - 135.0) * M_PI / 180.0;  // 0
-    q_init(1) = (142.0 - 90.0)  * M_PI / 180.0;  // +52°
-    q_init(2) = (60.0  - 90.0)  * M_PI / 180.0;  // -30°
-    q_init(3) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
-    q_init(4) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
+    //JntArray q_init(chain.getNrOfJoints());
+    //q_init(0) = (135.0 - 135.0) * M_PI / 180.0;  // 0
+    //q_init(1) = (142.0 - 90.0)  * M_PI / 180.0;  // +52°
+    //q_init(2) = (60.0  - 90.0)  * M_PI / 180.0;  // -30°
+    //q_init(3) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
+    //q_init(4) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
     //for(int i = 0; i < chain.getNrOfJoints(); i++) {
     //    q_init(i) = 0;
     //}
