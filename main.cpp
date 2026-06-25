@@ -32,9 +32,9 @@
 // Other
 #define DEADZONE 5000
 
-float x = 0;
+float x = 0.15;
 float y = 0;
-float z = 0;
+float z = 0.20;
 
 
 namespace {
