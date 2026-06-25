@@ -216,9 +216,9 @@ bool Controller::getProgramState() {
 }
 
 float Controller::getLTCurve() { // magic number from main. too lazy
-    return LT_VALUE - 5000 < 0 ? 0 : (LT_VALUE - 5000) / (INT16_MAX - 5000);
+    return (LT_VALUE - 5000 < 0) ? 0 : (LT_VALUE - 5000) / (INT16_MAX - 5000);
 }   
 
 float Controller::getRTCurve() {
-    return RT_VALUE - 5000 < 0 ? 0 : (RT_VALUE - 5000) / (INT16_MAX - 5000);
+    return (RT_VALUE - 5000 < 0) ? 0 : (RT_VALUE - 5000) / (INT16_MAX - 5000);
 }
