@@ -70,9 +70,14 @@ std::vector<double> IK_solver(float x, float y, float z)
 
     // Initial joint guess
     JntArray q_init(chain.getNrOfJoints());
-    for(int i = 0; i < chain.getNrOfJoints(); i++) {
-        q_init(i) = 0;
-    }
+    q_init(0) = 0.0;          // base yaw — 0 is fine
+    q_init(1) = M_PI / 4;    // shoulder up ~45°
+    q_init(2) = -M_PI / 4;   // elbow bent back slightly
+    q_init(3) = 0.0;
+    q_init(4) = 0.0;
+    //for(int i = 0; i < chain.getNrOfJoints(); i++) {
+    //    q_init(i) = 0;
+    //}
     
 
 
