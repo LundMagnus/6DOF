@@ -229,7 +229,7 @@ int main() {
 
 
         double smoothness = 0.5;
-        if(true and solution_found){
+        if(false and solution_found){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], smoothness);
             usleep(20);
             pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, smoothness);
