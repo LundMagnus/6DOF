@@ -27,11 +27,11 @@ std::vector<double> IK_solver(float x, float y, float z)
 
     std::vector<Link> robot = {
         // joint,       a         d          alpha
-        {Joint::RotZ,  0.023491,  0.043682,  -M_PI/2},  // J1: base yaw, X offset + Z rise to J2
+        {Joint::RotZ,  0.023491,  0.043682,  M_PI/2},  // J1: base yaw, X offset + Z rise to J2
         {Joint::RotZ,  0.11312,   0.0,       M_PI},       // J2: upper arm, nearly pure Z
         {Joint::RotZ,  0.097049,  0.015182,  -M_PI/2},       // J3: forearm
         {Joint::RotZ,  0.017141,  0.049753,  -M_PI/2},    // J4: wrist roll, twist to J5
-        {Joint::RotZ,  0.041431,  0.045000,  -M_PI},       // J5: wrist pitch (end)
+        {Joint::RotZ,  0.041431,  0.045000,  0.0},       // J5: wrist pitch (end)
     };
 
     Chain chain;
@@ -63,21 +63,20 @@ std::vector<double> IK_solver(float x, float y, float z)
     //}
     
 
-    // Forward kinematics solver
     ChainFkSolverPos_recursive fk_solver(chain);
     JntArray q_home(chain.getNrOfJoints());
-    q_home(0) = (135.0 - 135.0) * M_PI / 180.0;
-    q_home(1) = (142.0 - 90.0)  * M_PI / 180.0;
-    q_home(2) = (60.0  - 90.0)  * M_PI / 180.0;
-    q_home(3) = (90.0  - 90.0)  * M_PI / 180.0;
-    q_home(4) = (90.0  - 90.0)  * M_PI / 180.0;
+    q_home(0) = 0.0;                          // J1: 135° - 135° = 0
+    q_home(1) = (142.0 - 90.0) * M_PI/180.0; // J2: +52°
+    q_home(2) = (60.0  - 90.0) * M_PI/180.0; // J3: -30°
+    q_home(3) = 0.0;                          // J4: 90° - 90° = 0
+    q_home(4) = 0.0;                          // J5: 90° - 90° = 0
 
     KDL::Frame fk_home;
     fk_solver.JntToCart(q_home, fk_home);
-    std::cout << "FK home pose: " 
-            << fk_home.p.x() << " " 
-            << fk_home.p.y() << " " 
-            << fk_home.p.z() << std::endl;
+    std::cout << "FK home pose: "
+              << fk_home.p.x() << " "
+              << fk_home.p.y() << " "
+              << fk_home.p.z() << std::endl;
 
     // Inverse kinematics solver (position-priority: orientation almost ignored)
     Eigen::Matrix<double, 6, 1> lma_weights;
@@ -88,28 +87,24 @@ std::vector<double> IK_solver(float x, float y, float z)
     KDL::Frame target(Frame::Identity());
     target.p = KDL::Vector(x, y, z);
 
-
+    JntArray q_init = q_home;
 
 
     // Output solution
     JntArray q_out(chain.getNrOfJoints());
-
     int ret = ik_solver.CartToJnt(q_init, target, q_out);
 
-    
-
-
-    if(ret >= 0)
-    {
-
-        return std::vector<double>{get_actual_angle(q_out(0)), get_actual_angle(q_out(1)), get_actual_angle(q_out(2)), get_actual_angle(q_out(3)), get_actual_angle(q_out(4))};
-
+    if(ret >= 0) {
+        return std::vector<double>{
+            get_actual_angle(q_out(0)),
+            get_actual_angle(q_out(1)),
+            get_actual_angle(q_out(2)),
+            get_actual_angle(q_out(3)),
+            get_actual_angle(q_out(4))
+        };
     }
-    else
-    {
-        std::cout << "IK failed:\n";
-        std::cout << ik_solver.strError(ret) << std::endl;
 
-        return std::vector<double>{-1};
-    }
+    std::cout << "IK failed: " << ik_solver.strError(ret) << std::endl;
+    return std::vector<double>{-1};
 }
+
