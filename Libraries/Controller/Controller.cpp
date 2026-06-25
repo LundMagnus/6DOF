@@ -187,7 +187,7 @@ int16_t Controller::getRSY() {
     return Y_RS_VALUE;
 }
 
-int16_t Controller::getLT() {
+int16_t Controller::getLT() { // Value between -32768 to +32767 (signed 15-bit)
     return LT_VALUE;
 }
 
@@ -215,10 +215,17 @@ bool Controller::getProgramState() {
     return PROGRAMSTATE;
 }
 
-float Controller::getLTCurve() { // magic number from main. too lazy
-    return (LT_VALUE - 5000 < 0) ? 0 : (LT_VALUE - 5000) / (INT16_MAX - 5000);
+float Controller::getLTCurve() { // Value between 0 and 1
+    uint16_t value = map(LT_VALUE, INT16_MIN, INT16_MAX, 0, UINT16_MAX);
+    return (value - 5000 < 0) ? 0 : (value - 5000) / (UINT16_MAX - 5000);
 }   
 
-float Controller::getRTCurve() {
-    return (RT_VALUE - 5000 < 0) ? 0 : (RT_VALUE - 5000) / (INT16_MAX - 5000);
+float Controller::getRTCurve() { // Value between 0 and 1
+    uint16_t value = map(RT_VALUE, INT16_MIN, INT16_MAX, 0, UINT16_MAX);
+    return (value - 5000 < 0) ? 0 : (value - 5000) / (UINT16_MAX - 5000);
+}
+
+// Deprecated
+float Controller::trigger_curves(float value) {
+    return (value - 5000 < 0) ? 0 : (value - 5000) / (UINT16_MAX - 5000);
 }

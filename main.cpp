@@ -208,15 +208,14 @@ int main() {
         }
 
         // Z movement
-        const int16_t lt = c8bitdo.getLT();
-        const int16_t rt = c8bitdo.getRT();
-        if (std::abs(lt) > DEADZONE || std::abs(rt) > DEADZONE) {
-            z -= c8bitdo.getLTCurve();
-            z += c8bitdo.getLTCurve();
-        }
+        z -= c8bitdo.getLTCurve();
+        z += c8bitdo.getRTCurve();
+
+
+
         
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
-        std::cout << "RT: " << rt << std::endl;
+        //std::cout << "RT: " << rt << std::endl;
 
         std::vector<double> IK_Solutions = IK_solver(x, y, 0.3);
         if(IK_Solutions[0] == -1) {
@@ -235,7 +234,7 @@ int main() {
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], 1);
             usleep(20);
             
-            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
+            //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
 
         } else {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
@@ -248,7 +247,7 @@ int main() {
             usleep(20);
             pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, 2);
             usleep(20);
-            pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
+            //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
         }
 
 

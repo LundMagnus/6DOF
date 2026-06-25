@@ -33,6 +33,7 @@ public:
     float getRSVector();
     float getLTCurve();
     float getRTCurve();
+    float trigger_curves(float value);
 
 private:
     SDL_Joystick* joystick_ = nullptr;
