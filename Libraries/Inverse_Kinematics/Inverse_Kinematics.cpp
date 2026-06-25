@@ -51,15 +51,31 @@ std::vector<double> IK_solver(float x, float y, float z)
           << chain.getNrOfSegments() << " segments" << std::endl;
 
 
-    // Forward kinematics solver
-    ChainFkSolverPos_recursive fk_solver(chain);
-    JntArray q_zero(chain.getNrOfJoints());
-    KDL::Frame fk_result;
-    fk_solver.JntToCart(q_zero, fk_result);
-    std::cout << "FK zero pose: " 
-          << fk_result.p.x() << " " 
-          << fk_result.p.y() << " " 
-          << fk_result.p.z() << std::endl;
+    // Initial joint guess
+    JntArray q_init(chain.getNrOfJoints());
+    q_init(0) = (135.0 - 135.0) * M_PI / 180.0;  // 0
+    q_init(1) = (142.0 - 90.0)  * M_PI / 180.0;  // +52°
+    q_init(2) = (60.0  - 90.0)  * M_PI / 180.0;  // -30°
+    q_init(3) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
+    q_init(4) = (90.0  - 90.0)  * M_PI / 180.0;  // 0
+    //for(int i = 0; i < chain.getNrOfJoints(); i++) {
+    //    q_init(i) = 0;
+    //}
+    
+
+    JntArray q_home(chain.getNrOfJoints());
+    q_home(0) = (135.0 - 135.0) * M_PI / 180.0;
+    q_home(1) = (142.0 - 90.0)  * M_PI / 180.0;
+    q_home(2) = (60.0  - 90.0)  * M_PI / 180.0;
+    q_home(3) = (90.0  - 90.0)  * M_PI / 180.0;
+    q_home(4) = (90.0  - 90.0)  * M_PI / 180.0;
+
+    KDL::Frame fk_home;
+    fk_solver.JntToCart(q_home, fk_home);
+    std::cout << "FK home pose: " 
+            << fk_home.p.x() << " " 
+            << fk_home.p.y() << " " 
+            << fk_home.p.z() << std::endl;
 
     // Inverse kinematics solver (position-priority: orientation almost ignored)
     Eigen::Matrix<double, 6, 1> lma_weights;
@@ -70,17 +86,7 @@ std::vector<double> IK_solver(float x, float y, float z)
     KDL::Frame target(Frame::Identity());
     target.p = KDL::Vector(x, y, z);
 
-    // Initial joint guess
-    JntArray q_init(chain.getNrOfJoints());
-    q_init(0) = 0.0;          // base yaw — 0 is fine
-    q_init(1) = M_PI / 4;    // shoulder up ~45°
-    q_init(2) = -M_PI / 4;   // elbow bent back slightly
-    q_init(3) = 0.0;
-    q_init(4) = 0.0;
-    //for(int i = 0; i < chain.getNrOfJoints(); i++) {
-    //    q_init(i) = 0;
-    //}
-    
+
 
 
     // Output solution
