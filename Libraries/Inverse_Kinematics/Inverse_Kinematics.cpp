@@ -78,21 +78,14 @@ std::vector<double> IK_solver(float x, float y, float z)
     if(ret >= 0)
     {
 
-        return std::vector<double>{get_actual_angle(q_out(0)), get_actual_angle(q_out(1)), get_actual_angle(q_out(2)), get_actual_angle(q_out(3))};
+        return std::vector<double>{get_actual_angle(q_out(0)), get_actual_angle(q_out(1)), get_actual_angle(q_out(2)), get_actual_angle(q_out(3)), get_actual_angle(q_out(4))};
 
     }
     else
     {
         std::cout << "IK failed:\n";
         std::cout << ik_solver.strError(ret) << std::endl;
+
+        return std::vector<double>(-1);
     }
-    
-    // Return all 5 joints
-    return std::vector<double>{
-    get_actual_angle(q_out(0)),
-    get_actual_angle(q_out(1)),
-    get_actual_angle(q_out(2)),
-    get_actual_angle(q_out(3)),
-    get_actual_angle(q_out(4))
-};
 }
