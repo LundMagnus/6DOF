@@ -47,8 +47,17 @@ std::vector<double> IK_solver(float x, float y, float z)
         );
     }
 
+
+
     // Forward kinematics solver
     ChainFkSolverPos_recursive fk_solver(chain);
+    JntArray q_zero(chain.getNrOfJoints());
+    KDL::Frame fk_result;
+    fk_solver.JntToCart(q_zero, fk_result);
+    std::cout << "FK zero pose: " 
+          << fk_result.p.x() << " " 
+          << fk_result.p.y() << " " 
+          << fk_result.p.z() << std::endl;
 
     // Inverse kinematics solver (position-priority: orientation almost ignored)
     Eigen::Matrix<double, 6, 1> lma_weights;
