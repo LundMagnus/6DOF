@@ -37,9 +37,9 @@ std::vector<double> IK_solver(float x, float y, float z)
     std::vector<Link> robot = {
         // joint        a         d          alpha
         {Joint::RotZ,  0.022816, 0.043826,  M_PI/2},   // J1
-        {Joint::RotZ,  0.0,      0.113124,  M_PI},      // J2: back to d
-        {Joint::RotZ,  0.0,      0.101050, -M_PI/2},    // J3: back to d
-        {Joint::RotZ,  0.0,      0.049753,  M_PI/2},    // J4: back to d
+        {Joint::RotZ,  0.113124, 0.0,       M_PI},      // J2
+        {Joint::RotZ,  0.101050, 0.0,      -M_PI/2},    // J3
+        {Joint::RotZ,  0.049753, 0.0,       M_PI/2},    // J4
         {Joint::RotZ,  0.0,      0.0,       0.0},       // J5
     };
 
