@@ -224,22 +224,22 @@ int main() {
             solution_found = false;
         } else {
             std::cout << "IK solutions: ";
-            std::cout << IK_Solutions[0] << ", " << IK_Solutions[1] << ", " << IK_Solutions[2] << ", " << IK_Solutions[3] << ", " << IK_Solutions[4] << std::endl;
+            std::cout << IK_Solutions[0] + 135 << ", " << IK_Solutions[1] + 135 << ", " << IK_Solutions[2] + 90 << ", " << IK_Solutions[3] + 90 << ", " << IK_Solutions[4] + 90 << std::endl;
             solution_found = true;
         }
 
 
         double smoothness = 0.3;
         if(false and solution_found){
-            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0], smoothness);
+            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0] + 135, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 7, smoothness);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 135, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] - 30, smoothness);
+            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] + 90, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3], smoothness);
+            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3] + 90, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4], smoothness);
+            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4] + 90, smoothness);
             usleep(20);
             
             //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
