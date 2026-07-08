@@ -247,7 +247,7 @@ int main() {
         } else if(true) {
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, smoothness);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 141, smoothness);
             usleep(20);
             pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, smoothness);
             usleep(20);
@@ -278,7 +278,7 @@ int main() {
         
         pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, 2);
         usleep(20);
-        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 142, 2);
+        pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 141, 2);
         usleep(20);
         pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, 2);
         usleep(20);
