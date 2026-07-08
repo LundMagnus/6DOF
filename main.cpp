@@ -224,7 +224,7 @@ int main() {
             solution_found = false;
         } else {
             std::cout << "IK solutions: ";
-            std::cout << IK_Solutions[0] + 135 << ", " << IK_Solutions[1] + 135 << ", " << IK_Solutions[2] + 90 << ", " << IK_Solutions[3] + 90 << ", " << IK_Solutions[4] + 90 << std::endl;
+            std::cout << fmod(IK_Solutions[0],360) + 135 << ", " << fmod(IK_Solutions[1],360) + 135 << ", " << fmod(IK_Solutions[2],360) + 90 << ", " << fmod(IK_Solutions[3],360) + 90 << ", " << fmod(IK_Solutions[4],360) + 90 << std::endl;
             solution_found = true;
         }
 
@@ -233,7 +233,7 @@ int main() {
         if(false and solution_found){
             pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0] + 135, smoothness);
             usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 135, smoothness);
+            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 45.0, smoothness);
             usleep(20);
             pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] + 90, smoothness);
             usleep(20);

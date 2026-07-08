@@ -339,6 +339,8 @@ bool PCA9685::setSmoothServoAngle(uint8_t channel, uint8_t servoType, uint16_t s
         return false;
     }
 
+    servoAngle = fmod(servoAngle, 360.0);
+
     static double currentAngle[16] = {0}; // Current angle of servos
     static double delta[16] = {0};             // Delta between current angle and desired angle
     static double curve[16] = {0};          // Curve profile for each servo
