@@ -25,13 +25,22 @@ std::vector<double> IK_solver(float x, float y, float z)
         double alpha;
     };
 
+    //std::vector<Link> robot = {
+    //    // joint,       a         d          alpha
+    //    {Joint::RotZ,  0.023491,  0.043682,  M_PI/2},  // J1: base yaw, X offset + Z rise to J2
+    //    {Joint::RotZ,  0.11312,   0.0,       M_PI},       // J2: upper arm, nearly pure Z
+    //    {Joint::RotZ,  0.097049,  0.015182,  -M_PI/2},       // J3: forearm
+    //    {Joint::RotZ,  0.017141,  0.049753,  -M_PI/2},    // J4: wrist roll, twist to J5
+    //    {Joint::RotZ,  0.041431,  0.045000,  0.0},       // J5: wrist pitch (end)
+    //};
+
     std::vector<Link> robot = {
-        // joint,       a         d          alpha
-        {Joint::RotZ,  0.023491,  0.043682,  M_PI/2},  // J1: base yaw, X offset + Z rise to J2
-        {Joint::RotZ,  0.11312,   0.0,       M_PI},       // J2: upper arm, nearly pure Z
-        {Joint::RotZ,  0.097049,  0.015182,  -M_PI/2},       // J3: forearm
-        {Joint::RotZ,  0.017141,  0.049753,  -M_PI/2},    // J4: wrist roll, twist to J5
-        {Joint::RotZ,  0.041431,  0.045000,  0.0},       // J5: wrist pitch (end)
+        // joint        a         d          alpha
+        {Joint::RotZ,  0.022816, 0.043826,  M_PI/2},   // J1: +Z → -X needs +90°
+        {Joint::RotZ,  0.0,      0.113124,  M_PI},      // J2: -X → +X needs 180°
+        {Joint::RotZ,  0.0,      0.101050, -M_PI/2},    // J3: +X → +Z needs -90°
+        {Joint::RotZ,  0.0,      0.049753,  M_PI/2},    // J4: +Z → -X needs +90°
+        {Joint::RotZ,  0.0,      0.0,       0.0},       // J5: tip
     };
 
     Chain chain;
