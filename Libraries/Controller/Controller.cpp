@@ -196,19 +196,19 @@ int16_t Controller::getRT() {
 }
 
 float Controller::getLSAngle() {
-    return calculateJoyAngle(X_LS_VALUE, Y_LS_VALUE);
+    return calculateJoyAngle(X_LS_VALUE, -Y_LS_VALUE);
 }
 
 float Controller::getRSAngle() {
-    return calculateJoyAngle(X_RS_VALUE, Y_RS_VALUE);
+    return calculateJoyAngle(X_RS_VALUE, -Y_RS_VALUE);
 }
 
 float Controller::getLSVector() {
-    return calculateJoyVector(X_LS_VALUE, Y_LS_VALUE);
+    return calculateJoyVector(X_LS_VALUE, -Y_LS_VALUE);
 }
 
 float Controller::getRSVector() {
-    return calculateJoyVector(X_RS_VALUE, Y_RS_VALUE);
+    return calculateJoyVector(X_RS_VALUE, -Y_RS_VALUE);
 }
 
 bool Controller::getProgramState() {
