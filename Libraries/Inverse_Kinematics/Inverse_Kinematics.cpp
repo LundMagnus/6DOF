@@ -5,10 +5,14 @@
 #include <kdl/chainiksolverpos_lma.hpp>
 #include <vector>
 
-double get_actual_angle(double angle) {
-    double degrees = angle * 180.0 / M_PI;
-    if(degrees < 0) return 360.0 + degrees;  // was: 360 - degrees
-    return degrees;
+double get_actual_angle(double angle_rad, double servo_offset, 
+                         double servo_min, double servo_max) {
+    double degrees = angle_rad * 180.0 / M_PI;
+    double servo_angle = degrees + servo_offset;
+    // Clamp to physical servo range — never wrap
+    if(servo_angle < servo_min) servo_angle = servo_min;
+    if(servo_angle > servo_max) servo_angle = servo_max;
+    return servo_angle;
 }
 
 
@@ -113,11 +117,11 @@ std::vector<double> IK_solver(float x, float y, float z)
 
     if(ret >= 0) {
         return std::vector<double>{
-            get_actual_angle(q_out(0)),
-            get_actual_angle(q_out(1)),
-            get_actual_angle(q_out(2)),
-            get_actual_angle(q_out(3)),
-            get_actual_angle(q_out(4))
+            get_actual_angle(q_out(0), 135.0,   0.0, 270.0),  // J1: 270° servo
+            get_actual_angle(q_out(1),  45.0,   0.0, 270.0),  // J2: 270° servo
+            get_actual_angle(q_out(2),  90.0,   0.0, 180.0),  // J3: 180° servo
+            get_actual_angle(q_out(3),  90.0,   0.0, 180.0),  // J4: 180° servo
+            get_actual_angle(q_out(4),  90.0,   0.0, 180.0),  // J5: 180° servo
         };
     }
 
