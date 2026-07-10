@@ -34,7 +34,8 @@ namespace {
     int16_t X_RS_VALUE = 0;
     int16_t Y_RS_VALUE = 0;
     int16_t RT_VALUE   = 0;
-    bool PROGRAMSTATE  = true;
+    float   BMP_VALUE  = 0;
+    bool    PROGRAMSTATE  = true;
 }
 
 Controller::Controller() = default;
@@ -136,8 +137,10 @@ void Controller::handleJoyButtons(SDL_Event e) {
         case X:
             break;
         case LB:
+            BMP_VALUE -= 0.14;
             break;
         case RB:
+            BMP_VALUE += 0.14;
             break;
         case MIN:
             PROGRAMSTATE = false;
@@ -187,7 +190,7 @@ int16_t Controller::getRSY() {
     return Y_RS_VALUE;
 }
 
-int16_t Controller::getLT() { // Value between -32768 to +32767 (signed 15-bit)
+int16_t Controller::getLT() { // Value between -32768 to +32767 (signed 16-bit)
     return LT_VALUE;
 }
 
@@ -213,6 +216,10 @@ float Controller::getRSVector() {
 
 bool Controller::getProgramState() {
     return PROGRAMSTATE;
+}
+
+float Controller::getBMPValue() {
+    return BMP_VALUE;
 }
 
 float Controller::getLTCurve() { // Value between 0 and 1

@@ -30,12 +30,15 @@
 #define FINGER      5
 
 // Other
-#define DEADZONE 5000
+#define DEADZONE    5000
+#define VECTOR_MAX  37000 // Controller joysticks are NOT circular: Should be 32767, but it CAN go up to ~36500. WHY??
 
-float x = 0.0;
-float y = 0.0;
-float z = 0.3;
-
+float x     = 0.0;
+float y     = 0.0;
+float z     = 0.3;
+float alpha = 0.0;
+float beta  = 0.0;
+float gamma = 0.0;
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -198,7 +201,7 @@ int main() {
         const int16_t lsx = c8bitdo.getLSX();
         const int16_t lsy = c8bitdo.getLSY();
         if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
-            float vectorLS = c8bitdo.getLSVector() / INT16_MAX;
+            float vectorLS = c8bitdo.getLSVector() / VECTOR_MAX;
             angleLS = c8bitdo.getLSAngle();
 
 
@@ -211,6 +214,21 @@ int main() {
         z -= c8bitdo.getLTCurve()/1000;
         z += c8bitdo.getRTCurve()/1000;
 
+        // beta, gamma movement
+        const int16_t rsx = c8bitdo.getRSX();
+        const int16_t rsy = c8bitdo.getRSY();
+        if (std::abs(rsx) > DEADZONE || std::abs(rsy) > DEADZONE) {     // To prevent small noise
+            float vectorRS = c8bitdo.getRSVector() / VECTOR_MAX;
+            angleRS = c8bitdo.getRSAngle();
+
+
+            beta  += (cos(angleRS) * vectorRS)/1000;
+            gamma += (sin(angleRS) * vectorRS)/1000;
+
+        }
+
+        // alpha movement
+        alpha = c8bitdo.getBMPValue();
 
 
         // x,y,z debug

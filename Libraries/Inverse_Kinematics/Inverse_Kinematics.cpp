@@ -17,7 +17,7 @@ double get_actual_angle(double angle_rad, double servo_offset,
 
 
 
-std::vector<double> IK_solver(float x, float y, float z) 
+std::vector<double> IK_solver(float x, float y, float z, float alpha, float beta, float gamma) 
 {
     using namespace KDL;
 
@@ -106,7 +106,7 @@ std::vector<double> IK_solver(float x, float y, float z)
 
     // Desired end-effector pose
     KDL::Frame target(Frame::Identity());
-    target.p = KDL::Vector(x, y, z);
+    target.p = KDL::Vector(x, y, z, alpha, beta, gamma);
 
     JntArray q_init = q_home;
 

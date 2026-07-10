@@ -27,6 +27,7 @@ public:
     int16_t getLT();
     int16_t getRT();
     bool getProgramState();
+    float getBMPValue();
     float getLSAngle();
     float getRSAngle();
     float getLSVector();
