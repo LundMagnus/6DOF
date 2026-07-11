@@ -205,8 +205,10 @@ int main() {
             angleLS = c8bitdo.getLSAngle();
 
 
-            x += (cos(angleLS) * vectorLS)/1000;
-            y += (sin(angleLS) * vectorLS)/1000;
+            x += (cos(angleLS) * vectorLS)/750;
+            y += (sin(angleLS) * vectorLS)/750;
+
+            std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << "y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
 
         }
 
