@@ -222,8 +222,8 @@ int main() {
             angleRS = c8bitdo.getRSAngle();
 
 
-            beta  += (cos(angleRS) * vectorRS)/1000;
-            gamma += (sin(angleRS) * vectorRS)/1000;
+            beta  += (cos(angleRS) * vectorRS) ;
+            gamma += (sin(angleRS) * vectorRS) ;
 
         }
 
