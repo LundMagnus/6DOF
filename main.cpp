@@ -33,12 +33,12 @@
 #define DEADZONE    5000
 #define VECTOR_MAX  37000 // Controller joysticks are NOT circular: Should be 32767, but it CAN go up to ~36500. WHY??
 
-float x = 0.0;
-float y = 0.0;
-float z = 0.3;
-float a = 0.0;
-float b = 0.0;
-float c = 0.0;
+float x     = 0.0;
+float y     = 0.0;
+float z     = 0.3;
+float roll  = 0.0;
+float pitch = 0.0;
+float yaw   = 0.0;
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
