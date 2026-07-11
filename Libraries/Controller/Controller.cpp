@@ -171,7 +171,12 @@ float Controller::calculateJoyVector(int16_t joyX, int16_t joyY) {
 }
 
 float Controller::calculateJoyAngle(int16_t joyX, int16_t joyY) {
-    return 360 - fmod(atan2(joyY, joyX) * 180/M_PI + 360, 360);
+    float ans = atan2(joyY, joyX);
+    if(ans < 0){
+        return ans + 2 * M_PI;
+    } else {
+        return ans;
+    }
 }
 
 int16_t Controller::getLSX() {

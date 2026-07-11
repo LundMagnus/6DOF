@@ -174,8 +174,8 @@ int main() {
     //
     // PROGRAM START
     //
-    float angleLS = 90;
-    float angleRS = 90;
+    float angleLS = 0;
+    float angleRS = 0;
     float RS = 90;
     while (g_running && c8bitdo.getProgramState()) {
         c8bitdo.updateAxes();
@@ -208,7 +208,7 @@ int main() {
             x += (cos(angleLS) * vectorLS)/750;
             y += (sin(angleLS) * vectorLS)/750;
 
-            std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << "y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
+            std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
 
         }
 
