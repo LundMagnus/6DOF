@@ -8,11 +8,11 @@
 double get_actual_angle(double angle_rad, double servo_offset, 
                          double servo_min, double servo_max) {
     double degrees = angle_rad * 180.0 / M_PI;
-    double servo_angle = degrees + servo_offset;
-    // Clamp to physical servo range — never wrap
-    if(servo_angle < servo_min) servo_angle = servo_min;
-    if(servo_angle > servo_max) servo_angle = servo_max;
-    return servo_angle;
+    //double servo_angle = degrees + servo_offset;
+    //// Clamp to physical servo range — never wrap
+    //if(servo_angle < servo_min) servo_angle = servo_min;
+    //if(servo_angle > servo_max) servo_angle = servo_max;
+    return degrees; // Was servo_angle
 }
 
 
