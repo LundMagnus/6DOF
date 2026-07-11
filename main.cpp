@@ -224,13 +224,13 @@ int main() {
             angleRS = c8bitdo.getRSAngle();
 
 
-            b += (cos(angleRS) * vectorRS);
-            c += (sin(angleRS) * vectorRS);
+            pitch += (cos(angleRS) * vectorRS);
+            yaw += (sin(angleRS) * vectorRS);
 
         }
 
-        // alpha movement
-        a = c8bitdo.getBMPValue();
+        // alpha movement (REDUNDANT)
+        roll = c8bitdo.getBMPValue();
 
 
         // x,y,z debug
@@ -238,7 +238,7 @@ int main() {
 
         // IK solver
         bool solution_found = false;
-        std::vector<double> IK_Solutions = IK_solver(x, y, z, a, b, c);
+        std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
             solution_found = false;

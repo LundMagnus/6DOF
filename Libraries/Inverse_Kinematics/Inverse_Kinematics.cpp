@@ -17,7 +17,7 @@ double get_actual_angle(double angle_rad, double servo_offset,
 
 
 
-std::vector<double> IK_solver(float x, float y, float z, float a, float b, float c) 
+std::vector<double> IK_solver(float x, float y, float z, float roll, float pitch, float yaw) 
 {
     using namespace KDL;
 
@@ -101,13 +101,14 @@ std::vector<double> IK_solver(float x, float y, float z, float a, float b, float
 
     // Inverse kinematics solver (position-priority: orientation almost ignored)
     Eigen::Matrix<double, 6, 1> lma_weights;
-    lma_weights << 1.0, 1.0, 1.0, 1e-6, 1e-6, 1e-6;
+    lma_weights << 1.0, 1.0, 1.0, 0.01, 0.01, 0.0;  // roll weight = 0
     ChainIkSolverPos_LMA ik_solver(chain, lma_weights);
 
     // Desired end-effector pose
     KDL::Frame target(Frame::Identity());
     target.p = KDL::Vector(x, y, z);
-    //target.M = KDL::Rotation(a, b, c);
+    // Fixed roll (0), controllable pitch and yaw
+    target.M = KDL::Rotation::RPY(0.0, pitch, yaw);
 
     JntArray q_init = q_home;
 
