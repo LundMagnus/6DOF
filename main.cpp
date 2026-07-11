@@ -33,12 +33,12 @@
 #define DEADZONE    5000
 #define VECTOR_MAX  37000 // Controller joysticks are NOT circular: Should be 32767, but it CAN go up to ~36500. WHY??
 
-float x     = 0.0;
-float y     = 0.0;
-float z     = 0.3;
-float alpha = 0.0;
-float beta  = 0.0;
-float gamma = 0.0;
+float x = 0.0;
+float y = 0.0;
+float z = 0.3;
+float a = 0.0;
+float b = 0.0;
+float c = 0.0;
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -191,11 +191,11 @@ int main() {
         }
 
         // Gripper
-        const int16_t rsy = c8bitdo.getRSY();
-        if(std::abs(rsy) > DEADZONE) { 
-            angleRS = c8bitdo.getRSAngle();
-            RS = constrain(angleRS, 66, 180);
-        }
+        //const int16_t rsy = c8bitdo.getRSY();
+        //if(std::abs(rsy) > DEADZONE) { 
+        //    angleRS = c8bitdo.getRSAngle();
+        //    RS = constrain(angleRS, 66, 180);
+        //}
 
         // X Y movement
         const int16_t lsx = c8bitdo.getLSX();
@@ -222,13 +222,13 @@ int main() {
             angleRS = c8bitdo.getRSAngle();
 
 
-            beta  += (cos(angleRS) * vectorRS) ;
-            gamma += (sin(angleRS) * vectorRS) ;
+            b += (cos(angleRS) * vectorRS);
+            c += (sin(angleRS) * vectorRS);
 
         }
 
         // alpha movement
-        alpha = c8bitdo.getBMPValue();
+        a = c8bitdo.getBMPValue();
 
 
         // x,y,z debug
@@ -236,7 +236,7 @@ int main() {
 
         // IK solver
         bool solution_found = false;
-        std::vector<double> IK_Solutions = IK_solver(x, y, z);
+        std::vector<double> IK_Solutions = IK_solver(x, y, z, a, b, c);
         if(IK_Solutions[0] == -1) {
             std::cout << "No solution found." << std::endl;
             solution_found = false;
