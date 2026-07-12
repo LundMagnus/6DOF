@@ -10,6 +10,7 @@
 #include <signal.h>
 #include <vector>
 #include <iomanip>
+#include <ftxui/ftxui.hpp>
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
@@ -33,12 +34,7 @@
 #define DEADZONE    5000
 #define VECTOR_MAX  37000 // Controller joysticks are NOT circular: Should be 32767, but it CAN go up to ~36500. WHY??
 
-float x     = 0.0;
-float y     = 0.0;
-float z     = 0.3;
-float roll  = 0.0;
-float pitch = 0.0;
-float yaw   = 0.0;
+
 
 namespace {
 bool probe_i2c_address(const std::string &device, uint8_t address) {
@@ -105,9 +101,14 @@ void signal_handler(int sig) {
 
 
 int main() {
+    using namespace ftxui;
+
     std::cout << "Process started\n";
     std::cout << "PID: " << getpid() << std::endl;
 
+
+    // TUI define interactive screen
+    auto screen = ScreenInteractive::TerminalOutput();
 
     //
     // I2C
@@ -171,131 +172,173 @@ int main() {
     //}
 
 
+
+
+
+
+
+
     //
     // PROGRAM START
     //
-    float angleLS = 0;
-    float angleRS = 0;
-    float RS = 90;
-    while (g_running && c8bitdo.getProgramState()) {
-        c8bitdo.updateAxes();
 
-        while (SDL_PollEvent(&e)) {
-            if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
-                c8bitdo.handleJoyButtons(e);
+    // Atomic values for what has to be displayed
+    std::atomic<float> x{0.0}, y{0.0}, z{0.3}, x_delta{0.0}, y_delta{0.0}, z_delta {0.0}, roll{0.0}, pitch{0.0}, yaw{0.0}, roll_delta{0.0}, pitch_delta{0.0}, yaw_delta{0.0};
+
+    // Start IK Thread
+    std::thread ik_thread([&]() {
+        
+        float angleLS = 0;
+        float angleRS = 0;
+        float RS = 90;
+
+        while (g_running && c8bitdo.getProgramState()) {
+            c8bitdo.updateAxes();
+
+            while (SDL_PollEvent(&e)) {
+                if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
+                    c8bitdo.handleJoyButtons(e);
+                }
+
+                if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
+                    g_running = 0;
+                }
             }
 
-            if (e.type == SDL_QUIT || e.type == SDL_JOYDEVICEREMOVED) {
-                g_running = 0;
+            // Gripper
+            //const int16_t rsy = c8bitdo.getRSY();
+            //if(std::abs(rsy) > DEADZONE) { 
+            //    angleRS = c8bitdo.getRSAngle();
+            //    RS = constrain(angleRS, 66, 180);
+            //}
+
+            // X Y movement
+            const int16_t lsx = c8bitdo.getLSX();
+            const int16_t lsy = c8bitdo.getLSY();
+            if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
+                float vectorLS = c8bitdo.getLSVector() / VECTOR_MAX;
+                angleLS = c8bitdo.getLSAngle();
+
+
+                x += (cos(angleLS) * vectorLS)/750;
+                y += (sin(angleLS) * vectorLS)/750;
+
+                std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
+
             }
-        }
 
-        // Gripper
-        //const int16_t rsy = c8bitdo.getRSY();
-        //if(std::abs(rsy) > DEADZONE) { 
-        //    angleRS = c8bitdo.getRSAngle();
-        //    RS = constrain(angleRS, 66, 180);
-        //}
+            // Z movement
+            z -= c8bitdo.getLTCurve()/1000;
+            z += c8bitdo.getRTCurve()/1000;
 
-        // X Y movement
-        const int16_t lsx = c8bitdo.getLSX();
-        const int16_t lsy = c8bitdo.getLSY();
-        if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {     // To prevent small noise
-            float vectorLS = c8bitdo.getLSVector() / VECTOR_MAX;
-            angleLS = c8bitdo.getLSAngle();
+            // beta, gamma movement
+            const int16_t rsx = c8bitdo.getRSX();
+            const int16_t rsy = c8bitdo.getRSY();
+            if (std::abs(rsx) > DEADZONE || std::abs(rsy) > DEADZONE) {     // To prevent small noise
+                float vectorRS = c8bitdo.getRSVector() / VECTOR_MAX;
+                angleRS = c8bitdo.getRSAngle();
 
 
-            x += (cos(angleLS) * vectorLS)/750;
-            y += (sin(angleLS) * vectorLS)/750;
+                pitch += (cos(angleRS) * vectorRS) / 15;
+                yaw   += (sin(angleRS) * vectorRS) / 15;
 
-            std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
+            }
 
-        }
-
-        // Z movement
-        z -= c8bitdo.getLTCurve()/1000;
-        z += c8bitdo.getRTCurve()/1000;
-
-        // beta, gamma movement
-        const int16_t rsx = c8bitdo.getRSX();
-        const int16_t rsy = c8bitdo.getRSY();
-        if (std::abs(rsx) > DEADZONE || std::abs(rsy) > DEADZONE) {     // To prevent small noise
-            float vectorRS = c8bitdo.getRSVector() / VECTOR_MAX;
-            angleRS = c8bitdo.getRSAngle();
+            // alpha movement (REDUNDANT)
+            roll = c8bitdo.getBMPValue();
 
 
-            pitch += (cos(angleRS) * vectorRS) / 15;
-            yaw   += (sin(angleRS) * vectorRS) / 15;
+            // x,y,z debug
+            //std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
 
-        }
+            // alpha, beta, gamma debug
+            //std::cout << "roll: " << std::setw(7) << roll << std::setw(7) << "pitch: " << std::setw(7) << pitch << std::setw(7) << "yaw: " << std::setw(7) << yaw << std::endl;
 
-        // alpha movement (REDUNDANT)
-        roll = c8bitdo.getBMPValue();
-
-
-        // x,y,z debug
-        std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
-
-        // alpha, beta, gamma debug
-        std::cout << "roll: " << std::setw(7) << roll << std::setw(7) << "pitch: " << std::setw(7) << pitch << std::setw(7) << "yaw: " << std::setw(7) << yaw << std::endl;
-
-        // IK solver
-        bool solution_found = false;
-        std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
-        if(IK_Solutions[0] == -1) {
-            std::cout << "No solution found." << std::endl;
-            solution_found = false;
-        } else {
-            std::cout << "IK solutions: ";
-            std::cout << fmod(IK_Solutions[0] + 135,360) << ", " << fmod(IK_Solutions[1] + 45,360) << ", " << fmod(IK_Solutions[2] + 90,360) << ", " << fmod(IK_Solutions[3] + 90,360) << ", " << fmod(IK_Solutions[4] + 90,360) << std::endl;
-            solution_found = true;
-        }
+            // IK solver
+            bool solution_found = false;
+            std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
+            if(IK_Solutions[0] == -1) {
+                //std::cout << "No solution found." << std::endl;
+                solution_found = false;
+            } else {
+                //std::cout << "IK solutions: ";
+                //std::cout << fmod(IK_Solutions[0] + 135,360) << ", " << fmod(IK_Solutions[1] + 45,360) << ", " << fmod(IK_Solutions[2] + 90,360) << ", " << fmod(IK_Solutions[3] + 90,360) << ", " << fmod(IK_Solutions[4] + 90,360) << std::endl;
+                solution_found = true;
+            }
 
 
-        double smoothness = 0.3;
-        if(true and solution_found){
-            pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0] + 135, smoothness);
-            usleep(20);
-            pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 45, smoothness);
-            usleep(20);
-            pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] + 90, smoothness);
-            usleep(20);
-            pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3] + 90, smoothness);
-            usleep(20);
-            pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4] + 90, smoothness);
-            usleep(20);
-            
-            //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
-        }
+            double smoothness = 0.3;
+            if(true and solution_found){
+                pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0] + 135, smoothness);
+                usleep(20);
+                pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 45, smoothness);
+                usleep(20);
+                pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] + 90, smoothness);
+                usleep(20);
+                pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3] + 90, smoothness);
+                usleep(20);
+                pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4] + 90, smoothness);
+                usleep(20);
+                
+                //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
+            }
 
-        //} else if(true) {
-        //    pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 141, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, smoothness);
-        //    usleep(20);
-        //    //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
-        //
-        //} else {
-        //    pwm.setSmoothServoAngle(BASE, MS62_SERVO, 0, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 0, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 0, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 0, smoothness);
-        //    usleep(20);
-        //    pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 0, smoothness);
-        //    usleep(20);
-        //}
+            //} else if(true) {
+            //    pwm.setSmoothServoAngle(BASE, MS62_SERVO, 135, smoothness);
+            //    usleep(20);
+            //    pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, 141, smoothness);
+            //    usleep(20);
+            //    pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, 60, smoothness);
+            //    usleep(20);
+            //    pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, 90, smoothness);
+            //    usleep(20);
+            //    pwm.setSmoothServoAngle(WIRST, DM996_SERVO, 90, smoothness);
+            //    usleep(20);
+            //    //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, RS, 2);
+            //
+            //}
 
 
-        usleep(50000); // 0.05 sec
+
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 0.05 sec
+        } // End of loop
+    });
+
+    // TUI rendering setup
+    auto renderer = Renderer([&] {
+        // Create the matrix of strings for the table
+        std::vector<std::vector<std::string>> data = {
+            {"Name",  "Value",                "Delta"},
+            {"x",     std::to_string(x),      std::to_string(x_delta)},
+            {"y",     std::to_string(y),      std::to_string(y_delta)},
+            {"z",     std::to_string(z),      std::to_string(z_delta)},
+            {"roll",  std::to_string(roll),   std::to_string(roll_delta)},
+            {"pitch", std::to_string(pitch),  std::to_string(pitch_delta)},
+            {"yaw",   std::to_string(yaw),    std::to_string(yaw_delta)}
+        };
+
+        // Build the visual table element
+        auto t = Table(data);
+
+        // Apply visual styles to look like a clean data dashboard
+        t.SelectRow(0).Decorate(bold | color(Color::Cyan)); // Header row styling
+        t.SelectColumn(0).Decorate(color(Color::Yellow));    // Leftmost name column styling
+        t.Border(LIGHT);                                     // Add a clean outer border
+        
+        // Return the final element centered on the screen
+        return t.Render() | center;
+    });
+
+
+    // 3. Blocks this thread, rendering the UI smoothly
+    screen.Loop(renderer); 
+
+
+    // Clean-up & close TUI properly
+    refresh_ui = false;
+    if (data_thread.joinable()) {
+        data_thread.join();
     }
 
     for(int i = 0; i < 50; i++) {

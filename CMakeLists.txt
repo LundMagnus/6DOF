@@ -4,6 +4,15 @@ project(Code VERSION 0.1.0 LANGUAGES C CXX)
 find_package(SDL2 REQUIRED)
 find_package(orocos_kdl REQUIRED)
 
+include(FetchContent)
+FetchContent_Declare(ftxui
+  GIT_REPOSITORY https://github.com/ArthurSonzogni/ftxui
+  GIT_TAG v7.0.0
+)
+FetchContent_MakeAvailable(ftxui)
+
+
+
 add_library(PCA9685 Libraries/PCA9685/PCA9685.cpp)
 target_include_directories(PCA9685 PUBLIC Libraries/PCA9685)
 
@@ -24,6 +33,7 @@ add_executable(Code main.cpp)
 target_link_libraries(Code PRIVATE PCA9685)
 target_link_libraries(Code PRIVATE Controller)
 target_link_libraries(Code PRIVATE Inverse_Kinematics)
+target_link_libraries(Code PRIVATE ftxui::ftxui)
 
 include(CTest)
 enable_testing()
