@@ -236,6 +236,9 @@ int main() {
         // x,y,z debug
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
 
+        // alpha, beta, gamma debug
+        std::cout << "alpha: " << std::setw(5) << alpha << std::setw(5) << "beta: " << std::setw(5) << beta << std::setw(5) << "gamma: " << std::setw(5) << gamma << std::endl;
+
         // IK solver
         bool solution_found = false;
         std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
