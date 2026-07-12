@@ -237,7 +237,7 @@ int main() {
         std::cout << "x: " << std::setw(5) << x << std::setw(5) << "y: " << std::setw(5) << y << std::setw(5) << "z: " << std::setw(5) << z << std::endl;
 
         // alpha, beta, gamma debug
-        std::cout << "alpha: " << std::setw(5) << alpha << std::setw(5) << "beta: " << std::setw(5) << beta << std::setw(5) << "gamma: " << std::setw(5) << gamma << std::endl;
+        std::cout << "roll: " << std::setw(5) << roll << std::setw(5) << "pitch: " << std::setw(5) << pitch << std::setw(5) << "yaw: " << std::setw(5) << yaw << std::endl;
 
         // IK solver
         bool solution_found = false;
