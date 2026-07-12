@@ -224,8 +224,8 @@ int main() {
             angleRS = c8bitdo.getRSAngle();
 
 
-            pitch += (cos(angleRS) * vectorRS);
-            yaw += (sin(angleRS) * vectorRS);
+            pitch += (cos(angleRS) * vectorRS) / 15;
+            yaw   += (sin(angleRS) * vectorRS) / 15;
 
         }
 
@@ -292,7 +292,7 @@ int main() {
         //}
 
 
-        usleep(100000);
+        usleep(100000); // 0.1 sec
     }
 
     for(int i = 0; i < 50; i++) {
