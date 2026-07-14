@@ -229,7 +229,7 @@ int main() {
                 x += (cos(angleLS) * vectorLS)/750;
                 y += (sin(angleLS) * vectorLS)/750;
 
-                std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
+                //std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
 
             }
 
@@ -305,7 +305,7 @@ int main() {
             //}
 
 
-
+            screen.PostEvent(ftxui::Event::Custom);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 0.05 sec
         } // End of loop

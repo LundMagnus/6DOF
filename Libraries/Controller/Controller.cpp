@@ -35,7 +35,7 @@ namespace {
     int16_t Y_RS_VALUE = 0;
     int16_t RT_VALUE   = 0;
     float   BMP_VALUE  = 0;
-    bool    PROGRAMSTATE  = true;
+    std::atomic<bool> PROGRAMSTATE{true}; 
 }
 
 Controller::Controller() = default;
@@ -143,7 +143,7 @@ void Controller::handleJoyButtons(SDL_Event e) {
             BMP_VALUE += 0.14;
             break;
         case MIN:
-            PROGRAMSTATE = false;
+            PROGRAMSTATE.store(false);
             break;
         case PLU:
             break;
@@ -220,7 +220,7 @@ float Controller::getRSVector() {
 }
 
 bool Controller::getProgramState() {
-    return PROGRAMSTATE;
+    return PROGRAMSTATE.load();
 }
 
 float Controller::getBMPValue() {
