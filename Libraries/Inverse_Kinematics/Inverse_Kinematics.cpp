@@ -94,10 +94,7 @@ std::vector<double> IK_solver(float x, float y, float z, float roll, float pitch
 
     KDL::Frame fk_home;
     fk_solver.JntToCart(q_home, fk_home);
-    std::cout << "FK home pose: "
-              << fk_home.p.x() << " "
-              << fk_home.p.y() << " "
-              << fk_home.p.z() << std::endl;
+    //std::cout << "FK home pose: " << fk_home.p.x() << " " << fk_home.p.y() << " " << fk_home.p.z() << std::endl;
 
     // Inverse kinematics solver (position-priority: orientation almost ignored)
     Eigen::Matrix<double, 6, 1> lma_weights;
@@ -127,7 +124,7 @@ std::vector<double> IK_solver(float x, float y, float z, float roll, float pitch
         };
     }
 
-    std::cout << "IK failed: " << ik_solver.strError(ret) << std::endl;
+    //std::cout << "IK failed: " << ik_solver.strError(ret) << std::endl;
     return std::vector<double>{-1};
 }
 
