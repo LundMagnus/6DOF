@@ -377,7 +377,7 @@ int main() {
         return vbox({
             hbox({
                 t1.Render(),
-                seperator(),
+                ftxui::seperator(),
                 t2.Render()
             }) | center,
             text_box | center
