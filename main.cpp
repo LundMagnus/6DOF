@@ -276,6 +276,13 @@ int main() {
                 //std::cout << fmod(IK_Solutions[0] + 135,360) << ", " << fmod(IK_Solutions[1] + 45,360) << ", " << fmod(IK_Solutions[2] + 90,360) << ", " << fmod(IK_Solutions[3] + 90,360) << ", " << fmod(IK_Solutions[4] + 90,360) << std::endl;
                 solution_found = true;
             }
+            
+            // Make sure all servos are in-bounds
+            for(solution : IK_Solutions) {
+                if(solution < 0.0f) {
+                    solution_found = false;
+                }
+            }
 
 
             // Input solutions to servo motors
