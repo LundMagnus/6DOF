@@ -185,7 +185,7 @@ int main() {
 
         while (g_running) {
             // Stop program if 'minus' is pressed.
-            if (c8bitdo.getProgramState()) {
+            if (!c8bitdo.getProgramState()) {
                 g_running = false;
 
                 screen.ExitLoopClosure()();
@@ -348,13 +348,13 @@ int main() {
 
         // Table 2 for all motor values
         std::vector<std::vector<std::string>> angles = {
-            {"Servo",       "Angle",                    "Delta"},
-            {"MS62_1",      std::to_string(angle0),     std::to_string(x_delta)},
-            {"MS62_2",      std::to_string(angle1),     std::to_string(y_delta)},
-            {"DM996_1",     std::to_string(angle2),     std::to_string(z_delta)},
-            {"DM996_2",     std::to_string(angle3),     std::to_string(roll_delta)},
-            {"DM996_3",     std::to_string(angle4),     std::to_string(pitch_delta)},
-            {"DM996_4",     std::to_string(angle5),     std::to_string(yaw_delta)}
+            {"Servo",       "Angle"},
+            {"MS62_1",      std::to_string(angle0)},
+            {"MS62_2",      std::to_string(angle1)},
+            {"DM996_1",     std::to_string(angle2)},
+            {"DM996_2",     std::to_string(angle3)},
+            {"DM996_3",     std::to_string(angle4)},
+            {"DM996_4",     std::to_string(angle5)}
         };
 
         // Build the visual table element
