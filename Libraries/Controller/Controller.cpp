@@ -10,6 +10,7 @@
 #include <limits.h>
 #include <chrono>
 #include <ctime>
+#include <atomic>
 
 namespace {
     #define X_LS 0
