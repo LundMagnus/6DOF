@@ -10,7 +10,12 @@
 #include <signal.h>
 #include <vector>
 #include <iomanip>
-#include <ftxui/ftxui.hpp>
+#include <thread> // Enable multi-processing (threads)
+#include <ftxui/dom/elements.hpp>          // For layouts, text, boxes, and borders
+#include <ftxui/screen/screen.hpp>        // For static rendering and printing
+#include <ftxui/component/component.hpp>  // For interactive buttons, menus, and inputs
+#include <ftxui/component/screen_interactive.hpp> // For interactive main loops
+
 
 #include "Libraries/PCA9685/PCA9685.h"
 #include "Libraries/Controller/Controller.h"
