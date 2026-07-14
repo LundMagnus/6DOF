@@ -330,7 +330,8 @@ int main() {
         // Apply visual styles to look like a clean data dashboard
         t.SelectRow(0).Decorate(bold | color(Color::Cyan)); // Header row styling
         t.SelectColumn(0).Decorate(color(Color::Yellow));    // Leftmost name column styling
-        t.Border(LIGHT);                                     // Add a clean outer border
+        t.SelectAll().Border(ftxui::LIGHT);            // Outer border around the table edges
+        t.SelectAll().Separator(ftxui::LIGHT);         // Adds both vertical and horizontal inner dividers
         
         // Return the final element centered on the screen
         return t.Render() | center;
@@ -342,9 +343,9 @@ int main() {
 
 
     // Clean-up & close TUI properly
-    refresh_ui = false;
-    if (data_thread.joinable()) {
-        data_thread.join();
+    //refresh_ui = false;
+    if (ik_thread.joinable()) {
+        ik_thread.join();
     }
 
     for(int i = 0; i < 50; i++) {
