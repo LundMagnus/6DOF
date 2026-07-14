@@ -278,7 +278,7 @@ int main() {
             }
             
             // Make sure all servos are in-bounds
-            for(solution :: IK_Solutions) {
+            for(double solution : IK_Solutions) {
                 if(solution < 0.0f) {
                     solution_found = false;
                 }
