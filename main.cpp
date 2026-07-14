@@ -174,7 +174,7 @@ int main() {
 
     // Atomic values for what has to be displayed
     std::atomic<float> x{0.0f}, y{0.0f}, z{0.3f}, x_delta{0.0f}, y_delta{0.0f}, z_delta {0.0f}, roll{0.0f}, pitch{0.0f}, yaw{0.0f}, roll_delta{0.0f}, pitch_delta{0.0f}, yaw_delta{0.0f}, angle0{0.0f}, angle1{0.0f}, angle2{0.0f}, angle3{0.0f}, angle4{0.0f}, angle5{0.0f};
-    std::atomic<std::string> text;
+    //std::atomic<std::string> text;
 
     // Start IK Thread
     std::thread ik_thread([&]() {
@@ -268,10 +268,10 @@ int main() {
             bool solution_found = false;
             std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
             if(IK_Solutions[0] == -1) {
-                text.store("No solution found: IK error.");
+                //text.store("No solution found: IK error.");
                 solution_found = false;
             } else {
-                text.store("Solution found!");
+                //text.store("Solution found!");
                 //std::cout << "IK solutions: ";
                 //std::cout << fmod(IK_Solutions[0] + 135,360) << ", " << fmod(IK_Solutions[1] + 45,360) << ", " << fmod(IK_Solutions[2] + 90,360) << ", " << fmod(IK_Solutions[3] + 90,360) << ", " << fmod(IK_Solutions[4] + 90,360) << std::endl;
                 solution_found = true;
@@ -347,7 +347,7 @@ int main() {
 
 
         // Table 2 for all motor values
-        std::vector<std::vector<std::string>> data = {
+        std::vector<std::vector<std::string>> angles = {
             {"Servo",       "Angle",                    "Delta"},
             {"MS62_1",      std::to_string(angle0),     std::to_string(x_delta)},
             {"MS62_2",      std::to_string(angle1),     std::to_string(y_delta)},
@@ -358,7 +358,7 @@ int main() {
         };
 
         // Build the visual table element
-        auto t2 = Table(data);
+        auto t2 = Table(angles);
 
         // Apply visual styles to look like a clean data dashboard
         t2.SelectRow(0).Decorate(bold | color(Color::Cyan));    // Header row styling
@@ -372,7 +372,7 @@ int main() {
         // ==========================================
         // 3. LAYOUT ARRAIGNMENT
         // ==========================================
-        auto text_box = text(std::to_string(text));
+        auto text_box = text("Add IK solution here eventually.");
         
         return vbox({
             hbox({
