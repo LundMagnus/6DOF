@@ -15,6 +15,7 @@
 #include <ftxui/screen/screen.hpp>                  // For static rendering and printing
 #include <ftxui/component/component.hpp>            // For interactive buttons, menus, and inputs
 #include <ftxui/component/screen_interactive.hpp>   // For interactive main loops
+#include <ftxui/dom/table.hpp>                      // For the Table class
 
 
 #include "Libraries/PCA9685/PCA9685.h"
