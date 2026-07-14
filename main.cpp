@@ -174,7 +174,7 @@ int main() {
 
     // Atomic values for what has to be displayed
     std::atomic<float> x{0.0f}, y{0.0f}, z{0.3f}, x_delta{0.0f}, y_delta{0.0f}, z_delta {0.0f}, roll{0.0f}, pitch{0.0f}, yaw{0.0f}, roll_delta{0.0f}, pitch_delta{0.0f}, yaw_delta{0.0f}, angle0{0.0f}, angle1{0.0f}, angle2{0.0f}, angle3{0.0f}, angle4{0.0f}, angle5{0.0f};
-    std::atomic<string> text;
+    std::atomic<std::string> text;
 
     // Start IK Thread
     std::thread ik_thread([&]() {
