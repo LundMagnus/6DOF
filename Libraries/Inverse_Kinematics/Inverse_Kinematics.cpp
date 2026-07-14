@@ -80,11 +80,11 @@ std::vector<double> IK_solver(float x, float y, float z, float roll, float pitch
     // q_home(2) was (90.0 - 60.0)
     ChainFkSolverPos_recursive fk_solver(chain);
     JntArray q_home(chain.getNrOfJoints());
-    q_home(0) = (135.0 - 135.0) * M_PI/180.0;                          // J1: 135° - 135° = 0
-    q_home(1) = (90.0 + 6.0)    * M_PI/180.0; // J2: +97° (90° + 6°) = (found best offset + offset from 135°) 
-    q_home(2) = (-25)           * M_PI/180.0; // J3: -25° worked best
-    q_home(3) = (90.0 - 90.0)   * M_PI/180.0;                         // J4: 90° - 90° = 0
-    q_home(4) = (90.0 - 90.0)   * M_PI/180.0;                         // J5: 90° - 90° = 0
+    q_home(0) = (135.0 - 135.0) * M_PI/180.0;   // J1: 135° - 135° = 0
+    q_home(1) = (90.0 + 6.0)    * M_PI/180.0;   // J2: +96° (90° + 6°) = (found best offset + offset from 135°) 
+    q_home(2) = (-25)           * M_PI/180.0;   // J3: -25° worked best
+    q_home(3) = (90.0 - 90.0)   * M_PI/180.0;   // J4: 90° - 90° = 0
+    q_home(4) = (90.0 - 90.0)   * M_PI/180.0;   // J5: 90° - 90° = 0
 
     //q_home(0) = 0.0;
     //q_home(1) = 0.0;

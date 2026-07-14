@@ -107,14 +107,17 @@ void signal_handler(int sig) {
 
 
 int main() {
-    using namespace ftxui;
+    
 
     std::cout << "Process started\n";
     std::cout << "PID: " << getpid() << std::endl;
 
-
-    // TUI define interactive screen
+    //
+    // TUI
+    //
+    using namespace ftxui;
     auto screen = ScreenInteractive::TerminalOutput();
+
 
     //
     // I2C
@@ -137,7 +140,6 @@ int main() {
     // Register Ctrl+C / termination handlers.
     ::signal(SIGINT, signal_handler);
     ::signal(SIGTERM, signal_handler);
-
 
     if (!pwm.open()) {
         std::cerr << "Failed to open PCA9685 on " << i2c_device << std::endl;
@@ -166,30 +168,13 @@ int main() {
 
     std::cout << "Ready!" << std::endl;
     
-    //std::vector<double> IK_Solutions = IK_solver();
-    //if(IK_Solutions[0] == -1) {
-    //    g_running = 0;
-    //} else {
-//
-    //    std::cout << "Solution found:\n";
-    //    for (int i = 0; i < 5; i++) {
-    //        std::cout << "q" << i << " deg=" << IK_Solutions[i] << "\n";
-    //    }
-    //}
-
-
-
-
-
-
-
-
     //
     // PROGRAM START
     //
 
     // Atomic values for what has to be displayed
-    std::atomic<float> x{0.0f}, y{0.0f}, z{0.3f}, x_delta{0.0f}, y_delta{0.0f}, z_delta {0.0f}, roll{0.0f}, pitch{0.0f}, yaw{0.0f}, roll_delta{0.0f}, pitch_delta{0.0f}, yaw_delta{0.0f};
+    std::atomic<float> x{0.0f}, y{0.0f}, z{0.3f}, x_delta{0.0f}, y_delta{0.0f}, z_delta {0.0f}, roll{0.0f}, pitch{0.0f}, yaw{0.0f}, roll_delta{0.0f}, pitch_delta{0.0f}, yaw_delta{0.0f}, angle0{0.0f}, angle1{0.0f}, angle2{0.0f}, angle3{0.0f}, angle4{0.0f}, angle5{0.0f};
+    std::atomic<string> text;
 
     // Start IK Thread
     std::thread ik_thread([&]() {
@@ -198,9 +183,19 @@ int main() {
         float angleRS = 0;
         float RS = 90;
 
-        while (g_running && c8bitdo.getProgramState()) {
+        while (g_running) {
+            // Stop program if 'minus' is pressed.
+            if (c8bitdo.getProgramState()) {
+                g_running = false;
+
+                screen.ExitLoopClosure()();
+                break;
+            }
+
+            // Update joystick axes
             c8bitdo.updateAxes();
 
+            // Check for button events
             while (SDL_PollEvent(&e)) {
                 if (e.type == SDL_JOYBUTTONDOWN || e.type == SDL_CONTROLLERBUTTONDOWN) {
                     c8bitdo.handleJoyButtons(e);
@@ -225,17 +220,21 @@ int main() {
                 float vectorLS = c8bitdo.getLSVector() / VECTOR_MAX;
                 angleLS = c8bitdo.getLSAngle();
 
+                x_delta = (cos(angleLS) * vectorLS)/750;
+                y_delta = (sin(angleLS) * vectorLS)/750;
 
-                x += (cos(angleLS) * vectorLS)/750;
-                y += (sin(angleLS) * vectorLS)/750;
+                x += x_delta;
+                y += y_delta;
 
-                //std::cout << "x+: " << (cos(angleLS) * vectorLS)/750 << " y+: " << (sin(angleLS) * vectorLS)/750 << std::endl;
-
+                x = constrain(x, -0.3, 0.3);
+                y = constrain(y, -0.3, 0.3);
             }
 
             // Z movement
             z -= c8bitdo.getLTCurve()/1000;
             z += c8bitdo.getRTCurve()/1000;
+            z_delta = -(c8bitdo.getLTCurve()/1000) + c8bitdo.getRTCurve()/1000;
+            z = constrain(z, -0.3, 0.3);
 
             // beta, gamma movement
             const int16_t rsx = c8bitdo.getRSX();
@@ -245,9 +244,14 @@ int main() {
                 angleRS = c8bitdo.getRSAngle();
 
 
-                pitch += (cos(angleRS) * vectorRS) / 15;
-                yaw   += (sin(angleRS) * vectorRS) / 15;
+                pitch_delta = (cos(angleRS) * vectorRS) / 15;
+                yaw_delta   = (sin(angleRS) * vectorRS) / 15;
 
+                pitch += pitch_delta;
+                yaw   += yaw_delta;
+
+                pitch = constrain(pitch, 0, 2 * M_PI);
+                yaw   = constrain(yaw,   0, 2 * M_PI);
             }
 
             // alpha movement (REDUNDANT)
@@ -264,26 +268,33 @@ int main() {
             bool solution_found = false;
             std::vector<double> IK_Solutions = IK_solver(x, y, z, roll, pitch, yaw);
             if(IK_Solutions[0] == -1) {
-                //std::cout << "No solution found." << std::endl;
+                text.store("No solution found: IK error.");
                 solution_found = false;
             } else {
+                text.store("Solution found!");
                 //std::cout << "IK solutions: ";
                 //std::cout << fmod(IK_Solutions[0] + 135,360) << ", " << fmod(IK_Solutions[1] + 45,360) << ", " << fmod(IK_Solutions[2] + 90,360) << ", " << fmod(IK_Solutions[3] + 90,360) << ", " << fmod(IK_Solutions[4] + 90,360) << std::endl;
                 solution_found = true;
             }
 
 
+            // Input solutions to servo motors
             double smoothness = 0.3;
             if(true and solution_found){
                 pwm.setSmoothServoAngle(BASE, MS62_SERVO, IK_Solutions[0] + 135, smoothness);
+                angle0.store(IK_Solutions[0] + 135);
                 usleep(20);
                 pwm.setSmoothServoAngle(SHOULDER, MS62_SERVO_A, IK_Solutions[1] + 45, smoothness);
+                angle1.store(IK_Solutions[1] + 45);
                 usleep(20);
                 pwm.setSmoothServoAngle(UPPER_ARM, DM996_SERVO, IK_Solutions[2] + 90, smoothness);
+                angle2.store(IK_Solutions[2] + 90);
                 usleep(20);
                 pwm.setSmoothServoAngle(FOREARM, DM996_SERVO, IK_Solutions[3] + 90, smoothness);
+                angle3.store(IK_Solutions[3] + 90);
                 usleep(20);
                 pwm.setSmoothServoAngle(WIRST, DM996_SERVO, IK_Solutions[4] + 90, smoothness);
+                angle4.store(IK_Solutions[4] + 90);
                 usleep(20);
                 
                 //pwm.setSmoothServoAngle(FINGER, DM996_SERVO, rt, 2);
@@ -304,7 +315,7 @@ int main() {
             //
             //}
 
-
+            // Update table
             screen.PostEvent(ftxui::Event::Custom);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50)); // 0.05 sec
@@ -313,7 +324,7 @@ int main() {
 
     // TUI rendering setup
     auto renderer = Renderer([&] {
-        // Create the matrix of strings for the table
+        // Table 1 for all values
         std::vector<std::vector<std::string>> data = {
             {"Name",  "Value",                "Delta"},
             {"x",     std::to_string(x),      std::to_string(x_delta)},
@@ -325,16 +336,52 @@ int main() {
         };
 
         // Build the visual table element
-        auto t = Table(data);
+        auto t1 = Table(data);
 
         // Apply visual styles to look like a clean data dashboard
-        t.SelectRow(0).Decorate(bold | color(Color::Cyan)); // Header row styling
-        t.SelectColumn(0).Decorate(color(Color::Yellow));    // Leftmost name column styling
-        t.SelectAll().Border(ftxui::LIGHT);            // Outer border around the table edges
-        t.SelectAll().Separator(ftxui::LIGHT);         // Adds both vertical and horizontal inner dividers
+        t1.SelectRow(0).Decorate(bold | color(Color::Cyan));    // Header row styling
+        t1.SelectColumn(0).Decorate(color(Color::Yellow));      // Leftmost name column styling
+        t1.SelectAll().Border(ftxui::LIGHT);                    // Outer border around the table edges
+        t1.SelectAll().Separator(ftxui::LIGHT);                 // Adds both vertical and horizontal inner dividers
+
+
+
+        // Table 2 for all motor values
+        std::vector<std::vector<std::string>> data = {
+            {"Servo",       "Angle",                    "Delta"},
+            {"MS62_1",      std::to_string(angle0),     std::to_string(x_delta)},
+            {"MS62_2",      std::to_string(angle1),     std::to_string(y_delta)},
+            {"DM996_1",     std::to_string(angle2),     std::to_string(z_delta)},
+            {"DM996_2",     std::to_string(angle3),     std::to_string(roll_delta)},
+            {"DM996_3",     std::to_string(angle4),     std::to_string(pitch_delta)},
+            {"DM996_4",     std::to_string(angle5),     std::to_string(yaw_delta)}
+        };
+
+        // Build the visual table element
+        auto t2 = Table(data);
+
+        // Apply visual styles to look like a clean data dashboard
+        t2.SelectRow(0).Decorate(bold | color(Color::Cyan));    // Header row styling
+        t2.SelectColumn(0).Decorate(color(Color::Yellow));      // Leftmost name column styling
+        t2.SelectAll().Border(ftxui::LIGHT);                    // Outer border around the table edges
+        t2.SelectAll().Separator(ftxui::LIGHT);                 // Adds both vertical and horizontal inner dividers
+
         
-        // Return the final element centered on the screen
-        return t.Render() | center;
+
+
+        // ==========================================
+        // 3. LAYOUT ARRAIGNMENT
+        // ==========================================
+        auto text_box = text(std::to_string(text));
+        
+        return vbox({
+            hbox({
+                t1.Render(),
+                seperator(),
+                t2.Render()
+            }) | center,
+            text_box | center
+        });
     });
 
 
