@@ -188,7 +188,7 @@ int main() {
     //
 
     // Atomic values for what has to be displayed
-    std::atomic<float> x{0.0}, y{0.0}, z{0.3}, x_delta{0.0}, y_delta{0.0}, z_delta {0.0}, roll{0.0}, pitch{0.0}, yaw{0.0}, roll_delta{0.0}, pitch_delta{0.0}, yaw_delta{0.0};
+    std::atomic<float> x{0.0f}, y{0.0f}, z{0.3f}, x_delta{0.0f}, y_delta{0.0f}, z_delta {0.0f}, roll{0.0f}, pitch{0.0f}, yaw{0.0f}, roll_delta{0.0f}, pitch_delta{0.0f}, yaw_delta{0.0f};
 
     // Start IK Thread
     std::thread ik_thread([&]() {
