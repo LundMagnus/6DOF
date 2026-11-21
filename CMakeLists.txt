@@ -45,7 +45,7 @@ add_executable(arm_control_node
     Libraries/ArmNode/ArmNode.cpp
 )
 target_include_directories(arm_control_node PRIVATE Libraries/ArmNode)
-target_link_libraries(arm_control_node PRIVATE
+target_link_libraries(arm_control_node
     PCA9685
     Controller
     Inverse_Kinematics
