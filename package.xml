@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>arm_control</name>
+  <version>0.1.0</version>
+  <description>ROS 2 control node for the 6DOF arm.</description>
+  <maintainer email="magnus@todo.todo">Magnus</maintainer>
+  <license>TODO</license>
+
+  <buildtool_depend>ament_cmake</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>sensor_msgs</depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
