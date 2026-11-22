@@ -48363,3 +48363,138 @@ events:
         - "/usr/pkg"
         - "/opt"
 ...
+
+---
+events:
+  -
+    kind: "find_package-v1"
+    backtrace:
+      - "CMakeLists.txt:6 (find_package)"
+    name: "ament_cmake"
+    configs:
+      -
+        filename: "ament_cmakeConfig.cmake"
+        kind: "cmake"
+      -
+        filename: "ament_cmake-config.cmake"
+        kind: "cmake"
+    version_request:
+      exact: false
+    settings:
+      required: "required_explicit"
+      quiet: false
+      global: false
+      policy_scope: true
+      bypass_provider: false
+      names:
+        - "ament_cmake"
+      path_suffixes:
+        - ""
+      paths:
+        CMAKE_FIND_USE_CMAKE_PATH: true
+        CMAKE_FIND_USE_CMAKE_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_SYSTEM_ENVIRONMENT_PATH: true
+        CMAKE_FIND_USE_CMAKE_SYSTEM_PATH: true
+        CMAKE_FIND_USE_INSTALL_PREFIX: true
+        CMAKE_FIND_USE_PACKAGE_ROOT_PATH: true
+        CMAKE_FIND_USE_CMAKE_PACKAGE_REGISTRY: true
+        CMAKE_FIND_USE_SYSTEM_PACKAGE_REGISTRY: true
+        CMAKE_FIND_ROOT_PATH_MODE: "BOTH"
+    candidates:
+      -
+        path: "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/pkgRedirects/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets/CMakeFiles/pkgRedirects/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/magnus/.local/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/home/magnus/.local/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/games/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/games/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/games/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/usr/local/games/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/snap/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/snap/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/ament_cmakeConfig.cmake"
+        mode: "config"
+        reason: "no_exist"
+      -
+        path: "/opt/ament_cmake-config.cmake"
+        mode: "config"
+        reason: "no_exist"
+    found: null
+    search_context:
+      ENV{PATH}:
+        - "/home/magnus/.local/bin"
+        - "/home/magnus/.local/bin"
+        - "/usr/local/sbin"
+        - "/usr/local/bin"
+        - "/usr/sbin"
+        - "/usr/bin"
+        - "/sbin"
+        - "/bin"
+        - "/usr/games"
+        - "/usr/local/games"
+        - "/snap/bin"
+      CMAKE_INSTALL_PREFIX: "/home/magnus/Documents/Raspberry Pi/Code/out/install/CMakePresets"
+      CMAKE_SYSTEM_PREFIX_PATH:
+        - "/usr/local"
+        - "/usr"
+        - "/"
+        - "/usr"
+        - "/home/magnus/Documents/Raspberry Pi/Code/out/install/CMakePresets"
+        - "/usr/X11R6"
+        - "/usr/pkg"
+        - "/opt"
+...

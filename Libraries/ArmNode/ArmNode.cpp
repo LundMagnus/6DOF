@@ -6,11 +6,9 @@
 #include <cmath>
 #include <chrono>
 #include <cstdint>
-#include <iomanip>
 #include <iostream>
 #include <stdexcept>
 #include <string>
-#include <thread>
 #include <unistd.h>
 #include <vector>
 #include <fcntl.h>
@@ -18,8 +16,6 @@
 #include <sys/ioctl.h>
 
 #include <SDL2/SDL.h>
-#include <ftxui/component/component.hpp>
-#include <ftxui/dom/table.hpp>
 
 namespace {
 constexpr float PI = 3.14159265358979323846f;
@@ -73,8 +69,7 @@ void scan_i2c_bus(const std::string& device) {
 }  // namespace
 
 ArmNode::ArmNode()
-    : Node("arm_node"),
-      screen_(ftxui::ScreenInteractive::TerminalOutput()) {
+    : Node("arm_node") {
     i2c_device_ =
         declare_parameter<std::string>("i2c_device", "/dev/i2c-1");
     const int i2c_address = declare_parameter<int>("i2c_address", i2c_address_);
@@ -92,18 +87,11 @@ ArmNode::ArmNode()
         std::chrono::milliseconds(50),
         [this]() { control_tick(); });
 
-    rclcpp::on_shutdown([this]() {
-        running_.store(false);
-        if (ui_active_.load()) {
-            screen_.ExitLoopClosure()();
-        }
-    });
-
     std::cout << "ArmNode started. PID: " << getpid() << std::endl;
 }
 
 ArmNode::~ArmNode() {
-    running_.store(false);
+    running_ = false;
     control_timer_.reset();
     stop_actuators();
 }
@@ -130,7 +118,7 @@ void ArmNode::initialize_hardware() {
 }
 
 void ArmNode::control_tick() {
-    if (!running_.load()) {
+    if (!running_) {
         return;
     }
 
@@ -153,29 +141,21 @@ void ArmNode::control_tick() {
         }
     }
 
-    float angle_ls = 0.0f;
     const std::int16_t lsx = controller_.getLSX();
     const std::int16_t lsy = controller_.getLSY();
     if (std::abs(lsx) > DEADZONE || std::abs(lsy) > DEADZONE) {
         const float vector_ls = controller_.getLSVector() / VECTOR_MAX;
-        angle_ls = controller_.getLSAngle();
+        const float angle_ls = controller_.getLSAngle();
 
         const float x_delta = (std::cos(angle_ls) * vector_ls) / 750.0f;
         const float y_delta = (std::sin(angle_ls) * vector_ls) / 750.0f;
-        state_.x.store(constrain(state_.x.load() + x_delta, -0.3, 0.3));
-        state_.y.store(constrain(state_.y.load() + y_delta, -0.3, 0.3));
-        state_.x_delta.store(x_delta);
-        state_.y_delta.store(y_delta);
-    } else {
-        state_.x_delta.store(0.0f);
-        state_.y_delta.store(0.0f);
+        state_.x = constrain(state_.x + x_delta, -0.3, 0.3);
+        state_.y = constrain(state_.y + y_delta, -0.3, 0.3);
     }
-
     const float z_delta =
         -(controller_.getLTCurve() / 1000.0f) +
         (controller_.getRTCurve() / 1000.0f);
-    state_.z.store(constrain(state_.z.load() + z_delta, -0.3, 0.3));
-    state_.z_delta.store(z_delta);
+    state_.z = constrain(state_.z + z_delta, -0.3, 0.3);
 
     const std::int16_t rsx = controller_.getRSX();
     const std::int16_t rsy = controller_.getRSY();
@@ -185,25 +165,19 @@ void ArmNode::control_tick() {
         const float pitch_delta = (std::cos(angle_rs) * vector_rs) / 15.0f;
         const float yaw_delta = (std::sin(angle_rs) * vector_rs) / 15.0f;
 
-        state_.pitch.store(
-            constrain(state_.pitch.load() + pitch_delta, 0, 2 * PI));
-        state_.yaw.store(constrain(state_.yaw.load() + yaw_delta, 0, 2 * PI));
-        state_.pitch_delta.store(pitch_delta);
-        state_.yaw_delta.store(yaw_delta);
-    } else {
-        state_.pitch_delta.store(0.0f);
-        state_.yaw_delta.store(0.0f);
+        state_.pitch = constrain(state_.pitch + pitch_delta, 0, 2 * PI);
+        state_.yaw = constrain(state_.yaw + yaw_delta, 0, 2 * PI);
     }
 
-    state_.roll.store(controller_.getBMPValue());
+    state_.roll = controller_.getBMPValue();
 
     const std::vector<double> solutions = IK_solver(
-        state_.x.load(),
-        state_.y.load(),
-        state_.z.load(),
-        state_.roll.load(),
-        state_.pitch.load(),
-        state_.yaw.load());
+        state_.x,
+        state_.y,
+        state_.z,
+        state_.roll,
+        state_.pitch,
+        state_.yaw);
 
     bool solution_found = solutions.size() == 5;
     for (double solution : solutions) {
@@ -227,12 +201,6 @@ void ArmNode::control_tick() {
         const std::uint8_t servo_types[] = {
             MS62_SERVO, MS62_SERVO_A, DM996_SERVO, DM996_SERVO, DM996_SERVO,
         };
-        state_.angle0.store(static_cast<float>(angles[0]));
-        state_.angle1.store(static_cast<float>(angles[1]));
-        state_.angle2.store(static_cast<float>(angles[2]));
-        state_.angle3.store(static_cast<float>(angles[3]));
-        state_.angle4.store(static_cast<float>(angles[4]));
-
         bool servo_command_ok = true;
         for (std::size_t i = 0; i < 5; ++i) {
             if (!pwm_->setSmoothServoAngle(
@@ -258,11 +226,10 @@ void ArmNode::control_tick() {
         joint_targets_publisher_->publish(targets);
     }
 
-    screen_.PostEvent(ftxui::Event::Custom);
 }
 
 void ArmNode::stop() {
-    running_.store(false);
+    running_ = false;
     if (rclcpp::ok()) {
         rclcpp::shutdown();
     }
@@ -299,67 +266,4 @@ void ArmNode::stop_actuators() {
     }
     hardware_open_ = false;
     std::cout << "Goodbye." << std::endl;
-}
-
-void ArmNode::run_ui() {
-    using namespace ftxui;
-    ui_active_.store(true);
-    if (running_.load()) {
-        auto renderer = Renderer([this]() { return render_ui(); });
-        screen_.Loop(renderer);
-    }
-    ui_active_.store(false);
-    if (rclcpp::ok()) {
-        rclcpp::shutdown();
-    }
-}
-
-ftxui::Element ArmNode::render_ui() {
-    using namespace ftxui;
-    std::vector<std::vector<std::string>> data = {
-        {"Name", "Value", "Delta"},
-        {"x", std::to_string(state_.x.load()),
-         std::to_string(state_.x_delta.load())},
-        {"y", std::to_string(state_.y.load()),
-         std::to_string(state_.y_delta.load())},
-        {"z", std::to_string(state_.z.load()),
-         std::to_string(state_.z_delta.load())},
-        {"roll", std::to_string(state_.roll.load()),
-         std::to_string(state_.roll_delta.load())},
-        {"pitch", std::to_string(state_.pitch.load()),
-         std::to_string(state_.pitch_delta.load())},
-        {"yaw", std::to_string(state_.yaw.load()),
-         std::to_string(state_.yaw_delta.load())},
-    };
-
-    auto pose_table = Table(data);
-    pose_table.SelectRow(0).Decorate(bold | color(Color::Cyan));
-    pose_table.SelectColumn(0).Decorate(color(Color::Yellow));
-    pose_table.SelectAll().Border(LIGHT);
-    pose_table.SelectAll().Separator(LIGHT);
-
-    std::vector<std::vector<std::string>> angles = {
-        {"Servo", "Angle"},
-        {"MS62_1", std::to_string(state_.angle0.load())},
-        {"MS62_2", std::to_string(state_.angle1.load())},
-        {"DM996_1", std::to_string(state_.angle2.load())},
-        {"DM996_2", std::to_string(state_.angle3.load())},
-        {"DM996_3", std::to_string(state_.angle4.load())},
-        {"DM996_4", std::to_string(state_.angle5.load())},
-    };
-
-    auto servo_table = Table(angles);
-    servo_table.SelectRow(0).Decorate(bold | color(Color::Cyan));
-    servo_table.SelectColumn(0).Decorate(color(Color::Yellow));
-    servo_table.SelectAll().Border(LIGHT);
-    servo_table.SelectAll().Separator(LIGHT);
-
-    return vbox({
-        hbox({
-            pose_table.Render(),
-            separator(),
-            servo_table.Render(),
-        }) | center,
-        text("Add IK solution here eventually.") | center,
-    });
 }

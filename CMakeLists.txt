@@ -20,7 +20,6 @@ elseif(NOT SDL2_FOUND OR NOT SDL2_LIBRARIES)
     set(SDL2_LIBRARIES "${SDL2_LIBRARY}")
 endif()
 find_package(orocos_kdl REQUIRED)
-find_package(ftxui CONFIG REQUIRED)
 
 
 
@@ -49,9 +48,6 @@ target_link_libraries(arm_control_node
     PCA9685
     Controller
     Inverse_Kinematics
-    ftxui::screen
-    ftxui::dom
-    ftxui::component
 )
 ament_target_dependencies(arm_control_node rclcpp sensor_msgs)
 install(TARGETS arm_control_node DESTINATION lib/${PROJECT_NAME})

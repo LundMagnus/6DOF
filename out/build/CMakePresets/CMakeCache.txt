@@ -151,7 +151,7 @@ CMAKE_PROJECT_DESCRIPTION:STATIC=
 CMAKE_PROJECT_HOMEPAGE_URL:STATIC=
 
 //Value Computed by CMake
-CMAKE_PROJECT_NAME:STATIC=Code
+CMAKE_PROJECT_NAME:STATIC=arm_control
 
 //Value Computed by CMake
 CMAKE_PROJECT_SPDX_LICENSE:STATIC=
@@ -247,6 +247,18 @@ Code_SOURCE_DIR:STATIC=/home/magnus/Documents/Raspberry Pi/Code
 
 //The directory containing a CMake configuration file for SDL2.
 SDL2_DIR:PATH=SDL2_DIR-NOTFOUND
+
+//The directory containing a CMake configuration file for ament_cmake.
+ament_cmake_DIR:PATH=ament_cmake_DIR-NOTFOUND
+
+//Value Computed by CMake
+arm_control_BINARY_DIR:STATIC=/home/magnus/Documents/Raspberry Pi/Code/out/build/CMakePresets
+
+//Value Computed by CMake
+arm_control_IS_TOP_LEVEL:STATIC=ON
+
+//Value Computed by CMake
+arm_control_SOURCE_DIR:STATIC=/home/magnus/Documents/Raspberry Pi/Code
 
 
 ########################
