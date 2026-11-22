@@ -6,6 +6,7 @@
 
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/joint_state.hpp>
+#include <std_msgs/msg/string.hpp>
 
 #include "../Controller/Controller.h"
 #include "../PCA9685/PCA9685.h"
@@ -49,6 +50,8 @@ private:
     std::unique_ptr<PCA9685> pwm_;
     Controller controller_;
     rclcpp::Publisher<sensor_msgs::msg::JointState>::SharedPtr joint_targets_publisher_;
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr hello_reply_publisher_;
+    rclcpp::Subscription<std_msgs::msg::String>::SharedPtr hello_subscription_;
     rclcpp::TimerBase::SharedPtr control_timer_;
     State state_;
     bool running_{true};

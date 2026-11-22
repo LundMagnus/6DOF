@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(sensor_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
 find_package(SDL2 QUIET)
 if(TARGET SDL2::SDL2)
     set(SDL2_INCLUDE_DIRS "")
@@ -49,7 +50,7 @@ target_link_libraries(arm_control_node
     Controller
     Inverse_Kinematics
 )
-ament_target_dependencies(arm_control_node rclcpp sensor_msgs)
+ament_target_dependencies(arm_control_node rclcpp sensor_msgs std_msgs)
 install(TARGETS arm_control_node DESTINATION lib/${PROJECT_NAME})
 
 include(CTest)

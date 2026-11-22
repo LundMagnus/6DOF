@@ -83,6 +83,20 @@ ArmNode::ArmNode()
 
     joint_targets_publisher_ =
         create_publisher<sensor_msgs::msg::JointState>("arm/joint_targets", 10);
+    hello_reply_publisher_ =
+        create_publisher<std_msgs::msg::String>("/hello_reply", 10);
+    hello_subscription_ = create_subscription<std_msgs::msg::String>(
+        "/hello", 10,
+        [this](const std_msgs::msg::String::SharedPtr message) {
+            if (message->data != "hello") {
+                return;
+            }
+
+            std_msgs::msg::String reply;
+            reply.data = "Hello World!";
+            hello_reply_publisher_->publish(reply);
+            RCLCPP_INFO(get_logger(), "Received hello; sent reply");
+        });
     control_timer_ = create_wall_timer(
         std::chrono::milliseconds(50),
         [this]() { control_tick(); });
